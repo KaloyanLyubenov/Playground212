@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    username: "kalo"
+    password: "12345678"
+    jdbc-url: "jdbc:mysql://localhost:3308/playground"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    pool-size: 30
+  flyway:
+    url: "jdbc:mysql://localhost:3308/playground"
+    user: "kalo"
+    password: "12345678"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+server:
+  error:
+    include-binding-errors: always
+    include-message: always
