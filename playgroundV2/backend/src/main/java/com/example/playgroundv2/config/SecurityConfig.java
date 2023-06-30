@@ -31,10 +31,11 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(
                         auth -> auth
-                                        .requestMatchers("/api/v1/auth/**")
-                                        .permitAll()
-                                        .anyRequest()
-                                        .authenticated()
+
+                                .requestMatchers("/api/v1/auth/**", "/")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
                 )
                 .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

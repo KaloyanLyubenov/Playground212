@@ -15,6 +15,7 @@ public class UserEntity implements UserDetails {
     private String email;
     private String role;
 
+
     public UserEntity(){}
 
     public UserEntity(
@@ -98,4 +99,5 @@ public class UserEntity implements UserDetails {
     public String getRole() {
         return role;
     }
+
 }
