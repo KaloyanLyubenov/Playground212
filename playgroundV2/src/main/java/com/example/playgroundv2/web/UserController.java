@@ -1,7 +1,7 @@
 package com.example.playgroundv2.web;
 
 
-import com.example.playgroundv2.entities.UserEntity;
+import com.example.playgroundv2.domain.entities.UserEntity;
 import com.example.playgroundv2.services.UserService;
 import org.springframework.web.bind.annotation.*;
 

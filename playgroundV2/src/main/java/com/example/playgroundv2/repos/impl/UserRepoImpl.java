@@ -1,7 +1,7 @@
 package com.example.playgroundv2.repos.impl;
 
 
-import com.example.playgroundv2.entities.UserEntity;
+import com.example.playgroundv2.domain.entities.UserEntity;
 import com.example.playgroundv2.repos.UserRepo;
 import com.example.playgroundv2.rowMappers.UserRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,9 +21,9 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
-    public List<UserEntity> selectUsers() {
+    public List<UserEntity> findAllUsers() {
         String sql = """
-            SELECT id, first_name, last_name, email, password
+            SELECT id, first_name, last_name, email, password, role
             FROM users
             LIMIT 10;
             """;
@@ -34,14 +34,15 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public int insertUser(UserEntity user) {
         String sql = """
-                INSERT INTO users(first_name, last_name, password, email)
-                VALUES (?, ?, ?, ?);
+                INSERT INTO users(first_name, last_name, password, email, role)
+                VALUES (?, ?, ?, ?, ?);
                 """;
         return jdbcTemplate.update(sql,
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPassword(),
-                user.getEmail());
+                user.getEmail(),
+                user.getRole());
     }
 
     @Override
@@ -54,7 +55,7 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
-    public Optional<UserEntity> selectUserById(int id) {
+    public Optional<UserEntity> findUserById(int id) {
         String sql = """
                 SELECT * FROM users
                 WHERE id = ?
@@ -64,10 +65,20 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
+    public Optional<UserEntity> findUserByEmail(String email) {
+        String sql = """
+                SELECT * FROM users
+                WHERE email = ?
+                """;
+        return jdbcTemplate.query(sql, new UserRowMapper(), email)
+                .stream().findFirst();
+    }
+
+    @Override
     public int updateUser(UserEntity user){
         String sql = """
                 UPDATE users
-                SET first_name = ?, last_name = ?, password = ?, email = ?   
+                SET first_name = ?, last_name = ?, password = ?, email = ?, role = ?   
                 WHERE id = ?
                 """;
         return jdbcTemplate.update(sql,
@@ -75,6 +86,7 @@ public class UserRepoImpl implements UserRepo {
                 user.getLastName(),
                 user.getPassword(),
                 user.getEmail(),
-                user.getId());
+                user.getId(),
+                user.getRole());
     }
 }

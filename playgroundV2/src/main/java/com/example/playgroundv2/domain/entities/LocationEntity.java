@@ -1,4 +1,4 @@
-package com.example.playgroundv2.entities;
+package com.example.playgroundv2.domain.entities;
 
 import java.util.List;
 
@@ -7,16 +7,16 @@ public class LocationEntity {
     private double latitude;
     private double longitude;
     private int thumbnailId;
-    private List<Integer> suitableColorIds;
+    private List<ColorEntity> suitableColor;
 
     public LocationEntity(){}
 
-    public LocationEntity(int id, double latitude, double longitude, int thumbnailId, List<Integer> suitableColorIds) {
+    public LocationEntity(int id, double latitude, double longitude, int thumbnailId, List<ColorEntity> suitableColor) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.thumbnailId = thumbnailId;
-        this.suitableColorIds = suitableColorIds;
+        this.suitableColor = suitableColor;
     }
 
     public int getId() {
@@ -35,7 +35,7 @@ public class LocationEntity {
         return thumbnailId;
     }
 
-    public List<Integer> getSuitableColorIds() {
-        return suitableColorIds;
+    public List<ColorEntity> getSuitableColorIds() {
+        return suitableColor;
     }
 }

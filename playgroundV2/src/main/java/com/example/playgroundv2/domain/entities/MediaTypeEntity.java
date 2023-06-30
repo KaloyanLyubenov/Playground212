@@ -1,4 +1,4 @@
-package com.example.playgroundv2.entities;
+package com.example.playgroundv2.domain.entities;
 
 public class MediaTypeEntity {
     private int id;

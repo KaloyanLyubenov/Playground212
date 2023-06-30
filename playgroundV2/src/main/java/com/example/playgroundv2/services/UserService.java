@@ -1,6 +1,6 @@
 package com.example.playgroundv2.services;
 
-import com.example.playgroundv2.entities.UserEntity;
+import com.example.playgroundv2.domain.entities.UserEntity;
 import com.example.playgroundv2.repos.UserRepo;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +17,11 @@ public class UserService {
     }
 
     public List<UserEntity> getUsers(){
-        return this.userRepo.selectUsers();
+        return this.userRepo.findAllUsers();
     }
 
     public UserEntity getUserById(int id){
-        Optional<UserEntity> optionalUser = this.userRepo.selectUserById(id);
+        Optional<UserEntity> optionalUser = this.userRepo.findUserById(id);
         if(optionalUser.isEmpty()){
             throw new IllegalStateException("User with this id does not exist");
         }

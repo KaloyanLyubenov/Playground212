@@ -1,13 +1,13 @@
-package com.example.playgroundv2.entities;
+package com.example.playgroundv2.domain.entities;
 
-public class VideoEntity {
+public class PictureEntity {
     private int id;
     private String url;
-    private String mediaType;
+    private MediaTypeEntity mediaType;
 
-    public VideoEntity(){}
+    public PictureEntity(){}
 
-    public VideoEntity(int id, String url, String mediaType) {
+    public PictureEntity(int id, String url, MediaTypeEntity mediaType) {
         this.id = id;
         this.url = url;
         this.mediaType = mediaType;
@@ -21,7 +21,7 @@ public class VideoEntity {
         return url;
     }
 
-    public String getMediaType() {
+    public MediaTypeEntity getMediaType() {
         return mediaType;
     }
 }
