@@ -1,12 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
-import Gallery from './components/Gallery';
+import LoginForm from './components/LoginForm';
+import NavBar from './components/NavBar';
+
+
 
 function App() {
+
+  const handleNavigationBar = (data) =>{
+  }
+
+
   return (
     <>
-      <h1>Hello world</h1>
-      <Gallery />
+      <NavBar onChange={() => handleNavigationBar()}/>
+      <br />
+      <LoginForm />
     </>
   );
 }

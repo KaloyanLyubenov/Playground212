@@ -55,6 +55,42 @@
     margin: 0 auto;
 }
 
+.closeIcon {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 2rem;
+    height: 2rem;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.backwardsArrow {
+    position: fixed;
+    top: 49%;
+    left: 10px;
+    width: 2rem;
+    height: 2rem;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.forwardsArrow {
+    position: fixed;
+    top: 49%;
+    right: 10px;
+    width: 2rem;
+    height: 2rem;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    cursor: pointer;
+}
+
 @media (max-width: 991px){
     .gallery{
         -webkit-column-count: 2;
@@ -78,3 +114,4 @@
         padding: 0 12px;
     }
 }
+
