@@ -8,12 +8,12 @@ import java.util.Collection;
 import java.util.List;
 
 public class UserEntity implements UserDetails {
-    private int id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String password;
     private String email;
-    private String role;
+    private List<UserRoleEntity> roles;
 
 
     public UserEntity(){}
@@ -23,30 +23,60 @@ public class UserEntity implements UserDetails {
             String lastName,
             String email,
             String password,
-            String role) {
+            List<UserRoleEntity> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
-        this.role = role;
+        this.roles = roles;
     }
 
     public UserEntity(
-            int id,
+            Long id,
             String firstName,
             String lastName,
             String email, String password,
-            String role) {
+            List<UserRoleEntity> roles
+    )
+    {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
-        this.role = role;
+        this.roles = roles;
+    }
+
+    public UserEntity(
+            Long id,
+            String firstName,
+            String lastName,
+            String email,
+            String password
+    )
+    {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+    }
+
+    public UserEntity(
+            String firstName,
+            String lastName,
+            String email,
+            String password
+    )
+    {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
     }
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -60,7 +90,14 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+        return this.roles.
+                stream().
+                map(this::mapRole).
+                toList();
+    }
+
+    private GrantedAuthority mapRole(UserRoleEntity role){
+        return new SimpleGrantedAuthority(("ROLE_" + role.getRole()));
     }
 
     public String getPassword() {
@@ -96,8 +133,13 @@ public class UserEntity implements UserDetails {
         return email;
     }
 
-    public String getRole() {
-        return role;
+    public List<UserRoleEntity> getRole() {
+        return roles;
+    }
+
+    public UserEntity setRoles(List<UserRoleEntity> roles){
+        this.roles = roles;
+        return this;
     }
 
 }

@@ -23,7 +23,7 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public List<UserEntity> findAllUsers() {
         String sql = """
-            SELECT id, first_name, last_name, email, password, role
+            SELECT *
             FROM users
             LIMIT 10;
             """;
@@ -34,15 +34,14 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public int insertUser(UserEntity user) {
         String sql = """
-                INSERT INTO users(first_name, last_name, password, email, role)
-                VALUES (?, ?, ?, ?, ?);
+                INSERT INTO users(first_name, last_name, password, email)
+                VALUES (?, ?, ?, ?);
                 """;
         return jdbcTemplate.update(sql,
                 user.getFirstName(),
                 user.getLastName(),
                 user.getPassword(),
-                user.getEmail(),
-                user.getRole());
+                user.getEmail());
     }
 
     @Override
@@ -78,7 +77,7 @@ public class UserRepoImpl implements UserRepo {
     public int updateUser(UserEntity user){
         String sql = """
                 UPDATE users
-                SET first_name = ?, last_name = ?, password = ?, email = ?, role = ?   
+                SET first_name = ?, last_name = ?, password = ?, email = ?  
                 WHERE id = ?
                 """;
         return jdbcTemplate.update(sql,
@@ -86,7 +85,6 @@ public class UserRepoImpl implements UserRepo {
                 user.getLastName(),
                 user.getPassword(),
                 user.getEmail(),
-                user.getId(),
-                user.getRole());
+                user.getId());
     }
 }

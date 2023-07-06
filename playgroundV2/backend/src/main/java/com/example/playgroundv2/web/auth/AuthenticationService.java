@@ -25,12 +25,13 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse register(RegisterRequest request) {
+
+
         var user = new UserEntity(
                 request.getFirstName(),
                 request.getLastName(),
                 request.getEmail(),
-                passwordEncoder.encode(request.getPassword()),
-                "USER"
+                passwordEncoder.encode(request.getPassword())
         );
         userRepo.insertUser(user);
         var jwtToken = jwtService.generateToken(user);
