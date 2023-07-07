@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorization -> authorization
                                 .requestMatchers(HttpMethod.OPTIONS, "/users").permitAll()
-                                .requestMatchers("/auth/**")
+                                .requestMatchers("/auth/**", "/image-upload")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

@@ -1,7 +1,7 @@
 package com.example.playgroundv3.config;
 
-import com.example.playgroundv3.repos.UserRepo;
 import com.example.playgroundv3.services.UserService;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,24 +9,39 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ApplicationConfiguration {
 
-    private final UserRepo userRepo;
     private final UserService userService;
+    private final Dotenv dotenv;
 
-    public ApplicationConfiguration(UserRepo userRepo, UserService userService) {
-        this.userRepo = userRepo;
+    public ApplicationConfiguration(UserService userService, Dotenv dotenv) {
         this.userService = userService;
+        this.dotenv = dotenv;
+    }
+
+    public String getAccessKey() {
+        return dotenv.get("AWS_ACCESS_KEY_ID");
+    }
+
+    public String getSecretKey() {
+        return dotenv.get("AWS_SECRET_ACCESS_KEY");
+    }
+
+    public String getRegion() {
+        return dotenv.get("REGION");
+    }
+
+    public String getBucketName() {
+        return dotenv.get("NAME");
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> this.userService.getUserByEmail(username);
+        return this.userService::getUserByEmail;
     }
 
     @Bean
