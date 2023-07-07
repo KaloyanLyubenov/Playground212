@@ -1,6 +1,5 @@
 package com.example.playgroundv3.repos.impl.row_mappers;
 
-import com.example.playgroundv3.domain.entites.UserEntity;
 import com.example.playgroundv3.domain.entites.UserRoleEntity;
 import org.springframework.jdbc.core.RowMapper;
 

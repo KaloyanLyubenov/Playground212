@@ -28,6 +28,27 @@ public class UserRepoImpl implements UserRepo {
 
         return jdbcTemplate.query(sql, new UserRowMapper());
     }
+    @Override
+    public Optional<UserEntity> findUserByID(int id) {
+        String sql = """
+            SELECT *
+            FROM users
+            WHERE id = ?;
+            """;
+
+        return jdbcTemplate.query(sql, new UserRowMapper(), id).stream().findFirst();
+    }
+
+    @Override
+    public Optional<UserEntity> findUserByEmail(String email) {
+        String sql = """
+            SELECT *
+            FROM users
+            WHERE email = ?;
+            """;
+
+        return jdbcTemplate.query(sql, new UserRowMapper(), email).stream().findFirst();
+    }
 
     @Override
     public int saveUser(UserAddDTO user) {
@@ -44,16 +65,6 @@ public class UserRepoImpl implements UserRepo {
                 user.getEmail());
     }
 
-    @Override
-    public Optional<UserEntity> findUserByID(int id) {
-        String sql = """
-            SELECT *
-            FROM users
-            WHERE id = ?;
-            """;
-
-        return jdbcTemplate.query(sql, new UserRowMapper(), id).stream().findFirst();
-    }
 
 
 }

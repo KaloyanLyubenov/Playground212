@@ -11,5 +11,6 @@ public interface UserRepo {
     public List<UserEntity> findAllUsers();
     public int saveUser(UserAddDTO user);
     public Optional<UserEntity> findUserByID(int id);
+    public Optional<UserEntity> findUserByEmail(String email);
 
 }

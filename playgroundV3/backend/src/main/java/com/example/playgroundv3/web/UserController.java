@@ -1,6 +1,7 @@
 package com.example.playgroundv3.web;
 
 import com.example.playgroundv3.domain.dtos.UserAddDTO;
+import com.example.playgroundv3.domain.dtos.UserDTO;
 import com.example.playgroundv3.domain.models.UserModel;
 import com.example.playgroundv3.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserModel> getAllUsers(){
+    public List<UserDTO> getAllUsers(){
         return this.userService.getAllUsers();
     }
 

@@ -2,6 +2,7 @@ package com.example.playgroundv3.services;
 
 import com.example.playgroundv3.domain.dtos.UserAddDTO;
 import com.example.playgroundv3.domain.dtos.UserAddRoleDTO;
+import com.example.playgroundv3.domain.dtos.UserDTO;
 import com.example.playgroundv3.domain.entites.UserEntity;
 import com.example.playgroundv3.domain.entites.UserRoleEntity;
 import com.example.playgroundv3.domain.models.UserModel;
@@ -22,23 +23,50 @@ public class UserService {
         this.userRoleService = userRoleService;
     }
 
-    public List<UserModel> getAllUsers() {
-        List<UserModel> users = this.userRepo.findAllUsers()
+    public List<UserDTO> getAllUsers() {
+        List<UserDTO> users = this.userRepo.findAllUsers()
                 .stream().map(
                         entity ->
-                            new UserModel(
-                                    entity.getId(),
+                            new UserDTO(
                                     entity.getFirstName(),
                                     entity.getLastName(),
                                     entity.getEmail(),
                                     entity.getPassword()
                             )
                 ).toList();
-        for(UserModel user : users){
-            user.setRoles(this.userRoleService.getUserRolesByUserEmail(user.getEmail()));
-        }
+
         return users;
     }
+
+    public UserModel getUserByID(int id){
+        Optional<UserEntity> optionalUser = this.userRepo.findUserByID(id);
+
+        if(optionalUser.isEmpty()){
+            throw new IllegalArgumentException("User with this ID not found");
+        }
+
+        UserEntity user = optionalUser.get();
+        UserModel userModel = new UserModel(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+        userModel.setRoles(this.userRoleService.getUserRolesByUserEmail(user.getEmail()));
+
+        return userModel;
+    }
+
+    public UserModel getUserByEmail(String email){
+        Optional<UserEntity> optionalUser = this.userRepo.findUserByEmail(email);
+
+        if(optionalUser.isEmpty()){
+            throw new IllegalStateException("User with this email not found");
+        }
+
+        UserEntity user = optionalUser.get();
+        UserModel userModel = new UserModel(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+        userModel.setRoles(this.userRoleService.getUserRolesByUserEmail(user.getEmail()));
+
+        return userModel;
+    }
+
+
 
     public void createUser(UserAddDTO user){
         int result = this.userRepo.saveUser(user);
@@ -48,12 +76,4 @@ public class UserService {
         this.userRoleService.addRoleToUser(new UserAddRoleDTO(user.getEmail(), "USER"));
     }
 
-    public UserModel getUserByID(int id){
-        Optional<UserEntity> optionalUser = this.userRepo.findUserByID(id);
-        if(optionalUser.isEmpty()){
-            throw new IllegalArgumentException("User with this ID not found");
-        }
-        UserEntity user = optionalUser.get();
-        return new UserModel(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
-    }
 }

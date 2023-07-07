@@ -1,8 +1,13 @@
 package com.example.playgroundv3.domain.entites;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 import java.util.List;
 
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
     private int id;
     private String firstName;
@@ -62,4 +67,44 @@ public class UserEntity {
     public List<UserRoleEntity> getRoles() {
         return roles;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.
+                stream().
+                map(this::mapRole).
+                toList();
+    }
+
+    private GrantedAuthority mapRole(UserRoleEntity role){
+        return new SimpleGrantedAuthority(("ROLE_" + role.getRole()));
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    // UserData Checkers
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
