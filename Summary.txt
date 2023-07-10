@@ -1,0 +1,15 @@
+﻿Website for Forbidden Media
+
+
+
+
+Summary: 
+The website is supposed to represent Forbidden Media and help him grow his photographic business. Except the usual portfolio stuff where people will be able to view the photographers’ work they will also be able to register on the website. What would a registration be necessary for? With this they will be able to schedule a photoshoot through a feature on the website. They will be required to input details for the focus of the photoshoot (would it be a car, person or an event). After that they will be prompted with a list of locations chosen by the app, they can choose to remove or to add locations depending on their liking. Once they submit their request they will be able to access a direct chat with the photographer in case they have comments or questions. Once all details are agreed on by both parties the photoshoot will be scheduled and the customer will be asked to use the payment feature of the website and pay for the photoshoot. After the payment is successful both parties will receive an email containing a link to a google maps route containing all of the desired locations, and an option to add the event to their google calendar. After completing the photoshoot and the editing of the pictures, the photographer will have to upload the pictures on the website where the customer from a custom gallery will be able to review and download the pictures.  
+
+
+Problems and solutions:
+All image storage will be done using Amazon S3 cloud storage API;
+The locations and the maps will be implemented using Google Maps Api. The locations will be imputed by the photographer beforehand.
+Using websockets a two-way connection will be made between the customer and photographer to be able to chat in real-time. Still haven’t looked into a fitting API or method of implementation.
+Payment will be processed using Stripe API.
+Have to find a way to send emails and add the event to Google Calendar.

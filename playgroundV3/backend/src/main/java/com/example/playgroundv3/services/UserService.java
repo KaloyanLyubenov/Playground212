@@ -66,8 +66,6 @@ public class UserService {
         return userModel;
     }
 
-
-
     public void createUser(UserAddDTO user){
         int result = this.userRepo.saveUser(user);
         if(result != 1){

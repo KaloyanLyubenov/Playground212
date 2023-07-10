@@ -1,22 +1,57 @@
 import React, { ChangeEvent } from "react";
 import "../styles/imageUpload.css";
 import axios from "axios";
+import { error } from "console";
 
 function ImageUpload() {
+  const downloadFile = async (fileName: string) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/image/download/${fileName}`,
+        {
+          responseType: "blob", // Specify the response type as 'blob' to handle binary data
+        }
+      );
+
+      // Create a URL for the downloaded file
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+
+      // Create a link element and simulate a click to initiate the download
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error while downloading file:", error);
+    }
+  };
+
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     console.log("begining execution");
     if (e.target.files && e.target.files.length > 0) {
       const file: File = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
       console.log("got image");
 
-      // Get secure url from the server
-      const res = await axios.get("http://localhost:8080/image-upload");
-      console.log(res.data);
-
-      // Post the image to the S3 bucket
-
-      // Post request to server to store extra data
+      try {
+        await axios.post("http://localhost:8080/image/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log("File succesfully sent to backend");
+      } catch {
+        console.log("Error while sending to backend");
+      }
     }
+  };
+
+  const handleImageDownload = async () => {
+    const fileName = "1688999801353_download.jpeg";
+    downloadFile(fileName);
   };
 
   return (
@@ -48,6 +83,7 @@ function ImageUpload() {
         id="file"
         onChange={(e: ChangeEvent<HTMLInputElement>) => handleImageUpload(e)}
       />
+      <button id="download" onClick={() => handleImageDownload()}></button>
     </label>
   );
 }

@@ -9,7 +9,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/users")
+        registry.addMapping("/image/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("POST", "GET"); // Specify the allowed HTTP methods
+        registry.addMapping("/image/download/**")
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("GET"); // Specify the allowed HTTP methods
         registry.addMapping("/users/**")
@@ -18,9 +21,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/auth/**")
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("POST"); // Specify the allowed HTTP methods
-        registry.addMapping("/image-upload")
-                .allowedOrigins("http://localhost:3000")
-                .allowedMethods("GET");
     }
 
 }

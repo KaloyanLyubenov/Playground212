@@ -31,14 +31,6 @@ public class ApplicationConfiguration {
         return dotenv.get("AWS_SECRET_ACCESS_KEY");
     }
 
-    public String getRegion() {
-        return dotenv.get("REGION");
-    }
-
-    public String getBucketName() {
-        return dotenv.get("NAME");
-    }
-
     @Bean
     public UserDetailsService userDetailsService() {
         return this.userService::getUserByEmail;
