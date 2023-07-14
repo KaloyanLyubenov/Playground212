@@ -65,15 +65,15 @@ function ImageUpload() {
     }
   };
 
-  // const handleInputClick = () => {
-  //   if (fileInput) {
-  //     fileInput.click();
-  //   }
-  // };
+  const handleInputClick = () => {
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
 
   return (
     <div className="container">
-      <div className="header">
+      <div className="header" onClick={handleInputClick}>
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
           <g
