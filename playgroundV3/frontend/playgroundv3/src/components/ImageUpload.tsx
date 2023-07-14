@@ -42,6 +42,8 @@ function ImageUpload() {
     const formData = new FormData();
     formData.append("albumName", albumName);
     formData.append("mediaType", mediaType);
+    console.log(mediaType);
+    console.log(albumName);
     const email = localStorage.getItem("userEmail");
 
     if (email) {
@@ -52,8 +54,13 @@ function ImageUpload() {
       formData.append(`files`, file, file.name);
     });
 
+    console.log(formData);
+    sendData(formData);
+  };
+
+  const sendData = async (data: FormData) => {
     try {
-      await axios.post("http://localhost:8080/picture/upload", formData, {
+      await axios.post("http://localhost:8080/pictures", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -119,7 +126,11 @@ function ImageUpload() {
             onChange={handleMediaTypeChange}
           >
             {mediaTypes.map((type) => {
-              return <option className="select-option">{type}</option>;
+              return (
+                <option className="select-option" key={type}>
+                  {type}
+                </option>
+              );
             })}
           </select>
         </div>

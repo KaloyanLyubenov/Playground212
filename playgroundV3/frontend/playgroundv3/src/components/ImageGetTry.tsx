@@ -38,7 +38,7 @@ function ImageGetTry() {
         console.log("Couldn't get image names!");
       });
 
-    console.log("got images");
+    console.log("got image names");
   }, []);
 
   useEffect(() => {
@@ -66,11 +66,14 @@ function ImageGetTry() {
       } catch (error) {
         console.error("couldn't get url for " + name);
       }
+      console.log("got url");
     }
 
+    console.log(new Date());
     Promise.all(imageNames.map((name) => getImage(name))).then(() => {
       setImageUrls(urls);
     });
+    console.log(new Date());
   }, [s3, imageNames]);
 
   return (

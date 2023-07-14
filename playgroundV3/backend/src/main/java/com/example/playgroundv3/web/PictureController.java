@@ -42,7 +42,7 @@ public class PictureController {
 //        return HttpStatus.OK;
 //    }
 
-    @PostMapping("/upload")
+    @PostMapping()
     public ResponseEntity<String> uploadPictures(
             @RequestParam("albumName") String albumName,
             @RequestParam("ownerEmail") String ownerEmail,
