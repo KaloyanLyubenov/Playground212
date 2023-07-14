@@ -1,34 +1,52 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import axios from "axios";
-import "../styles/registerForm.css";
+import "../styles/loginForm.css";
 
-function LoginForm() {
+interface LoginProps {
+  onPageChange: (newPage: string) => void;
+}
+
+const LoginForm: React.FC<LoginProps> = ({ onPageChange }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
+    console.log("email: " + email + " " + password);
+
     try {
-      const response = await axios.post(" http://localhost:8080/auth/login", {
+      const response = await axios.post("http://localhost:8080/auth/login", {
         email,
         password,
       });
+
       const token = response.data.jwtToken;
+      const userEmail = response.data.userEmail;
       localStorage.setItem("token", token);
-      console.log(token);
+      localStorage.setItem("userEmail", userEmail);
+      console.log("Succesfull login");
     } catch (error) {
       // Handle login error
     }
+
+    setEmail("");
+    setPassword("");
+
+    //window.location.reload();
+  };
+
+  const handlePageChoice = (newPage: string) => {
+    onPageChange(newPage);
   };
 
   return (
-    <div className="form-box">
-      <form className="form" onSubmit={(e: FormEvent) => handleLogin(e)}>
-        <span className="title">Sign in</span>
-        <div className="form-container">
+    <div className="login-form-container">
+      <form className="login-form" onSubmit={handleLogin}>
+        <span className="log-in-text">Log in</span>
+        <div className="login-inputs-container">
           <input
-            type="email"
-            className="input"
+            type="text"
+            className="login input email"
             placeholder="Email"
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
@@ -36,22 +54,31 @@ function LoginForm() {
           />
           <input
             type="password"
-            className="input"
+            className="login input password"
             placeholder="Password"
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)
             }
           />
         </div>
-        <button>Sign in</button>
+        <div className="buttons-container">
+          <button className="login-button">Login</button>
+        </div>
+        <div className="register-option">
+          <span>
+            Don't have an account?{" "}
+            <a
+              onClick={() => {
+                handlePageChoice("register");
+              }}
+            >
+              Register
+            </a>
+          </span>
+        </div>
       </form>
-      <div className="form-section">
-        <p>
-          Don't have an account? <a href="/register">Register</a>
-        </p>
-      </div>
     </div>
   );
-}
+};
 
 export default LoginForm;

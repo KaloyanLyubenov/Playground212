@@ -1,9 +1,5 @@
 .App {
   text-align: center;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  min-height: 100vh;
 }
 
 .App-logo {
@@ -24,12 +20,47 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:rgba(40, 44, 52, 0.5);
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  z-index: 101;
+}
+
+.login-register-forms {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.login-register-forms.invisible{
+  display: none;
+  height: 50px;
 }
 
 @keyframes App-logo-spin {
@@ -40,4 +71,16 @@
     transform: rotate(360deg);
   }
 }
+
+body {
+  overflow-x: hidden;
+}
+
+.content {
+  position: absolute;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
 

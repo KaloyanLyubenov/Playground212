@@ -11,6 +11,14 @@ public class PictureAddDTO {
 
     // Constructors
 
+    public PictureAddDTO(String albumName, String ownerEmail, int mediaTypeId, MultipartFile file) {
+        this.name = file.getOriginalFilename();
+        this.albumName = albumName;
+        this.ownerEmail = ownerEmail;
+        this.mediaTypeId = mediaTypeId;
+        this.file = file;
+    }
+
     public PictureAddDTO(String name, String albumName, String ownerEmail, int mediaTypeId, MultipartFile file) {
         this.name = name;
         this.albumName = albumName;
@@ -19,6 +27,8 @@ public class PictureAddDTO {
         this.file = file;
     }
 
+    //10485760
+    //52977542
     // Getters
 
     public String getName() {
@@ -41,3 +51,5 @@ public class PictureAddDTO {
         return file;
     }
 }
+
+

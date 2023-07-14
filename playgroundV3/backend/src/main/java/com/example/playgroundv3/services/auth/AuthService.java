@@ -46,7 +46,7 @@ public class AuthService {
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword())
         ));
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(jwtToken, request.getEmail());
     }
 
     public AuthenticationResponse login(AuthenticationRequest request) {
@@ -65,6 +65,6 @@ public class AuthService {
                 user.getEmail(),
                 passwordEncoder.encode(user.getPassword())
         ));
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(jwtToken, request.getEmail());
     }
 }

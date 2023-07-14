@@ -1,90 +1,135 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import "../styles/imageUpload.css";
 import axios from "axios";
 import { error } from "console";
 
 function ImageUpload() {
-  const downloadFile = async (fileName: string) => {
+  const fileInput = document.querySelector("#file") as HTMLInputElement;
+
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [mediaTypes, setMediaTypes] = useState<string[]>([]);
+  const [mediaType, setMediaType] = useState("");
+  const [albumName, setAlbumName] = useState("");
+
+  useEffect(() => {
+    axios
+      .get<string[]>("http://localhost:8080/media-types")
+      .then((response) => {
+        setMediaTypes(response.data);
+      })
+      .catch((error) => {
+        console.log("Couldn't get media types!");
+      });
+  }, []);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedFiles([...e.target.files]);
+    }
+  };
+
+  const handleMediaTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setMediaType(e.target.value);
+  };
+
+  const handleAlbumNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setAlbumName(e.target.value);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("albumName", albumName);
+    formData.append("mediaType", mediaType);
+    const email = localStorage.getItem("userEmail");
+
+    if (email) {
+      formData.append("ownerEmail", email);
+    }
+
+    selectedFiles.forEach((file) => {
+      formData.append(`files`, file, file.name);
+    });
+
     try {
-      const response = await axios.get(
-        `http://localhost:8080/image/download/${fileName}`,
-        {
-          responseType: "blob", // Specify the response type as 'blob' to handle binary data
-        }
-      );
+      await axios.post("http://localhost:8080/picture/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-      // Create a URL for the downloaded file
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-
-      // Create a link element and simulate a click to initiate the download
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", fileName);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      console.log("Files uploaded successfully!");
     } catch (error) {
-      console.error("Error while downloading file:", error);
+      console.error("Error uploading files:", error);
     }
   };
 
-  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    console.log("begining execution");
-    if (e.target.files && e.target.files.length > 0) {
-      const file: File = e.target.files[0];
-      const formData = new FormData();
-      formData.append("file", file);
-      console.log("got image");
-
-      try {
-        await axios.post("http://localhost:8080/image/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        console.log("File succesfully sent to backend");
-      } catch {
-        console.log("Error while sending to backend");
-      }
-    }
-  };
-
-  const handleImageDownload = async () => {
-    const fileName = "1688999801353_download.jpeg";
-    downloadFile(fileName);
-  };
+  // const handleInputClick = () => {
+  //   if (fileInput) {
+  //     fileInput.click();
+  //   }
+  // };
 
   return (
-    <label className="custum-file-upload" htmlFor="file">
-      <div className="icon">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
-          <g strokeWidth="0" id="SVGRepo_bgCarrier"></g>
+    <div className="container">
+      <div className="header">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
           <g
-            strokeLinejoin="round"
-            strokeLinecap="round"
             id="SVGRepo_tracerCarrier"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           ></g>
           <g id="SVGRepo_iconCarrier">
-            {" "}
             <path
-              fill=""
-              d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z"
-              clipRule="evenodd"
-              fillRule="evenodd"
+              d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15"
+              stroke="#000000"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             ></path>{" "}
           </g>
-        </svg>
+        </svg>{" "}
+        <p>Browse File to upload!</p>
       </div>
-      <div className="text">
-        <span>Click to upload image</span>
+      <input id="file" type="file" onChange={handleFileChange} multiple />
+      <div className="input-holder">
+        <div className="album-name-holder">
+          <div className="album-name-label-holder">
+            <label htmlFor="album-name" className="album-name-label">
+              Album Name:{" "}
+            </label>
+          </div>
+          <input
+            className="album-name-input"
+            placeholder="Name"
+            onChange={handleAlbumNameChange}
+          />
+        </div>
+        <div className="media-type-holder">
+          <div className="media-type-label-holder">
+            <label htmlFor="media-type-select" className="media-type-label">
+              Media type:
+            </label>
+          </div>
+          <select
+            id="media-type-select"
+            name="media-type-select"
+            onChange={handleMediaTypeChange}
+          >
+            {mediaTypes.map((type) => {
+              return <option className="select-option">{type}</option>;
+            })}
+          </select>
+        </div>
       </div>
-      <input
-        type="file"
-        id="file"
-        onChange={(e: ChangeEvent<HTMLInputElement>) => handleImageUpload(e)}
-      />
-      <button id="download" onClick={() => handleImageDownload()}></button>
-    </label>
+      <div className="button-holder">
+        <button className="submit-button" onClick={handleSubmit}>
+          Submit
+        </button>
+      </div>
+    </div>
   );
 }
 

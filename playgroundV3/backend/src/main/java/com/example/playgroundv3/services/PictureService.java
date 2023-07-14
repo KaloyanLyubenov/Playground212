@@ -2,12 +2,14 @@ package com.example.playgroundv3.services;
 
 import com.example.playgroundv3.domain.dtos.PictureAddDTO;
 import com.example.playgroundv3.domain.dtos.PictureDownloadDTO;
+import com.example.playgroundv3.domain.dtos.auth.MultiplePictureUploadDTO;
 import com.example.playgroundv3.domain.entites.PictureEntity;
 import com.example.playgroundv3.domain.models.PictureModel;
 import com.example.playgroundv3.repos.PictureRepo;
+import com.example.playgroundv3.services.S3.S3Service;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +18,14 @@ public class PictureService {
 
     private final PictureRepo pictureRepo;
     private final UserService userService;
+    private final S3Service s3Service;
+    private final MediaTypesService mediaTypesService;
 
-    public PictureService(PictureRepo pictureRepo, UserService userService) {
+    public PictureService(PictureRepo pictureRepo, UserService userService, S3Service s3Service, MediaTypesService mediaTypesService) {
         this.pictureRepo = pictureRepo;
         this.userService = userService;
+        this.s3Service = s3Service;
+        this.mediaTypesService = mediaTypesService;
     }
 
     public List<PictureModel> getAllPictures() {
@@ -58,7 +64,15 @@ public class PictureService {
                 ).toList();
     }
 
-    public void addPicture(PictureAddDTO pictureDTO){
+    public void uploadPictures(MultiplePictureUploadDTO pictures){
+        MultipartFile[] files = pictures.getFiles();
+        for(MultipartFile file : files){
+            String fileName = this.s3Service.uploadFile(file);
+            this.addPicture(new PictureAddDTO(fileName, pictures.getAlbumName(), pictures.getOwnerEmail(), this.mediaTypesService.getMediaTypeIdByName(pictures.getMediaType()), file));
+        }
+    }
+
+    private void addPicture(PictureAddDTO pictureDTO){
         int res = this.pictureRepo.savePicture(
                 new PictureModel(
                         pictureDTO.getName(),
@@ -81,4 +95,5 @@ public class PictureService {
         }
         return optionalPic.get().getOwnerId() == this.userService.getUserByEmail(picDownDTO.getUserEmail()).getId();
     }
+
 }

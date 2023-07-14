@@ -46,7 +46,7 @@ public class S3Service {
                         .key(fileName)
                         .build(), RequestBody.fromFile(fileObj));
         fileObj.delete();
-        return "File upload : " + fileName;
+        return fileName;
     }
 
     public byte[] downloadFile(String fileName){

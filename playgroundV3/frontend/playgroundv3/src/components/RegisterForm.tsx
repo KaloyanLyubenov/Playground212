@@ -2,7 +2,11 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import axios from "axios";
 import "../styles/registerForm.css";
 
-function RegisterForm() {
+interface RegisterProps {
+  onPageChange: (newPage: string) => void;
+}
+
+const RegisterForm: React.FC<RegisterProps> = ({ onPageChange }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,14 +15,9 @@ function RegisterForm() {
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
 
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
-
     try {
       const response = await axios.post(
-        " http://localhost:8080/auth/register",
+        " http://10.16.6.11:8080/auth/register",
         {
           firstName,
           lastName,
@@ -28,59 +27,89 @@ function RegisterForm() {
       );
 
       const token = response.data.jwtToken;
+      const userEmail = response.data.userEmail;
       localStorage.setItem("token", token);
+      localStorage.setItem("userEmail", userEmail);
+      console.log("Succesfull register");
     } catch (error) {
       // Handle login error
     }
+
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+
+    window.location.reload();
+  };
+
+  const handlePageChoice = (newPage: string) => {
+    onPageChange(newPage);
   };
 
   return (
-    <div className="form-box">
-      <form className="form" onSubmit={(e: FormEvent) => handleRegister(e)}>
-        <span className="title">Sign up</span>
-        <div className="form-container">
+    <div className="register-form-container">
+      <form
+        className="register-form"
+        onSubmit={(e: FormEvent) => handleRegister(e)}
+      >
+        <span className="sign-up-text">Sign up</span>
+        <div className="register-inputs-container">
           <input
             type="text"
-            className="input"
-            placeholder="First Name"
+            className="register input first-name"
+            placeholder="First name"
+            value={firstName}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setFirstName(e.target.value)
             }
           />
           <input
             type="text"
-            className="input"
-            placeholder="Last Name"
+            className="register input last-name"
+            placeholder="Last name"
+            value={lastName}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setLastName(e.target.value)
             }
           />
           <input
-            type="email"
-            className="input"
+            type="text"
+            className="register input email"
             placeholder="Email"
+            value={email}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
             }
           />
           <input
             type="password"
-            className="input"
+            className="register input password"
             placeholder="Password"
+            value={password}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)
             }
           />
         </div>
-        <button>Sign up</button>
+        <div className="buttons-container">
+          <button className="register-button">Register</button>
+        </div>
+        <div className="log-in-option">
+          <span>
+            Already have an account?{" "}
+            <a
+              onClick={() => {
+                handlePageChoice("login");
+              }}
+            >
+              Log in
+            </a>
+          </span>
+        </div>
       </form>
-      <div className="form-section">
-        <p>
-          Have an account? <a href="/login">Log in</a>
-        </p>
-      </div>
     </div>
   );
-}
+};
 
 export default RegisterForm;
