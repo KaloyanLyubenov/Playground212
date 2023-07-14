@@ -27,6 +27,14 @@ public class ApplicationConfiguration {
         return dotenv.get("AWS_ACCESS_KEY_ID");
     }
 
+    public String getBucketName() {
+        return dotenv.get("NAME");
+    }
+
+    public String getRegion() {
+        return dotenv.get("REGION");
+    }
+
     public String getSecretKey() {
         return dotenv.get("AWS_SECRET_ACCESS_KEY");
     }

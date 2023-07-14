@@ -17,7 +17,7 @@ const RegisterForm: React.FC<RegisterProps> = ({ onPageChange }) => {
 
     try {
       const response = await axios.post(
-        " http://10.16.6.11:8080/auth/register",
+        "http://10.16.6.11:8080/auth/register",
         {
           firstName,
           lastName,

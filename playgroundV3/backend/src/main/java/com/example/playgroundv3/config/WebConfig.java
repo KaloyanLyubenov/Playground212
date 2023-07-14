@@ -9,7 +9,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/picture/**")
+        registry.addMapping("/pictures")
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("POST", "GET")
                 .exposedHeaders("Access-Control-Allow-Origin");
@@ -20,6 +20,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("POST");
         registry.addMapping("/media-types/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET");
+        registry.addMapping("/s3/creds")
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("GET");
     }

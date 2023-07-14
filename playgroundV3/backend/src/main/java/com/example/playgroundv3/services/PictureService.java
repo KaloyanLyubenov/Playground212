@@ -40,6 +40,12 @@ public class PictureService {
                 ).toList();
     }
 
+    public List<String> getAllPictureNames() {
+        return this.pictureRepo.findALlPictures()
+                .stream().map(PictureEntity::getName)
+                .toList();
+    }
+
     public List<PictureModel> getAllPicturesByAlbum(String albumName) {
         return this.pictureRepo.findAllPicturesByAlbum(albumName)
                 .stream().map(pictureEntity ->

@@ -5,6 +5,7 @@ import RegisterForm from "./components/RegisterForm";
 import LoginForm from "./components/LoginForm";
 import NavBar from "./components/NavBar";
 import ImageUpload from "./components/ImageUpload";
+import ImageGetTry from "./components/ImageGetTry";
 
 function App() {
   const [page, setPage] = useState("home");
@@ -72,6 +73,14 @@ function App() {
               element={
                 <>
                   <ImageUpload />
+                </>
+              }
+            />
+            <Route
+              path="/get"
+              element={
+                <>
+                  <ImageGetTry />
                 </>
               }
             />

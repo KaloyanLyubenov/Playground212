@@ -24,7 +24,7 @@ function ImageUpload() {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setSelectedFiles([...e.target.files]);
+      setSelectedFiles(Array.from(e.target.files));
     }
   };
 

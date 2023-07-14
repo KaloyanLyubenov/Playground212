@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/picture")
+@RequestMapping("/pictures")
 public class PictureController {
     private final S3Service s3Service;
     private final PictureService pictureService;
@@ -25,10 +25,10 @@ public class PictureController {
         this.pictureService = pictureService;
     }
 
-    @GetMapping
-    public String getUploadUrl() {
-        return this.s3Service.generateUploadUrl();
-    }
+//    @GetMapping
+//    public String getUploadUrl() {
+//        return this.s3Service.generateUploadUrl();
+//    }
 
 //    @PostMapping("/upload")
 //    public ResponseEntity<String> uploadFile(@RequestParam(value = "file")MultipartFile file) {
@@ -80,6 +80,11 @@ public class PictureController {
                     .body(resource);
         }
         return null;
+    }
+
+    @GetMapping
+    public List<String> getAllPictures() {
+        return this.pictureService.getAllPictureNames();
     }
 
     @GetMapping("/home-screen")
