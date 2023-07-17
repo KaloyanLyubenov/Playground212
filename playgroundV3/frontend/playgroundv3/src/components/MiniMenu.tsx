@@ -25,7 +25,7 @@ const MiniMenu: React.FC<NavBarProps> = ({ onPageChange }) => {
           <a href="">Peronal</a>
         </div>
         <div className="small-item">
-          <a href="">Shoot</a>
+          <a href="/order">Shoot</a>
         </div>
         <div className="small-item">
           <a

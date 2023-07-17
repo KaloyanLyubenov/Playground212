@@ -25,14 +25,13 @@ const LoginForm: React.FC<LoginProps> = ({ onPageChange }) => {
       localStorage.setItem("token", token);
       localStorage.setItem("userEmail", userEmail);
       console.log("Succesfull login");
+      window.location.reload();
     } catch (error) {
       // Handle login error
     }
 
     setEmail("");
     setPassword("");
-
-    //window.location.reload();
   };
 
   const handlePageChoice = (newPage: string) => {

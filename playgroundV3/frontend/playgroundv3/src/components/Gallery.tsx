@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import "../styles/gallery.css";
 import axios from "axios";
-// import CloseIcon from '@mui/icons-material/Close';
-// import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-// import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const Gallery = async () => {
   //   let data = [

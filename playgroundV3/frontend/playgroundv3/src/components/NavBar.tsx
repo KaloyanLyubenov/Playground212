@@ -61,7 +61,7 @@ const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
           </div>
           <nav className={`header-menu${animationPlayed ? "" : "-animate"}`}>
             <div className="item">
-              <a href="/home">Home</a>
+              <a href="/">Home</a>
             </div>
             <div className="item">
               <a href="">About</a>
@@ -72,8 +72,8 @@ const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
             <div className="item">
               <a href="">Peronal</a>
             </div>
-            <div className="item">
-              <a href="">Shoot</a>
+            <div className={`item shoot${isUserlogged ? "" : " invisible"}`}>
+              <a href="/order">Shoot</a>
             </div>
             <div className={`item register${isUserlogged ? " invisible" : ""}`}>
               <a
