@@ -11,7 +11,7 @@
     display: none;
 }
 
-.first-step-title {
+.step-title {
     flex: 1;
 }
 
@@ -19,6 +19,7 @@
     width: 80%;
     display: flex;
     align-items: center;
+    text-align: start;
     background-color: rgb(241, 247, 254);
     border: 1px rgba(0, 0, 0, 0.2) solid;
     padding-left: 10px;

@@ -1,21 +1,39 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import "../styles/orderSecondStep.css";
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
 function OrderSecondStep() {
   let [folded, setFolded] = useState(true);
+  let [miniLocationsVisibility, setMiniLocationsVisibility] = useState(false);
 
-  const foldUnfold = () => {
+  const googleMapsApiKey = `${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: googleMapsApiKey as string,
+  });
+
+  function foldUnfold() {
     if (folded) {
       setFolded(false);
     } else {
       setFolded(true);
     }
+  }
+
+  const foldUnfoldMiniMenu = () => {
+    if (miniLocationsVisibility) {
+      setMiniLocationsVisibility(false);
+    } else {
+      setMiniLocationsVisibility(true);
+    }
   };
 
+  if (!isLoaded) return <div>Loading...</div>;
   return (
     <>
       <div className={`second-step-container ${folded ? "" : "invisible"}`}>
         <div className="folded view">
-          <p className="first-step-title">Second Step: Locations</p>
+          <p className="step-title">Second Step: Locations</p>
           <div className="arrow-container" onClick={foldUnfold}>
             <p>▼</p>
           </div>
@@ -28,8 +46,12 @@ function OrderSecondStep() {
           <div className="map-functions-holder">
             <div className="map-container">
               <div className="map">
+                <Map />
                 <div className="small-location-button-holder">
-                  <div className="samll-menu-button">
+                  <div
+                    className="small-menu-button"
+                    onClick={foldUnfoldMiniMenu}
+                  >
                     <div
                       style={{ borderTopRightRadius: 6 }}
                       className="line"
@@ -37,7 +59,11 @@ function OrderSecondStep() {
                     <div className="line"></div>
                     <div className="line"></div>
                   </div>
-                  <div className="small-locations-menu">
+                  <div
+                    className={`small-locations-menu ${
+                      miniLocationsVisibility ? "" : "invisible"
+                    }`}
+                  >
                     <ul>
                       <li className="active">
                         <div className="location-info">
@@ -389,7 +415,7 @@ function OrderSecondStep() {
           </div>
           <div className="arrow-up-holder">
             <div className="arrow-container" onClick={foldUnfold}>
-              <p>▼</p>
+              <p style={{ marginTop: 10 }}>▲</p>
             </div>
           </div>
         </div>
@@ -399,3 +425,16 @@ function OrderSecondStep() {
 }
 
 export default OrderSecondStep;
+
+function Map() {
+  const center = useMemo(() => ({ lat: 44, lng: -80 }), []);
+  return (
+    <GoogleMap
+      zoom={10}
+      center={center}
+      mapContainerClassName="map-shenanigans"
+    >
+      <Marker position={center} />
+    </GoogleMap>
+  );
+}

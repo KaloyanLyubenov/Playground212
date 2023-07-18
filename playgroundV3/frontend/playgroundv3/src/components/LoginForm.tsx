@@ -12,7 +12,6 @@ const LoginForm: React.FC<LoginProps> = ({ onPageChange }) => {
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("email: " + email + " " + password);
 
     try {
       const response = await axios.post("http://localhost:8080/auth/login", {

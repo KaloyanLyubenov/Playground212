@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import ImageUpload from "./components/ImageUpload";
 import ImageGetTry from "./components/ImageGetTry";
 import OrderStepOne from "./components/OrderStepOne";
+import MapTry from "./components/MapTry/MapTry";
 
 function App() {
   const [page, setPage] = useState("home");
@@ -66,6 +67,14 @@ function App() {
               element={
                 <>
                   <ImageGetTry />
+                </>
+              }
+            />
+            <Route
+              path="/map"
+              element={
+                <>
+                  <MapTry />
                 </>
               }
             />

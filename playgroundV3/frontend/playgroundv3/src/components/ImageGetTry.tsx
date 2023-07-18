@@ -69,11 +69,9 @@ function ImageGetTry() {
       console.log("got url");
     }
 
-    console.log(new Date());
     Promise.all(imageNames.map((name) => getImage(name))).then(() => {
       setImageUrls(urls);
     });
-    console.log(new Date());
   }, [s3, imageNames]);
 
   return (

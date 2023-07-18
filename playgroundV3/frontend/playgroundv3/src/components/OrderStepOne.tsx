@@ -17,7 +17,7 @@ function OrderStepOne() {
     <>
       <div className={`first-step-container ${folded ? "" : "invisible"}`}>
         <div className="folded view">
-          <p className="first-step-title">First Step: Details</p>
+          <p className="step-title">First Step: Details</p>
           <div className="arrow-container" onClick={foldUnfold}>
             <p>▼</p>
           </div>

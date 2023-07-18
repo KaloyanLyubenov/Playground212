@@ -42,7 +42,6 @@ const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log(token);
 
     if (token === null || token === "") {
       setIsUserLogged(false);
