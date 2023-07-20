@@ -1,0 +1,28 @@
+INSERT INTO pictures(name, album_name, owner_id, media_type_id)
+VALUES
+("1689355837483_FBD07974.jpg", "RedBull Drift", 4, 1),
+("1689355837483_FBD07974.jpg", "RedBull Drift", 4, 1),
+("1689355838479_FBD08089.jpg", "RedBull Drift", 4, 1),
+("1689355837483_FBD08158.jpg", "RedBull Drift", 4, 1),
+("1689355837483_FBD08230.jpg", "RedBull Drift", 4, 1),
+("1689355837483_FBD08276.jpg", "RedBull Drift", 4, 1),
+("1689355837483_FBD01567.jpg", "Jully Morning", 4, 2),
+("1689355837483_FBD01650.jpg", "Jully Morning", 4, 2),
+("1689355837483_FBD01690.jpg", "Jully Morning", 4, 2),
+("1689355837483_FBD01753.jpg", "Jully Morning", 4, 2),
+("1689355837483_FBD01766.jpg", "Jully Morning", 4, 2);
+
+INSERT INTO users(firstName, Last_name, password, email)
+VALUES
+("Kaloyan", "Lyubenov", "$2a$10$6eyqX.E6C.AHg4fM4Gkhaeyb4AraA0U1oP3p3fVqrWaT7KmPomtt2", kalo@mail.com),
+("Papi", "Petrov", "$2a$10$uullL9kGTSW6sDXBGI5dx.2KREJJoFV/sdlPpInUnti0X9EVBlJZ2", pepi@mail.com),
+("Dani", "Tupoto", "$2a$10$kPkv9TH84AIu8gOxiqTw3eRqiYiCE1Z3Wgwg3P3e05PRsI3xCBXri", dani@mail.com),
+("kok", "kok", "'$2a$10$z6rp2O3OXQRJijUBpoYByObQu0vAAjua.phdlbV8eyt.8Vc2p86mC'", kok@abv.com);
+
+INSERT INTO users(user_email, user-role_id)
+VALUES
+("dani@mail.com", 1),
+("kalo@mail.com", 1),
+("kok@mail.com", 1),
+("pepi@mail.com", 1)
+

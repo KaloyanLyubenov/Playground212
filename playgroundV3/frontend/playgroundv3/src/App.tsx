@@ -6,8 +6,7 @@ import LoginForm from "./components/LoginForm";
 import NavBar from "./components/NavBar";
 import ImageUpload from "./components/ImageUpload";
 import ImageGetTry from "./components/ImageGetTry";
-import OrderStepOne from "./components/OrderStepOne";
-import MapTry from "./components/MapTry/MapTry";
+import MapTry from "./components/Map/MapContainer";
 
 function App() {
   const [page, setPage] = useState("home");
@@ -91,14 +90,6 @@ function App() {
               element={
                 <>
                   <ImageGetTry />
-                </>
-              }
-            />
-            <Route
-              path="/order"
-              element={
-                <>
-                  <OrderStepOne />
                 </>
               }
             />

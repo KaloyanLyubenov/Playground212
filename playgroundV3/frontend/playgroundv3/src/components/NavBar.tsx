@@ -26,6 +26,7 @@ const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userEmail");
     console.log("Logged out");
     window.location.reload();
   };

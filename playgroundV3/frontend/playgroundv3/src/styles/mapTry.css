@@ -2,27 +2,75 @@
     display: flex;
     height: 100vh;
     width: 100%;
+
+
+    .locations {
+        width: 18%;
+        padding: 1rem;
+        background: #14161a;
+        color: #fff;
+        overflow-y: scroll;
+
+        .edited {
+            background-color: rgba(0, 255, 26, 0.488);
+        }
+
+        .unedited {
+            background-color: rgba(250, 0, 0, 0.411);
+        }
+
+        .location {
+            display: flex;
+            flex-direction: row;
+
+            .thumbnail{
+                height: 50px;
+                width: 50px;
+            }
+
+            .location-info {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: 700;
+            }
+        }
+    }
+
+    .locations::-webkit-scrollbar {
+        width: 0px;
+    }
+
+    .map {
+        width: 80%;
+        height: 100vh;
+
+        .selected {
+            background-color: #14161a;
+        }
+    }
+
+    .map-container {
+        width: 100%;
+        height: 100vh;
+    }
+
+    .combobox-input {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 0px;
+    }
+
+    .details {
+        width: 18%;
+        padding: 1rem;
+        background: #14161a;
+        color: #fff;
+    }
+
+
+
 }
-
-.controls {
-    width: 20%;
-    padding: 1rem;
-    background: #14161a;
-    color: #fff;
-  }
-
-  .map {
-    width: 80%;
-    height: 100vh;
-  }
-
-  .map-container {
-    width: 100%;
-    height: 100vh;
-  }
-
-  .combobox-input {
-    width: 100%;
-    padding: 0.5rem;
-    border-radius: 0px;
-  }

@@ -7,6 +7,12 @@ create table media_types
     media_type VARCHAR(255) NOT NULL
 );
 
+create table format_types
+(
+    id         INT PRIMARY KEY AUTO_INCREMENT,
+    format_type VARCHAR(255) NOT NULL
+);
+
 create table videos
 (
     id            INT PRIMARY KEY AUTO_INCREMENT,
@@ -55,11 +61,16 @@ create table colors
 
 create table locations
 (
-    id           INT PRIMARY KEY AUTO_INCREMENT,
-    latitude     DOUBLE NOT NULL,
-    longitude    DOUBLE NOT NULL,
-    thumbnail_id INT    NOT NULL,
-    FOREIGN KEY (thumbnail_id) REFERENCES pictures (id)
+    id             INT PRIMARY KEY AUTO_INCREMENT,
+    title          VARCHAR(255)    NOT NULL,
+    latitude       DOUBLE          NOT NULL,
+    longitude      DOUBLE          NOT NULL,
+    description    VARCHAR(255)    NOT NULL,
+    thumbnail_url  VARCHAR(255)    NOT NULL,
+    media_type_id  INT NOT NULL,
+    format_type_id INT NOT NULL,
+    FOREIGN KEY (media_type_id) REFERENCES media_types (id),
+    FOREIGN KEY (format_type_id) REFERENCES format_types (id)
 );
 
 create table locations_suitable_colors

@@ -25,6 +25,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/s3/creds")
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("GET");
+        registry.addMapping("/locations")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST");
     }
 
 }

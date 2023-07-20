@@ -22,7 +22,7 @@ public class MediaTypesService {
     }
 
     @PostConstruct
-    public void initRoles(){
+    public void initMediaTypes(){
         this.availableMediaTypes = mapTypes(this.mediaTypeRepo.findAllMediaTypes());
     }
 
