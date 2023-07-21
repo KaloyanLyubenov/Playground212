@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import ImageUpload from "./components/ImageUpload";
 import ImageGetTry from "./components/ImageGetTry";
 import MapTry from "./components/Map/MapContainer";
+import OrderContainer from "./components/Order/OrderContainer";
 
 function App() {
   const [page, setPage] = useState("home");
@@ -66,6 +67,14 @@ function App() {
               element={
                 <>
                   <ImageGetTry />
+                </>
+              }
+            />
+            <Route
+              path="/order"
+              element={
+                <>
+                  <OrderContainer />
                 </>
               }
             />

@@ -95,17 +95,10 @@ header {
     cursor: pointer;
 }
 
-.register.invisible {
+.invisible {
     display: none;
 }
 
-.sign-out.invisible {
-    display: none;
-}
-
-.shoot.invisible {
-    display: none;
-}
 
 .small-icon-container {
     display: none;

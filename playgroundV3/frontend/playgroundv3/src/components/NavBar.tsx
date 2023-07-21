@@ -7,9 +7,10 @@ interface NavBarProps {
 }
 
 const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
-  const [style, setStyle] = useState("mini-menu-invisible");
-  const [animationPlayed, setAnimationPlayed] = useState(false);
-  const [isUserlogged, setIsUserLogged] = useState(false);
+  const [style, setStyle] = useState<string>("mini-menu-invisible");
+  const [animationPlayed, setAnimationPlayed] = useState<boolean>(false);
+  const [isUserlogged, setIsUserLogged] = useState<boolean>(false);
+  const [userRoles, setUserRoles] = useState<string[]>();
 
   const handleMiniMenuClick = () => {
     if (style === "mini-menu-invisible") {
@@ -26,7 +27,7 @@ const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRoles");
     console.log("Logged out");
     window.location.reload();
   };
@@ -48,8 +49,10 @@ const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
       setIsUserLogged(false);
     } else {
       setIsUserLogged(true);
+      setUserRoles(JSON.parse(localStorage.getItem("userRoles") as string));
+      console.log(userRoles);
     }
-  });
+  }, []);
 
   return (
     <>
@@ -72,9 +75,17 @@ const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
             <div className="item">
               <a href="">Peronal</a>
             </div>
-            <div className={`item shoot${isUserlogged ? "" : " invisible"}`}>
-              <a href="/order">Shoot</a>
-            </div>
+            {userRoles && (
+              <div
+                className={`item shoot${
+                  userRoles.includes("ADMIN") || userRoles.includes("MODERATOR")
+                    ? " invisible"
+                    : ""
+                }`}
+              >
+                <a href="/order">Shoot</a>
+              </div>
+            )}
             <div className={`item register${isUserlogged ? " invisible" : ""}`}>
               <a
                 onClick={() => {
@@ -93,9 +104,15 @@ const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
                 Sign out
               </a>
             </div>
-            <div className="item">
-              <a href="/upload">Upload</a>
-            </div>
+            {userRoles && (
+              <div
+                className={`item upload${
+                  userRoles.includes("ADMIN") ? "" : " invisible"
+                }`}
+              >
+                <a href="/upload">Upload</a>
+              </div>
+            )}
           </nav>
           <div className="small-icon-container">
             <div className="small-icon" onClick={() => handleMiniMenuClick()}>

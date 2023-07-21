@@ -4,6 +4,7 @@ import com.example.playgroundv3.domain.entites.FormatTypeEntity;
 import com.example.playgroundv3.domain.entites.MediaTypeEntity;
 import com.example.playgroundv3.repos.FormatTypeRepo;
 import jakarta.annotation.PostConstruct;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,6 +42,15 @@ public class FormatTypeService {
             types.add(entry.getKey());
         }
         return types;
+    }
+
+    public String getFormatNameById(int id) {
+        for(Map.Entry<String, Integer> format : this.availableFormatTypes.entrySet()){
+            if(format.getValue() == id){
+                return format.getKey();
+            }
+        }
+        return null;
     }
 
     public int getFormatTypeIdByName(String formatTypeName) {

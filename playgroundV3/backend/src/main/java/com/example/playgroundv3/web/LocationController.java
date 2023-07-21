@@ -1,12 +1,10 @@
 package com.example.playgroundv3.web;
 
 import com.example.playgroundv3.domain.dtos.LocationSaveDTO;
+import com.example.playgroundv3.domain.dtos.LocationSendDTO;
 import com.example.playgroundv3.services.LocationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,9 +18,16 @@ public class LocationController {
         this.locationService = locationService;
     }
 
+    @GetMapping
+    public List<LocationSendDTO> getLocations() {
+        return this.locationService.getAllLocations();
+    }
+
     @PostMapping
     public ResponseEntity<String> uploadLocations(@RequestBody List<LocationSaveDTO> locations){
         this.locationService.addLocations(locations);
         return ResponseEntity.ok("Location upload complete");
     }
+
+
 }

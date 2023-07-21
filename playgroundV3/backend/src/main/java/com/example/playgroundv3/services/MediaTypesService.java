@@ -43,6 +43,15 @@ public class MediaTypesService {
         return types;
     }
 
+    public String getMediaTypeNameById(int id) {
+        for(Map.Entry<String, Integer> format : this.availableMediaTypes.entrySet()){
+            if(format.getValue() == id){
+                return format.getKey();
+            }
+        }
+        return null;
+    }
+
     public int getMediaTypeIdByName(String mediaTypeName) {
         return this.availableMediaTypes.get(mediaTypeName);
     }

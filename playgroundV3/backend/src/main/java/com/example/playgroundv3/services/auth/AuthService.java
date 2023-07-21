@@ -5,24 +5,23 @@ import com.example.playgroundv3.domain.dtos.auth.AuthenticationRequest;
 import com.example.playgroundv3.domain.dtos.auth.AuthenticationResponse;
 import com.example.playgroundv3.domain.dtos.auth.RegisterRequest;
 import com.example.playgroundv3.domain.entites.UserEntity;
-import com.example.playgroundv3.repos.UserRepo;
 import com.example.playgroundv3.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthService {
 
-    private final UserRepo userRepo;
     private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepo userRepo, UserService userService, JwtService jwtService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
+    public AuthService(UserService userService, JwtService jwtService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
@@ -46,7 +45,7 @@ public class AuthService {
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword())
         ));
-        return new AuthenticationResponse(jwtToken, request.getEmail());
+        return new AuthenticationResponse(jwtToken, List.of("USER"));
     }
 
     public AuthenticationResponse login(AuthenticationRequest request) {
@@ -65,6 +64,6 @@ public class AuthService {
                 user.getEmail(),
                 passwordEncoder.encode(user.getPassword())
         ));
-        return new AuthenticationResponse(jwtToken, request.getEmail());
+        return new AuthenticationResponse(jwtToken, user.getRoles());
     }
 }

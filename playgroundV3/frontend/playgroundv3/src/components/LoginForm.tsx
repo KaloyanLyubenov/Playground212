@@ -20,9 +20,10 @@ const LoginForm: React.FC<LoginProps> = ({ onPageChange }) => {
       });
 
       const token = response.data.jwtToken;
-      const userEmail = response.data.userEmail;
       localStorage.setItem("token", token);
-      localStorage.setItem("userEmail", userEmail);
+      localStorage.setItem("userRoles", JSON.stringify(response.data.roles));
+      console.log(JSON.stringify(response.data.roles));
+
       console.log("Succesfull login");
       window.location.reload();
     } catch (error) {

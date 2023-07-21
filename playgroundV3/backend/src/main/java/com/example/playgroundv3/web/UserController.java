@@ -24,10 +24,13 @@ public class UserController {
         return this.userService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
-    public UserModel getUserById(@PathVariable int id){
-        return this.userService.getUserByID(id);
-    }
+    //    @GetMapping("/{id}")
+    //    public UserModel getUserById(@PathVariable int id){
+    //        return this.userService.getUserByID(id);
+    //    }
+
+    @GetMapping("/{email}")
+    public UserModel getUserByEmail(@PathVariable String email) {return this.userService.getUserByEmail(email);}
 
     @PostMapping
     public void addUser(@RequestBody UserAddDTO user){

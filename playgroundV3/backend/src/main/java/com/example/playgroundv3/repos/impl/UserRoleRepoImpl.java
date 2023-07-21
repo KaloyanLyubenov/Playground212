@@ -44,7 +44,8 @@ public class UserRoleRepoImpl implements UserRoleRepo {
                 SELECT ur.id AS id, ur.role AS role
                 FROM user_roles ur
                 JOIN users_user_roles uur ON uur.user_role_id = ur.id
-                JOIN users u ON u.email = ?;
+                JOIN users u ON u.email = uur.user_email
+                WHERE u.email = ?;
                 """;
 
         return jdbcTemplate.query(sql, new UserRoleRowMapper(), email);

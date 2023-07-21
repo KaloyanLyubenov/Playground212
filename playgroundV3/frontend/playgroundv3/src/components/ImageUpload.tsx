@@ -1,7 +1,6 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import "../styles/imageUpload.css";
 import axios from "axios";
-import { error } from "console";
 
 function ImageUpload() {
   const fileInput = document.querySelector("#file") as HTMLInputElement;
@@ -44,7 +43,7 @@ function ImageUpload() {
     formData.append("mediaType", mediaType);
     console.log(mediaType);
     console.log(albumName);
-    const email = localStorage.getItem("userEmail");
+    const email = localStorage.getItem("user");
 
     if (email) {
       formData.append("ownerEmail", email);

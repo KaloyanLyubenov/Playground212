@@ -29,7 +29,9 @@ const RegisterForm: React.FC<RegisterProps> = ({ onPageChange }) => {
       const token = response.data.jwtToken;
       const userEmail = response.data.userEmail;
       localStorage.setItem("token", token);
-      localStorage.setItem("userEmail", userEmail);
+      localStorage.setItem("userRoles", JSON.stringify(response.data.roles));
+      console.log(JSON.stringify(response.data.roles));
+
       console.log("Succesfull register");
     } catch (error) {
       // Handle login error
