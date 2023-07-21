@@ -18,7 +18,7 @@ public class LocationRowMapper implements RowMapper {
                 rs.getString("description"),
                 rs.getString("thumbnail_url"),
                 rs.getInt("media_type_id"),
-                rs.getInt("media_type_id")
+                rs.getInt("format_type_id")
         );
     }
 }

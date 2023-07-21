@@ -59,7 +59,7 @@ public class UserService {
             throw new IllegalStateException("User with this email not found");
         }
 
-        UserEntity user = optionalUser.get();
+        UserEntity user =  userRepo.findUserByEmail(email).orElseThrow(() -> new IllegalStateException("User with this email not found"));
         UserModel userModel = new UserModel(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
         userModel.setRoles(this.userRoleService.getUserRolesByUserEmail(user.getEmail()));
 

@@ -1,10 +1,8 @@
 package com.example.playgroundv3.services;
 
 import com.example.playgroundv3.domain.entites.FormatTypeEntity;
-import com.example.playgroundv3.domain.entites.MediaTypeEntity;
 import com.example.playgroundv3.repos.FormatTypeRepo;
 import jakarta.annotation.PostConstruct;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public class FormatTypeService {
         return typesMap;
     }
 
-    public List<String> getAllFormatTypes(){
+    public List<String> getAllFormatTypeNames(){
         List<String> types = new ArrayList<>();
         for(Map.Entry<String, Integer> entry : this.availableFormatTypes.entrySet()){
             types.add(entry.getKey());
