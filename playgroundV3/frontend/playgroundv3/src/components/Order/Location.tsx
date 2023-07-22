@@ -2,27 +2,25 @@ import { integer } from "aws-sdk/clients/cloudfront";
 import React from "react";
 
 interface LocationProps {
-  key: integer;
   title: string;
   description: string;
   thumbnailUrl: string;
 }
 
 const Location: React.FC<LocationProps> = ({
-  key,
   title,
   description,
   thumbnailUrl,
 }) => {
   return (
-    <div className="location" key={key}>
+    <div className="location">
       <img className="thumbnail" src={thumbnailUrl} alt="" />
       <div className="location-info">
-        <div className="location-titles">
-          <p style={{ fontSize: 14, margin: 1, height: 17 }}>{title}</p>
+        <div className="location-title">
+          <p className="p">{title}</p>
         </div>
         <div className="location-details">
-          <p style={{ fontSize: 14, margin: 1 }}>{description}</p>
+          <p className="p">{description}</p>
         </div>
       </div>
     </div>

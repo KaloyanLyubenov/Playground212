@@ -1,5 +1,6 @@
 import React, {
   ChangeEvent,
+  FormEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -7,9 +8,10 @@ import React, {
   useState,
 } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import axios from "axios";
+import axios, { all } from "axios";
 import Location from "./Location";
 import { SelectChangeEvent } from "@mui/material";
+import OrderDetails from "./OrderDetails";
 
 type Map = google.maps.Map;
 type MapOptions = google.maps.MapOptions;
@@ -29,6 +31,8 @@ type Location = {
 
 function Map() {
   // INIT MAP
+  const GREEN_MARKER_ICON = `${process.env.PUBLIC_URL}/Map_pin_icon_green.svg`;
+  const BLACK_MARKER_ICON = `${process.env.PUBLIC_URL}/location-dot.svg`;
   const mapRef = useRef<Map>();
   const center = useMemo<LatLngLiteral>(
     () => ({ lat: 42.6977, lng: 23.3219 }),
@@ -51,7 +55,10 @@ function Map() {
   // Collect locations
 
   const [allLocations, setAllLocations] = useState<Location[]>([]);
-  const [suitableLocations, setSuitableLocations] = useState<Location[]>([]);
+  const [selectedLocasions, setSelectedLocasions] = useState<Location[]>([]);
+  const [unselectedLocations, setUnselectedLocations] = useState<Location[]>(
+    []
+  );
   const [mediaTypes, setMediaTypes] = useState<string[]>([]);
   const [formatTypes, setFormatTypes] = useState<string[]>([]);
 
@@ -67,8 +74,6 @@ function Map() {
         setMediaTypes(response.data.mediaTypes);
         setFormatTypes(response.data.formatTypes);
         setAllLocations(response.data.locations);
-        setSuitableLocations(response.data.locations);
-        console.log(response.data.locations);
         console.log("Locations collected");
       })
       .catch((error) => {
@@ -78,35 +83,162 @@ function Map() {
 
   // Logic
 
-  const [format, setFormat] = useState<string>("PHOTOSHOOT");
-  const [mediaType, setMediaType] = useState<string>("PERSON");
+  const [format, setFormat] = useState<string>();
+  const [mediaType, setMediaType] = useState<string>();
 
+  // Filter locations
   useEffect(() => {
     const filteredLocations: Location[] = [];
+    const other: Location[] = [];
 
     allLocations.map((location) => {
-      if (location.formatType === format && location.mediaType === mediaType) {
+      if (
+        (!mediaType || location.mediaType === mediaType) &&
+        (!format || location.formatType === format)
+      ) {
         filteredLocations.push(location);
+      } else if (!mediaType || location.mediaType === mediaType) {
+        other.push(location);
       }
     });
 
-    setSuitableLocations(filteredLocations);
+    if (filteredLocations.length != 0) {
+      setSelectedLocasions(filteredLocations);
+    } else {
+      console.log("No suitable locations");
+    }
+    if (other.length != 0) {
+      setUnselectedLocations(other);
+    }
   }, [format, mediaType]);
+
+  // Remove location from selected list
+  const removeLocation = (id: number) => {
+    const newLocationList: Location[] = [];
+
+    selectedLocasions.map((location) => {
+      if (location.id != id) {
+        newLocationList.push(location);
+      } else {
+        unselectedLocations.push(location);
+      }
+    });
+
+    setSelectedLocasions(newLocationList);
+  };
+
+  // Add location to selected list
+  const pickLocation = (id: number) => {
+    console.log("id of location is: " + id);
+    const newLocationList: Location[] = [];
+
+    unselectedLocations.map((location) => {
+      if (location.id !== id) {
+        console.log(
+          "adding location with id: " +
+            location.id +
+            " because it's different from: " +
+            id
+        );
+        newLocationList.push(location);
+      } else {
+        console.log(
+          "adding location with id " + location.id + "to the selected list"
+        );
+        selectedLocasions.push(location);
+      }
+    });
+
+    setUnselectedLocations(newLocationList);
+  };
 
   return (
     <>
       <div className="order-container">
         <div className="order-locations-container">
-          <h1>Locations</h1>
-          {suitableLocations &&
-            suitableLocations.map((location) => {
+          <h1
+            className={`${
+              selectedLocasions.length != 0 || unselectedLocations.length != 0
+                ? "invisible"
+                : ""
+            }`}
+          >
+            Locations
+          </h1>
+          {selectedLocasions.length == 0 &&
+            unselectedLocations.length == 0 &&
+            allLocations.map((location, index) => {
               return (
-                <Location
-                  key={location.id}
-                  title={location.title}
-                  description={location.description}
-                  thumbnailUrl={location.thumbnailUrl}
-                />
+                <div
+                  className="location-container"
+                  key={`all-location ${index}`}
+                >
+                  <Location
+                    title={location.title}
+                    description={location.description}
+                    thumbnailUrl={location.thumbnailUrl}
+                  />
+                </div>
+              );
+            })}
+          <h1 className={`${selectedLocasions.length != 0 ? "" : "invisible"}`}>
+            Selected Locations
+          </h1>
+          {selectedLocasions &&
+            selectedLocasions.map((location, index) => {
+              return (
+                <div
+                  className="selected location-container"
+                  key={`selected-location ${index}`}
+                >
+                  <div className="location-options">
+                    <div className="option">
+                      <p>Info</p>
+                    </div>
+                    <div
+                      className="option"
+                      onClick={() => removeLocation(location.id)}
+                    >
+                      <p>Remove</p>
+                    </div>
+                  </div>
+                  <Location
+                    title={location.title}
+                    description={location.description}
+                    thumbnailUrl={location.thumbnailUrl}
+                  />
+                </div>
+              );
+            })}
+          <h1
+            className={`${unselectedLocations.length != 0 ? "" : "invisible"}`}
+          >
+            Unselected Locations
+          </h1>
+          {unselectedLocations &&
+            unselectedLocations.map((location, index) => {
+              return (
+                <div
+                  className="unselected location-container"
+                  key={`unselected-location ${index}`}
+                >
+                  <div className="location-options">
+                    <div className="option">
+                      <p>Info</p>
+                    </div>
+                    <div
+                      className="option"
+                      onClick={() => pickLocation(location.id)}
+                    >
+                      <p>Add</p>
+                    </div>
+                  </div>
+                  <Location
+                    title={location.title}
+                    description={location.description}
+                    thumbnailUrl={location.thumbnailUrl}
+                  />
+                </div>
               );
             })}
         </div>
@@ -118,45 +250,54 @@ function Map() {
             options={options}
             onLoad={onLoad}
           >
-            {suitableLocations &&
-              suitableLocations.map((location) => {
+            {selectedLocasions.length == 0 &&
+              unselectedLocations.length == 0 &&
+              allLocations.map((location, index) => {
                 return (
-                  <Marker
-                    position={{ lat: location.lat, lng: location.lng }}
-                    key={location.id}
-                  />
+                  <div key={`all-marker ${index}`}>
+                    <Marker
+                      position={{ lat: location.lat, lng: location.lng }}
+                      icon={{
+                        url: BLACK_MARKER_ICON,
+                        scaledSize: new window.google.maps.Size(30, 40),
+                      }}
+                    />
+                  </div>
+                );
+              })}
+            {selectedLocasions.length != 0 &&
+              selectedLocasions.map((location, index) => {
+                return (
+                  <div key={`selected-marker ${index}`}>
+                    <Marker
+                      position={{ lat: location.lat, lng: location.lng }}
+                      icon={{
+                        url: GREEN_MARKER_ICON,
+                        scaledSize: new window.google.maps.Size(30, 40),
+                      }}
+                    />
+                  </div>
+                );
+              })}
+            {unselectedLocations.length != 0 &&
+              unselectedLocations.map((location, index) => {
+                return (
+                  <div key={`unselected-marker ${index}`}>
+                    <Marker
+                      position={{ lat: location.lat, lng: location.lng }}
+                    />
+                  </div>
                 );
               })}
           </GoogleMap>
         </div>
         <div className="order-details">
-          <h1>Order Details</h1>
-          <div className="inputs">
-            <input type="text" placeholder="First Name" />
-            <input type="text" placeholder="Last Name" />
-            <input type="text" placeholder="email" />
-            <input type="text" placeholder="Phone number" />
-            <select
-              name="format-type"
-              id="format-type"
-              onChange={(e) => setFormat(e.target.value)}
-            >
-              {formatTypes &&
-                formatTypes.map((formatType) => {
-                  return <option value={formatType}>{formatType}</option>;
-                })}
-            </select>
-            <select
-              name="media-type"
-              id="media-type"
-              onChange={(e) => setMediaType(e.target.value)}
-            >
-              {mediaTypes &&
-                mediaTypes.map((mediaType) => {
-                  return <option value={mediaType}>{mediaType}</option>;
-                })}
-            </select>
-          </div>
+          <OrderDetails
+            mediaTypes={mediaTypes}
+            formatTypes={formatTypes}
+            formatUpdate={setFormat}
+            mediaTypeUpdate={setMediaType}
+          />
         </div>
       </div>
     </>
