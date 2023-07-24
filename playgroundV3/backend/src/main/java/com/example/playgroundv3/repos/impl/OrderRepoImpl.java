@@ -71,4 +71,33 @@ public class OrderRepoImpl implements OrderRepo {
 
         return jdbcTemplate.query(sql, new OrderRowMapper()).stream().findFirst();
     }
+
+    @Override
+    public int updateOrder(OrderEntity order) {
+        String sql = """
+                UPDATE orders
+                SET first_name= ?, last_name = ? , email = ?, phone_number = ?, format_type_id = ?, media_type_id = ?
+                WHERE id = ?;
+                """;
+
+        return jdbcTemplate.update(
+                sql,
+                order.getFirstName(),
+                order.getLastName(),
+                order.getEmail(),
+                order.getPhoneNumber(),
+                order.getFormatTypeID(),
+                order.getMediaTypeID(),
+                order.getId());
+    }
+
+    @Override
+    public int removeLocationsWithOrderId(int orderId) {
+        String sql = """
+                DELETE FROM orders_locations
+                WHERE order_id = ?;
+                """;
+
+       return jdbcTemplate.update(sql, orderId);
+    }
 }

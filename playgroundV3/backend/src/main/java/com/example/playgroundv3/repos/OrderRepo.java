@@ -9,4 +9,6 @@ public interface OrderRepo {
     public int saveOrder(OrderEntity order);
     public int saveOrderLocations(List<Integer> locationIDs, int orderId);
     public Optional<OrderEntity> findLastAddedOrder();
+    int updateOrder(OrderEntity orderEntity);
+    int removeLocationsWithOrderId(int id);
 }

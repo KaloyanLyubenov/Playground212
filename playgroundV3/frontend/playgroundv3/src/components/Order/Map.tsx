@@ -43,6 +43,8 @@ function Map() {
   const GREEN_MARKER_ICON = `${process.env.PUBLIC_URL}/Map_pin_icon_green.svg`;
   const BLACK_MARKER_ICON = `${process.env.PUBLIC_URL}/location-dot.svg`;
   const mapRef = useRef<Map>();
+  const [orderId, setOrderId] = useState(0);
+  const [successVisibility, setSuccessVisibility] = useState(false);
   const center = useMemo<LatLngLiteral>(
     () => ({ lat: 42.6977, lng: 23.3219 }),
     []
@@ -73,7 +75,7 @@ function Map() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/order", {
+      .get("http://localhost:8080/orders", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           Accept: "application/json",
@@ -162,37 +164,85 @@ function Map() {
   const handleOrderSubmit = (orderDetails: UserOrderInformation) => {
     console.log(orderDetails);
 
-    axios
-      .post(
-        "http://localhost:8080/order",
-        {
-          firstName: orderDetails.firstName,
-          lastName: orderDetails.lastName,
-          email: orderDetails.email,
-          phoneNumber: orderDetails.phoneNumber,
-          mediaType: mediaType,
-          formatType: format,
-          locationIDs: selectedLocasions.map(
-            (location: Location) => location.id
-          ),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            Accept: "application/json",
+    if (orderId === 0) {
+      axios
+        .post(
+          "http://localhost:8080/orders",
+          {
+            firstName: orderDetails.firstName,
+            lastName: orderDetails.lastName,
+            email: orderDetails.email,
+            phoneNumber: orderDetails.phoneNumber,
+            mediaType: mediaType,
+            formatType: format,
+            locationIDs: selectedLocasions.map(
+              (location: Location) => location.id
+            ),
           },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log("Couldn't submit order!");
-      });
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          setOrderId(response.data);
+          setSuccessVisibility(true);
+        })
+        .catch((error) => {
+          console.log("Couldn't submit order!");
+        });
+    } else {
+      axios
+        .patch(
+          "http://localhost:8080/orders",
+          {
+            id: orderId,
+            firstName: orderDetails.firstName,
+            lastName: orderDetails.lastName,
+            email: orderDetails.email,
+            phoneNumber: orderDetails.phoneNumber,
+            mediaType: mediaType,
+            formatType: format,
+            locationIDs: selectedLocasions.map(
+              (location: Location) => location.id
+            ),
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          setSuccessVisibility(true);
+        })
+        .catch((error) => {
+          console.log("Couldn't edit order!");
+        });
+    }
   };
 
   return (
     <>
+      <div
+        className={`successfull-submit-overlay${
+          successVisibility ? "visible" : ""
+        }`}
+      >
+        <div className="message-box">
+          <button
+            onClick={() => {
+              window.location.assign("/");
+            }}
+          >
+            Back Home
+          </button>
+          <button onClick={() => setSuccessVisibility(false)}>Edit</button>
+        </div>
+      </div>
       <div className="order-container">
         <div className="order-locations-container">
           <h1
