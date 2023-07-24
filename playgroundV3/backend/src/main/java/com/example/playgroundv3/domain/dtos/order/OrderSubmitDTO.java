@@ -1,10 +1,8 @@
-package com.example.playgroundv3.domain.dtos;
+package com.example.playgroundv3.domain.dtos.order;
 
 import java.util.List;
 
-public class OrderEditDTO {
-
-    private int id;
+public class OrderSubmitDTO {
     private String firstName;
     private String lastName;
     private String email;
@@ -13,8 +11,7 @@ public class OrderEditDTO {
     private String formatType;
     private List<Integer> locationIDs;
 
-    public OrderEditDTO(int id, String firstName, String lastName, String email, String phoneNumber, String mediaType, String formatType, List<Integer> locationIDs) {
-        this.id = id;
+    public OrderSubmitDTO(String firstName, String lastName, String email, String phoneNumber, String mediaType, String formatType, List<Integer> locationIDs) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -22,10 +19,6 @@ public class OrderEditDTO {
         this.mediaType = mediaType;
         this.formatType = formatType;
         this.locationIDs = locationIDs;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getFirstName() {

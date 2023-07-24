@@ -1,8 +1,9 @@
 package com.example.playgroundv3.web;
 
-import com.example.playgroundv3.domain.dtos.OrderEditDTO;
-import com.example.playgroundv3.domain.dtos.OrderInitDTO;
-import com.example.playgroundv3.domain.dtos.OrderSubmitDTO;
+import com.example.playgroundv3.domain.dtos.order.OrderEditDTO;
+import com.example.playgroundv3.domain.dtos.order.OrderEditInitDTO;
+import com.example.playgroundv3.domain.dtos.order.OrderInitDTO;
+import com.example.playgroundv3.domain.dtos.order.OrderSubmitDTO;
 import com.example.playgroundv3.services.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,18 @@ public class OrderController {
     public OrderInitDTO initOrderPage() {
         return this.orderService.initOrderPage();
     }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderEditInitDTO> initEditOrderPage(@PathVariable int orderId) {
+        OrderEditInitDTO initDetails = this.orderService.initEditOrderPage(orderId);
+
+        return ResponseEntity.ok(initDetails);
+    }
+
+//    @GetMapping
+//    public OrderEditDTO getOrderToEdit(int orderId){
+//
+//    }
 
     @PostMapping()
     public ResponseEntity<Integer> submitOrder(@RequestBody OrderSubmitDTO order){

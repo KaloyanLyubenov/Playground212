@@ -1,11 +1,9 @@
 package com.example.playgroundv3.web;
 
-import com.example.playgroundv3.domain.dtos.UserAddDTO;
-import com.example.playgroundv3.domain.dtos.UserDTO;
-import com.example.playgroundv3.domain.dtos.UserDetailsOrderDTO;
-import com.example.playgroundv3.domain.models.UserModel;
+import com.example.playgroundv3.domain.dtos.user.UserAddDTO;
+import com.example.playgroundv3.domain.dtos.user.UserDTO;
+import com.example.playgroundv3.domain.dtos.user.UserDetailsOrderDTO;
 import com.example.playgroundv3.services.UserService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

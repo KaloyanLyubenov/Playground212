@@ -73,7 +73,7 @@ const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
               <a href="">Automotive</a>
             </div>
             <div className="item">
-              <a href="">Peronal</a>
+              <a href="">Personal</a>
             </div>
             {userRoles && (
               <div
@@ -113,6 +113,9 @@ const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
                 <a href="/upload">Upload</a>
               </div>
             )}
+            <div className={`item account${isUserlogged ? "" : " invisible"}`}>
+              <a href="/account">Account</a>
+            </div>
           </nav>
           <div className="small-icon-container">
             <div className="small-icon" onClick={() => handleMiniMenuClick()}>

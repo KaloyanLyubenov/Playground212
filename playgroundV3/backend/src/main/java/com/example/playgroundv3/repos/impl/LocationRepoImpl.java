@@ -45,5 +45,17 @@ public class LocationRepoImpl implements LocationRepo {
         return this.jdbcTemplate.query(sql, new LocationRowMapper());
     }
 
+    @Override
+    public List<LocationEntity> findAllByOrderId(int orderId) {
+        String sql = """
+                SELECT l.id as id, l.title as title, l.latitude as latitude, l.longitude as longitude, l.description as description, l.thumbnail_url as thumbnail_url, l.media_type_id as media_type_id, l.format_type_id as format_type_id   
+                FROM locations as l
+                JOIN orders_locations as ol ON l.id = ol.location_id
+                WHERE ol.order_id = ?
+                """;
+
+        return this.jdbcTemplate.query(sql, new LocationRowMapper(), orderId);
+    }
+
 
 }

@@ -9,6 +9,7 @@ interface OrderDetailProps {
   formatUpdate: (newPage: string) => void;
   mediaTypeUpdate: (newPage: string) => void;
   orderSubmit: (details: OrderInformation) => void;
+  orderDetails?: OrderInformation;
 }
 
 interface OrderInformation {
@@ -26,35 +27,52 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
   formatUpdate,
   mediaTypeUpdate,
   orderSubmit,
+  orderDetails,
 }) => {
   // Get user details
 
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8080/users/${localStorage.getItem("email")}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json",
-        },
-      })
-      .then((response) => {
-        setFirstName(response.data.firstName);
-        setLastName(response.data.lastName);
-        setEmail(response.data.email);
-        console.log("User data collected");
-      })
-      .catch((error) => {
-        console.log("Couldn't find user details!");
-      });
-  }, []);
-
+  const [loaded, setLoaded] = useState<boolean>(false);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [formatType, setFormat] = useState<string>("");
   const [mediaType, setMediaType] = useState<String>("");
+
+  useEffect(() => {
+    if (loaded) {
+      if (!orderDetails) {
+        axios
+          .get(`http://localhost:8080/users/${localStorage.getItem("email")}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Accept: "application/json",
+            },
+          })
+          .then((response) => {
+            setFirstName(response.data.firstName);
+            setLastName(response.data.lastName);
+            setEmail(response.data.email);
+            console.log("User data collected");
+          })
+          .catch((error) => {
+            console.log("Couldn't find user details!");
+          });
+      } else {
+        console.log("There are order details");
+        setFirstName(orderDetails.firstName);
+        setLastName(orderDetails.lastName);
+        setEmail(orderDetails.email);
+        setPhoneNumber(orderDetails.phoneNumber);
+        handleFormatChange(orderDetails.formatType);
+        handleMediaTypeChange(orderDetails.mediaType);
+
+        console.log(orderDetails);
+      }
+    }
+    setLoaded(true);
+  }, [orderDetails]);
+
   const [alert, setAlert] = useState<Map<string, boolean>>(new Map());
 
   // Handle change of info fields
@@ -204,7 +222,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
         <select
           name="format-type"
           id="format-type"
-          defaultValue="option0"
+          defaultValue={formatType === "" ? "option0" : formatType}
           className={`select format ${alert.get("format") ? "" : "space"}`}
           onChange={(e) => handleFormatChange(e.target.value)}
         >
@@ -225,7 +243,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
         <select
           name="media-type"
           id="media-type"
-          defaultValue="option0"
+          defaultValue={mediaType === "" ? "option0" : mediaType}
           className={`input media-type ${
             alert.get("mediaType") ? "" : "space"
           }`}

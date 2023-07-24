@@ -73,6 +73,17 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
+    public Optional<OrderEntity> findOrderById(int orderId) {
+        String sql = """
+                SELECT *
+                FROM orders
+                WHERE id = ?
+                """;
+
+        return this.jdbcTemplate.query(sql, new OrderRowMapper(), orderId).stream().findFirst();
+    }
+
+    @Override
     public int updateOrder(OrderEntity order) {
         String sql = """
                 UPDATE orders

@@ -1,4 +1,4 @@
-package com.example.playgroundv3.domain.dtos;
+package com.example.playgroundv3.domain.dtos.user;
 
 public class UserAddRoleDTO {
     private String userEmail;

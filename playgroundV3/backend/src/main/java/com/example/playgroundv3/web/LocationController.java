@@ -1,7 +1,7 @@
 package com.example.playgroundv3.web;
 
-import com.example.playgroundv3.domain.dtos.LocationSaveDTO;
-import com.example.playgroundv3.domain.dtos.LocationSendDTO;
+import com.example.playgroundv3.domain.dtos.location.LocationSaveDTO;
+import com.example.playgroundv3.domain.dtos.location.LocationSendDTO;
 import com.example.playgroundv3.services.LocationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

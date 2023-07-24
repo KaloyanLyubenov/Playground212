@@ -17,6 +17,10 @@ type Map = google.maps.Map;
 type MapOptions = google.maps.MapOptions;
 type LatLngLiteral = google.maps.LatLngLiteral;
 
+interface OrderProps {
+  givenOrderId: number;
+}
+
 type Location = {
   id: number;
   title: string;
@@ -38,13 +42,12 @@ interface UserOrderInformation {
   formatType: string;
 }
 
-function Map() {
+const Map: React.FC<OrderProps> = (givenOrderId) => {
   // INIT MAP
   const GREEN_MARKER_ICON = `${process.env.PUBLIC_URL}/Map_pin_icon_green.svg`;
   const BLACK_MARKER_ICON = `${process.env.PUBLIC_URL}/location-dot.svg`;
   const mapRef = useRef<Map>();
-  const [orderId, setOrderId] = useState(0);
-  const [successVisibility, setSuccessVisibility] = useState(false);
+  const [orderId, setOrderId] = useState(givenOrderId.givenOrderId);
   const center = useMemo<LatLngLiteral>(
     () => ({ lat: 42.6977, lng: 23.3219 }),
     []
@@ -67,6 +70,7 @@ function Map() {
 
   const [allLocations, setAllLocations] = useState<Location[]>([]);
   const [selectedLocasions, setSelectedLocasions] = useState<Location[]>([]);
+  const [orderDetails, setOrderDetails] = useState<UserOrderInformation>();
   const [unselectedLocations, setUnselectedLocations] = useState<Location[]>(
     []
   );
@@ -74,22 +78,45 @@ function Map() {
   const [formatTypes, setFormatTypes] = useState<string[]>([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/orders", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json",
-        },
-      })
-      .then((response) => {
-        setMediaTypes(response.data.mediaTypes);
-        setFormatTypes(response.data.formatTypes);
-        setAllLocations(response.data.locations);
-        console.log("Locations collected");
-      })
-      .catch((error) => {
-        console.log("Couldn't get locations!");
-      });
+    console.log("OrderId: " + orderId);
+
+    if (orderId === 0) {
+      axios
+        .get("http://localhost:8080/orders", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+          },
+        })
+        .then((response) => {
+          setMediaTypes(response.data.mediaTypes);
+          setFormatTypes(response.data.formatTypes);
+          setAllLocations(response.data.locations);
+          console.log("Locations collected");
+        })
+        .catch((error) => {
+          console.log("Couldn't get locations!");
+        });
+    } else {
+      axios
+        .get(`http://localhost:8080/orders/${orderId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+          },
+        })
+        .then((response) => {
+          setAllLocations(response.data.locations);
+          setSelectedLocasions(response.data.selectedLocations);
+          setOrderDetails(response.data.orderDetails);
+          setMediaTypes(response.data.mediaTypes);
+          setFormatTypes(response.data.formatTypes);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log("Couldn't get locations!");
+        });
+    }
   }, []);
 
   // Logic
@@ -138,22 +165,12 @@ function Map() {
 
   // Add location to selected list
   const pickLocation = (id: number) => {
-    console.log("id of location is: " + id);
     const newLocationList: Location[] = [];
 
     unselectedLocations.map((location) => {
       if (location.id !== id) {
-        console.log(
-          "adding location with id: " +
-            location.id +
-            " because it's different from: " +
-            id
-        );
         newLocationList.push(location);
       } else {
-        console.log(
-          "adding location with id " + location.id + "to the selected list"
-        );
         selectedLocasions.push(location);
       }
     });
@@ -162,8 +179,6 @@ function Map() {
   };
 
   const handleOrderSubmit = (orderDetails: UserOrderInformation) => {
-    console.log(orderDetails);
-
     if (orderId === 0) {
       axios
         .post(
@@ -187,8 +202,7 @@ function Map() {
           }
         )
         .then((response) => {
-          setOrderId(response.data);
-          setSuccessVisibility(true);
+          console.log("Successfull");
         })
         .catch((error) => {
           console.log("Couldn't submit order!");
@@ -217,7 +231,7 @@ function Map() {
           }
         )
         .then((response) => {
-          setSuccessVisibility(true);
+          console.log("Successfull");
         })
         .catch((error) => {
           console.log("Couldn't edit order!");
@@ -227,22 +241,6 @@ function Map() {
 
   return (
     <>
-      <div
-        className={`successfull-submit-overlay${
-          successVisibility ? "visible" : ""
-        }`}
-      >
-        <div className="message-box">
-          <button
-            onClick={() => {
-              window.location.assign("/");
-            }}
-          >
-            Back Home
-          </button>
-          <button onClick={() => setSuccessVisibility(false)}>Edit</button>
-        </div>
-      </div>
       <div className="order-container">
         <div className="order-locations-container">
           <h1
@@ -380,18 +378,33 @@ function Map() {
               })}
           </GoogleMap>
         </div>
-        <div className="order-details">
-          <OrderDetails
-            mediaTypes={mediaTypes}
-            formatTypes={formatTypes}
-            formatUpdate={setFormat}
-            mediaTypeUpdate={setMediaType}
-            orderSubmit={handleOrderSubmit}
-          />
-        </div>
+        {orderId === 0 && (
+          <div className="order-details">
+            <OrderDetails
+              mediaTypes={mediaTypes}
+              formatTypes={formatTypes}
+              formatUpdate={setFormat}
+              mediaTypeUpdate={setMediaType}
+              orderSubmit={handleOrderSubmit}
+            />
+          </div>
+        )}
+        {orderId !== 0 && (
+          <div className="order-details">
+            <div>Starr</div>
+            <OrderDetails
+              mediaTypes={mediaTypes}
+              formatTypes={formatTypes}
+              formatUpdate={setFormat}
+              mediaTypeUpdate={setMediaType}
+              orderSubmit={handleOrderSubmit}
+              orderDetails={orderDetails}
+            />
+          </div>
+        )}
       </div>
     </>
   );
-}
+};
 
 export default Map;

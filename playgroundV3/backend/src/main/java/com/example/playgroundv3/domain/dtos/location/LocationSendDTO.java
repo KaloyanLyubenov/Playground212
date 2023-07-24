@@ -1,4 +1,4 @@
-package com.example.playgroundv3.domain.dtos;
+package com.example.playgroundv3.domain.dtos.location;
 
 public class LocationSendDTO {
 

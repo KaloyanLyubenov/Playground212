@@ -1,6 +1,6 @@
 package com.example.playgroundv3.repos;
 
-import com.example.playgroundv3.domain.dtos.UserAddDTO;
+import com.example.playgroundv3.domain.dtos.user.UserAddDTO;
 import com.example.playgroundv3.domain.entites.UserEntity;
 
 import java.util.List;

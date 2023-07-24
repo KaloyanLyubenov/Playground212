@@ -1,14 +1,14 @@
-package com.example.playgroundv3.domain.dtos;
+package com.example.playgroundv3.domain.dtos.user;
 
-public class UserAddDTO {
+public class UserDTO {
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
-    // Constructor
+    // Constructors
 
-    public UserAddDTO(String firstName, String lastName, String email, String password) {
+    public UserDTO(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -16,7 +16,6 @@ public class UserAddDTO {
     }
 
     // Getters
-
 
     public String getFirstName() {
         return firstName;

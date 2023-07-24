@@ -8,6 +8,7 @@ import ImageUpload from "./components/ImageUpload";
 import ImageGetTry from "./components/ImageGetTry";
 import MapTry from "./components/Map/MapContainer";
 import OrderContainer from "./components/Order/OrderContainer";
+import Account from "./components/Account/Account";
 
 function App() {
   const [page, setPage] = useState("home");
@@ -74,7 +75,15 @@ function App() {
               path="/order"
               element={
                 <>
-                  <OrderContainer />
+                  <OrderContainer orderId={0} />
+                </>
+              }
+            />
+            <Route
+              path="/order/2"
+              element={
+                <>
+                  <OrderContainer orderId={2} />
                 </>
               }
             />
@@ -99,6 +108,14 @@ function App() {
               element={
                 <>
                   <ImageGetTry />
+                </>
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                <>
+                  <Account />
                 </>
               }
             />

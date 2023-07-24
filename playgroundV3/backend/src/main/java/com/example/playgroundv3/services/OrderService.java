@@ -1,8 +1,6 @@
 package com.example.playgroundv3.services;
 
-import com.example.playgroundv3.domain.dtos.OrderEditDTO;
-import com.example.playgroundv3.domain.dtos.OrderInitDTO;
-import com.example.playgroundv3.domain.dtos.OrderSubmitDTO;
+import com.example.playgroundv3.domain.dtos.order.*;
 import com.example.playgroundv3.domain.entites.OrderEntity;
 import com.example.playgroundv3.repos.OrderRepo;
 import org.springframework.stereotype.Service;
@@ -28,6 +26,16 @@ public class OrderService {
                 this.formatTypeService.getAllFormatTypeNames());
 
         return orderInitDTO;
+    }
+
+    public OrderEditInitDTO initEditOrderPage(int orderId) {
+        return new OrderEditInitDTO(
+                this.locationService.getAllLocations(),
+                this.locationService.getAllSelectedLocationsByOrderId(orderId),
+                this.mediaTypesService.getAllMediaTypes(),
+                this.formatTypeService.getAllFormatTypeNames(),
+                getOrderDetails(orderId)
+        );
     }
 
     public int submitOrder(OrderSubmitDTO order) {
@@ -61,5 +69,11 @@ public class OrderService {
         if(result != order.getLocationIDs().size()){
             throw new IllegalStateException("Something went wrong adding locations to the order");
         }
+    }
+
+    private OrderDetailsDTO getOrderDetails(int orderId){
+        OrderEntity order = this.orderRepo.findOrderById(orderId).orElseThrow(() -> new IllegalStateException("order with this id not found"));
+
+        return new OrderDetailsDTO(order.getId(), order.getFirstName(), order.getLastName(), order.getEmail(), order.getEmail(), this.formatTypeService.getFormatNameById(order.getFormatTypeID()), this.mediaTypesService.getMediaTypeNameById(order.getMediaTypeID()));
     }
 }

@@ -1,6 +1,6 @@
 package com.example.playgroundv3.services.auth;
 
-import com.example.playgroundv3.domain.dtos.UserAddDTO;
+import com.example.playgroundv3.domain.dtos.user.UserAddDTO;
 import com.example.playgroundv3.domain.dtos.auth.AuthenticationRequest;
 import com.example.playgroundv3.domain.dtos.auth.AuthenticationResponse;
 import com.example.playgroundv3.domain.dtos.auth.RegisterRequest;

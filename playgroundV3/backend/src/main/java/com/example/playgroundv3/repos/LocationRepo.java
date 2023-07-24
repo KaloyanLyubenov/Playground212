@@ -8,4 +8,5 @@ public interface LocationRepo {
 
     public int saveLocation(LocationEntity location);
     public List<LocationEntity>  findAllLocations();
+    public List<LocationEntity> findAllByOrderId(int orderId);
 }

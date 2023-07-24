@@ -1,6 +1,6 @@
 package com.example.playgroundv3.services;
 
-import com.example.playgroundv3.domain.dtos.UserAddRoleDTO;
+import com.example.playgroundv3.domain.dtos.user.UserAddRoleDTO;
 import com.example.playgroundv3.domain.entites.UserRoleEntity;
 import com.example.playgroundv3.repos.UserRoleRepo;
 import jakarta.annotation.PostConstruct;

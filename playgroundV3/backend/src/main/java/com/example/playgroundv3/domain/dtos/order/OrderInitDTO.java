@@ -1,7 +1,6 @@
-package com.example.playgroundv3.domain.dtos;
+package com.example.playgroundv3.domain.dtos.order;
 
-import com.example.playgroundv3.domain.entites.FormatTypeEntity;
-import com.example.playgroundv3.domain.entites.MediaTypeEntity;
+import com.example.playgroundv3.domain.dtos.location.LocationSendDTO;
 
 import java.util.List;
 

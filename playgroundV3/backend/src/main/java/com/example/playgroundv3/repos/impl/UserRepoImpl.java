@@ -1,6 +1,6 @@
 package com.example.playgroundv3.repos.impl;
 
-import com.example.playgroundv3.domain.dtos.UserAddDTO;
+import com.example.playgroundv3.domain.dtos.user.UserAddDTO;
 import com.example.playgroundv3.domain.entites.UserEntity;
 import com.example.playgroundv3.repos.UserRepo;
 import com.example.playgroundv3.repos.impl.row_mappers.UserRowMapper;

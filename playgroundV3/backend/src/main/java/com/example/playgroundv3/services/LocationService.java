@@ -1,7 +1,7 @@
 package com.example.playgroundv3.services;
 
-import com.example.playgroundv3.domain.dtos.LocationSaveDTO;
-import com.example.playgroundv3.domain.dtos.LocationSendDTO;
+import com.example.playgroundv3.domain.dtos.location.LocationSaveDTO;
+import com.example.playgroundv3.domain.dtos.location.LocationSendDTO;
 import com.example.playgroundv3.domain.entites.LocationEntity;
 import com.example.playgroundv3.repos.LocationRepo;
 import org.springframework.stereotype.Service;
@@ -44,6 +44,17 @@ public class LocationService {
 
     public List<LocationSendDTO> getAllLocations() {
         List<LocationEntity> locations = this.locationRepo.findAllLocations();
+
+        return mapLocationsToLocationsToSend(locations);
+    }
+
+    public List<LocationSendDTO> getAllSelectedLocationsByOrderId(int orderId) {
+        List<LocationEntity> locations = this.locationRepo.findAllByOrderId(orderId);
+
+        return mapLocationsToLocationsToSend(locations);
+    }
+
+    private List<LocationSendDTO> mapLocationsToLocationsToSend(List<LocationEntity> locations){
         List<LocationSendDTO> locationsToSend = new ArrayList<>();
 
         for (int i = 0; i < locations.size(); i++) {
