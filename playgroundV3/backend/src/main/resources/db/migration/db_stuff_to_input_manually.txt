@@ -1,16 +1,16 @@
 INSERT INTO pictures(name, album_name, owner_id, media_type_id)
 VALUES
-("1689355837483_FBD07974.jpg", "RedBull Drift", 4, 1),
-("1689355837483_FBD07974.jpg", "RedBull Drift", 4, 1),
-("1689355838479_FBD08089.jpg", "RedBull Drift", 4, 1),
-("1689355837483_FBD08158.jpg", "RedBull Drift", 4, 1),
-("1689355837483_FBD08230.jpg", "RedBull Drift", 4, 1),
-("1689355837483_FBD08276.jpg", "RedBull Drift", 4, 1),
-("1689355837483_FBD01567.jpg", "Jully Morning", 4, 2),
-("1689355837483_FBD01650.jpg", "Jully Morning", 4, 2),
-("1689355837483_FBD01690.jpg", "Jully Morning", 4, 2),
-("1689355837483_FBD01753.jpg", "Jully Morning", 4, 2),
-("1689355837483_FBD01766.jpg", "Jully Morning", 4, 2);
+    ("1689355837483_FBD07974.jpg", "RedBull Drift", 1, 1),
+    ("1689355838479_FBD07988.jpg", "RedBull Drift", 1, 1),
+    ("1689355838784_FBD08089.jpg", "RedBull Drift", 1, 1),
+    ("1689355839085_FBD08158.jpg", "RedBull Drift", 1, 1),
+    ("1689355839317_FBD08230.jpg", "RedBull Drift", 1, 1),
+    ("1689355839624_FBD08276.jpg", "RedBull Drift", 1, 1),
+    ("1689356063406_FBD01567.jpg", "Jully Morning", 1, 2),
+    ("1689356064222_FBD01650.jpg", "Jully Morning", 1, 2),
+    ("1689356064545_FBD01690.jpg", "Jully Morning", 1, 2),
+    ("1689356064811_FBD01753.jpg", "Jully Morning", 1, 2),
+    ("1689356065066_FBD01766.jpg", "Jully Morning", 1, 2);
 
 INSERT INTO users(firstName, Last_name, password, email)
 VALUES
@@ -24,5 +24,5 @@ VALUES
 ("dani@mail.com", 1),
 ("kalo@mail.com", 1),
 ("kok@mail.com", 1),
-("pepi@mail.com", 1)
+("pepi@mail.com", 1);
 

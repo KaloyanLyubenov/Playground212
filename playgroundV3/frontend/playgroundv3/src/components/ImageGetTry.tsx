@@ -80,9 +80,9 @@ function ImageGetTry() {
         {/* <div className="upload-form">
           <ImageUpload />
         </div> */}
-        {imageUrls.map((url) => {
+        {imageUrls.map((url, index) => {
           return (
-            <div className="pics">
+            <div className="pics" key={index}>
               <img src={url} style={{ width: "100%" }} />
             </div>
           );

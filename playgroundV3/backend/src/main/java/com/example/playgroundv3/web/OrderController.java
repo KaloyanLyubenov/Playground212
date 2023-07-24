@@ -1,35 +1,31 @@
 package com.example.playgroundv3.web;
 
 import com.example.playgroundv3.domain.dtos.OrderInitDTO;
-import com.example.playgroundv3.services.FormatTypeService;
-import com.example.playgroundv3.services.LocationService;
-import com.example.playgroundv3.services.MediaTypesService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.playgroundv3.domain.dtos.OrderSubmitDTO;
+import com.example.playgroundv3.services.OrderService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/order")
 public class OrderController {
 
-    private final LocationService locationService;
-    private final MediaTypesService mediaTypesService;
-    private final FormatTypeService formatTypeService;
+    private final OrderService orderService;
 
-    public OrderController(LocationService locationService, MediaTypesService mediaTypesService, FormatTypeService formatTypeService) {
-        this.locationService = locationService;
-        this.mediaTypesService = mediaTypesService;
-        this.formatTypeService = formatTypeService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @GetMapping()
     public OrderInitDTO initOrderPage() {
-        OrderInitDTO orderInitDTO = new OrderInitDTO(
-                this.locationService.getAllLocations(),
-                this.mediaTypesService.getAllMediaTypes(),
-                this.formatTypeService.getAllFormatTypeNames());
+        return this.orderService.initOrderPage();
+    }
 
-        return orderInitDTO;
+    @PostMapping()
+    public ResponseEntity<Integer> submitOrder(@RequestBody OrderSubmitDTO order){
+        int orderId = this.orderService.submitOrder(order);
+
+        return ResponseEntity.ok(orderId);
     }
 
 }

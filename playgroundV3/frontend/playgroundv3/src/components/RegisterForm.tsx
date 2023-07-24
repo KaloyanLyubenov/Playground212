@@ -30,6 +30,7 @@ const RegisterForm: React.FC<RegisterProps> = ({ onPageChange }) => {
       const userEmail = response.data.userEmail;
       localStorage.setItem("token", token);
       localStorage.setItem("userRoles", JSON.stringify(response.data.roles));
+      localStorage.setItem("email", email);
       console.log(JSON.stringify(response.data.roles));
 
       console.log("Succesfull register");

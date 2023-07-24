@@ -18,4 +18,5 @@ public class AuthenticationResponse {
     public List<String> getRoles() {
         return roles;
     }
+
 }

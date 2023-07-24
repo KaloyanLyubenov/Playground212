@@ -2,6 +2,7 @@ package com.example.playgroundv3.web;
 
 import com.example.playgroundv3.domain.dtos.UserAddDTO;
 import com.example.playgroundv3.domain.dtos.UserDTO;
+import com.example.playgroundv3.domain.dtos.UserDetailsOrderDTO;
 import com.example.playgroundv3.domain.models.UserModel;
 import com.example.playgroundv3.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class UserController {
     //    }
 
     @GetMapping("/{email}")
-    public UserModel getUserByEmail(@PathVariable String email) {return this.userService.getUserByEmail(email);}
+    public UserDetailsOrderDTO getUserByEmail(@PathVariable String email) {return this.userService.getUserDetailsForOrderByEmail(email);}
 
     @PostMapping
     public void addUser(@RequestBody UserAddDTO user){

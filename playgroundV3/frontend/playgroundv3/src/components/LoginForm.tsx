@@ -22,6 +22,7 @@ const LoginForm: React.FC<LoginProps> = ({ onPageChange }) => {
       const token = response.data.jwtToken;
       localStorage.setItem("token", token);
       localStorage.setItem("userRoles", JSON.stringify(response.data.roles));
+      localStorage.setItem("email", email);
       console.log(JSON.stringify(response.data.roles));
 
       console.log("Succesfull login");

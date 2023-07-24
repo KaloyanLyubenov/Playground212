@@ -3,8 +3,8 @@ package com.example.playgroundv3.services;
 import com.example.playgroundv3.domain.dtos.UserAddDTO;
 import com.example.playgroundv3.domain.dtos.UserAddRoleDTO;
 import com.example.playgroundv3.domain.dtos.UserDTO;
+import com.example.playgroundv3.domain.dtos.UserDetailsOrderDTO;
 import com.example.playgroundv3.domain.entites.UserEntity;
-import com.example.playgroundv3.domain.entites.UserRoleEntity;
 import com.example.playgroundv3.domain.models.UserModel;
 import com.example.playgroundv3.repos.UserRepo;
 import org.springframework.stereotype.Service;
@@ -53,17 +53,18 @@ public class UserService {
     }
 
     public UserModel getUserByEmail(String email){
-        Optional<UserEntity> optionalUser = this.userRepo.findUserByEmail(email);
-
-        if(optionalUser.isEmpty()){
-            throw new IllegalStateException("User with this email not found");
-        }
-
         UserEntity user =  userRepo.findUserByEmail(email).orElseThrow(() -> new IllegalStateException("User with this email not found"));
         UserModel userModel = new UserModel(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
         userModel.setRoles(this.userRoleService.getUserRolesByUserEmail(user.getEmail()));
 
         return userModel;
+    }
+
+    public UserDetailsOrderDTO getUserDetailsForOrderByEmail(String email){
+        UserEntity user =  userRepo.findUserByEmail(email).orElseThrow(() -> new IllegalStateException("User with this email not found"));
+        UserDetailsOrderDTO userDetails = new UserDetailsOrderDTO(user.getFirstName(), user.getLastName(), user.getEmail());
+
+        return userDetails;
     }
 
     public void createUser(UserAddDTO user){

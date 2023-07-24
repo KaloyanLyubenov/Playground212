@@ -29,6 +29,15 @@ type Location = {
   formatType: string;
 };
 
+interface UserOrderInformation {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  mediaType: string;
+  formatType: string;
+}
+
 function Map() {
   // INIT MAP
   const GREEN_MARKER_ICON = `${process.env.PUBLIC_URL}/Map_pin_icon_green.svg`;
@@ -52,7 +61,7 @@ function Map() {
     return;
   }, []);
 
-  // Collect locations
+  // Gather locations, mediaTyppes, formatTypes
 
   const [allLocations, setAllLocations] = useState<Location[]>([]);
   const [selectedLocasions, setSelectedLocasions] = useState<Location[]>([]);
@@ -97,8 +106,6 @@ function Map() {
         (!format || location.formatType === format)
       ) {
         filteredLocations.push(location);
-      } else if (!mediaType || location.mediaType === mediaType) {
-        other.push(location);
       }
     });
 
@@ -150,6 +157,38 @@ function Map() {
     });
 
     setUnselectedLocations(newLocationList);
+  };
+
+  const handleOrderSubmit = (orderDetails: UserOrderInformation) => {
+    console.log(orderDetails);
+
+    axios
+      .post(
+        "http://localhost:8080/order",
+        {
+          firstName: orderDetails.firstName,
+          lastName: orderDetails.lastName,
+          email: orderDetails.email,
+          phoneNumber: orderDetails.phoneNumber,
+          mediaType: mediaType,
+          formatType: format,
+          locationIDs: selectedLocasions.map(
+            (location: Location) => location.id
+          ),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log("Couldn't submit order!");
+      });
   };
 
   return (
@@ -297,6 +336,7 @@ function Map() {
             formatTypes={formatTypes}
             formatUpdate={setFormat}
             mediaTypeUpdate={setMediaType}
+            orderSubmit={handleOrderSubmit}
           />
         </div>
       </div>

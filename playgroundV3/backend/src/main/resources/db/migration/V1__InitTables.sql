@@ -90,22 +90,23 @@ create table statuses
 create table orders
 (
     id            INT PRIMARY KEY AUTO_INCREMENT,
-    title         VARCHAR(255) NOT NULL,
-    comment       TEXT,
-    submitter_id  INT          NOT NULL,
-    status_id     INT          NOT NULL,
-    media_type_id INT          NOT NULL,
-    FOREIGN KEY (submitter_id) REFERENCES users (id),
-    FOREIGN KEY (status_id) REFERENCES users (id),
-    FOREIGN KEY (media_type_id) references media_types (id)
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email VARCHAR(255),
+    phone_number VARCHAR(255),
+    format_type_id INT,
+    media_type_id INT,
+    FOREIGN KEY (format_type_id) REFERENCES format_types (id),
+    FOREIGN KEY (media_type_id) REFERENCES media_types (id)
 );
 
 create table orders_locations
 (
-    order_id    INT PRIMARY KEY,
+    order_id    INT NOT NULL,
     location_id INT NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders (id),
-    FOREIGN KEY (location_id) REFERENCES locations (id)
+    FOREIGN KEY (location_id) REFERENCES locations (id),
+    PRIMARY KEY (order_id, location_id)
 );
 
 create table user_roles

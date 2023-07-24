@@ -29,7 +29,7 @@ const NavBar: React.FC<NavBarProps> = ({ onPageChange }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("userRoles");
     console.log("Logged out");
-    window.location.reload();
+    window.location.assign("/");
   };
 
   useEffect(() => {

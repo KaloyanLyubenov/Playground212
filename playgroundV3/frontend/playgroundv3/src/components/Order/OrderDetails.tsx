@@ -1,12 +1,23 @@
 import { String } from "aws-sdk/clients/codebuild";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import "../../styles/order.css";
+import axios from "axios";
 
 interface OrderDetailProps {
   mediaTypes: string[];
   formatTypes: string[];
   formatUpdate: (newPage: string) => void;
   mediaTypeUpdate: (newPage: string) => void;
+  orderSubmit: (details: OrderInformation) => void;
+}
+
+interface OrderInformation {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  mediaType: string;
+  formatType: string;
 }
 
 const OrderDetails: React.FC<OrderDetailProps> = ({
@@ -14,14 +25,39 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
   formatTypes,
   formatUpdate,
   mediaTypeUpdate,
+  orderSubmit,
 }) => {
+  // Get user details
+
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/users/${localStorage.getItem("email")}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json",
+        },
+      })
+      .then((response) => {
+        setFirstName(response.data.firstName);
+        setLastName(response.data.lastName);
+        setEmail(response.data.email);
+        console.log("User data collected");
+      })
+      .catch((error) => {
+        console.log("Couldn't find user details!");
+      });
+  }, []);
+
   const [phoneNumber, setPhoneNumber] = useState<string>("");
-  const [format, setFormat] = useState<string>("");
+  const [formatType, setFormat] = useState<string>("");
   const [mediaType, setMediaType] = useState<String>("");
   const [alert, setAlert] = useState<Map<string, boolean>>(new Map());
+
+  // Handle change of info fields
 
   const handleFormatChange = (newFormat: string) => {
     setFormat(newFormat);
@@ -72,6 +108,8 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
     }
   };
 
+  // Submit
+
   const handleSubmit = () => {
     const alerts = new Map();
 
@@ -85,7 +123,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
       alerts.set("email", true);
     }
 
-    if (format === "") {
+    if (formatType === "") {
       alerts.set("format", true);
     }
     if (mediaType === "") {
@@ -98,6 +136,14 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
       console.log("ima eroro gei");
     } else {
       console.log("brao be");
+      orderSubmit({
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        mediaType,
+        formatType,
+      });
     }
   };
 
@@ -108,6 +154,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
         <input
           type="text"
           placeholder="First Name"
+          value={firstName}
           className={`input first-name ${
             alert.has("firstName") ? "" : "space"
           }`}
@@ -124,6 +171,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
         <input
           type="text"
           placeholder="Last Name"
+          value={lastName}
           className={`input last-name ${alert.has("lastName") ? "" : "space"}`}
           onChange={(e) => lastNameChange(e.target.value)}
         />
@@ -138,6 +186,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
         <input
           type="text"
           placeholder="Email"
+          value={email}
           className={`input email ${alert.has("email") ? "" : "space"}`}
           onChange={(e) => emailChange(e.target.value)}
         />
@@ -191,7 +240,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
             })}
         </select>
         <label
-          className={`alert medi-type ${
+          className={`alert media-type ${
             alert.get("mediaType") ? "visible" : ""
           }`}
         >
