@@ -12,7 +12,7 @@ public interface PictureRepo {
     public List<PictureEntity> findALlPictures();
     public List<PictureEntity> findAllPicturesByAlbum(String albumName);
     public List<PictureEntity> findAllPicturesByMediaType(int mediaTypeId);
-    public Optional<PictureEntity> findPictureByOwnerID(int ownerID);
+    public List<PictureEntity> findAllByOwnerID(int ownerID);
     public Optional<PictureEntity> findPictureByName(String name);
 
     public int savePicture(PictureModel picture);

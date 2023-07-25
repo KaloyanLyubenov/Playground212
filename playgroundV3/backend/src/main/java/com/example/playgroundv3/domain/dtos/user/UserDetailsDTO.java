@@ -1,21 +1,14 @@
 package com.example.playgroundv3.domain.dtos.user;
 
-public class UserDetailsOrderDTO {
-
-    private int userId;
+public class UserDetailsDTO {
     private String firstName;
     private String lastName;
     private String email;
 
-    public UserDetailsOrderDTO(int userId, String firstName, String lastName, String email) {
-        this.userId = userId;
+    public UserDetailsDTO(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-    }
-
-    public int getUserId() {
-        return userId;
     }
 
     public String getFirstName() {

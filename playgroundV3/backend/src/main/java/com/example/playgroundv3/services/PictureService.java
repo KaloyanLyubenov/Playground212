@@ -1,5 +1,6 @@
 package com.example.playgroundv3.services;
 
+import com.example.playgroundv3.domain.dtos.AlbumDTO;
 import com.example.playgroundv3.domain.dtos.PictureAddDTO;
 import com.example.playgroundv3.domain.dtos.PictureDownloadDTO;
 import com.example.playgroundv3.domain.dtos.auth.MultiplePictureUploadDTO;
@@ -10,8 +11,7 @@ import com.example.playgroundv3.services.S3.S3Service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PictureService {
@@ -44,6 +44,27 @@ public class PictureService {
         return this.pictureRepo.findALlPictures()
                 .stream().map(PictureEntity::getName)
                 .toList();
+    }
+
+    public List<AlbumDTO> getAllAlbumsByOwnerId(int userId) {
+        Map<String, List<String>> albumPicUrls = new HashMap<>();
+
+        for(PictureEntity pic : this.pictureRepo.findAllByOwnerID(userId)){
+            if(!albumPicUrls.containsKey(pic.getAlbumName())){
+                //albumNameAlbums.put(pic.getAlbumName(), new AlbumDTO(pic.getAlbumName(), List.of(pic.getName())));
+                albumPicUrls.put(pic.getAlbumName(), new ArrayList<>(List.of(pic.getName())));
+            }else{
+                //albumNameAlbums.get(pic.getAlbumName()).addPicture(pic.getName());
+                albumPicUrls.get(pic.getAlbumName()).add(pic.getName());
+            }
+        }
+
+        List<AlbumDTO> albums = new ArrayList<>();
+        for(Map.Entry<String, List<String>> entry : albumPicUrls.entrySet()){
+            albums.add(new AlbumDTO(entry.getKey(), entry.getValue()));
+        }
+
+        return albums;
     }
 
     public List<PictureModel> getAllPicturesByAlbum(String albumName) {

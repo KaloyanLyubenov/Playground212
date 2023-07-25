@@ -1,9 +1,6 @@
 package com.example.playgroundv3.services;
 
-import com.example.playgroundv3.domain.dtos.user.UserAddDTO;
-import com.example.playgroundv3.domain.dtos.user.UserAddRoleDTO;
-import com.example.playgroundv3.domain.dtos.user.UserDTO;
-import com.example.playgroundv3.domain.dtos.user.UserDetailsOrderDTO;
+import com.example.playgroundv3.domain.dtos.user.*;
 import com.example.playgroundv3.domain.entites.UserEntity;
 import com.example.playgroundv3.domain.models.UserModel;
 import com.example.playgroundv3.repos.UserRepo;
@@ -21,6 +18,12 @@ public class UserService {
     public UserService(UserRepo userRepo, UserRoleService userRoleService) {
         this.userRepo = userRepo;
         this.userRoleService = userRoleService;
+    }
+
+    public UserDetailsDTO getUserDetails(int userId){
+        UserEntity user = this.userRepo.findUserByID(userId).orElseThrow(() -> new IllegalStateException("User with this id not found"));
+
+        return new UserDetailsDTO(user.getFirstName(), user.getLastName(), user.getEmail());
     }
 
     public List<UserDTO> getAllUsers() {
@@ -62,7 +65,7 @@ public class UserService {
 
     public UserDetailsOrderDTO getUserDetailsForOrderByEmail(String email){
         UserEntity user =  userRepo.findUserByEmail(email).orElseThrow(() -> new IllegalStateException("User with this email not found"));
-        UserDetailsOrderDTO userDetails = new UserDetailsOrderDTO(user.getFirstName(), user.getLastName(), user.getEmail());
+        UserDetailsOrderDTO userDetails = new UserDetailsOrderDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail());
 
         return userDetails;
     }
@@ -74,5 +77,6 @@ public class UserService {
         }
         this.userRoleService.addRoleToUser(new UserAddRoleDTO(user.getEmail(), "USER"));
     }
+
 
 }

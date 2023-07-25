@@ -5,6 +5,8 @@ import java.util.List;
 public class OrderEditDTO {
 
     private int id;
+    private String title;
+    private int userId;
     private String firstName;
     private String lastName;
     private String email;
@@ -13,8 +15,10 @@ public class OrderEditDTO {
     private String formatType;
     private List<Integer> locationIDs;
 
-    public OrderEditDTO(int id, String firstName, String lastName, String email, String phoneNumber, String mediaType, String formatType, List<Integer> locationIDs) {
+    public OrderEditDTO(int id, String title, int userId, String firstName, String lastName, String email, String phoneNumber, String mediaType, String formatType, List<Integer> locationIDs) {
         this.id = id;
+        this.title = title;
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -26,6 +30,14 @@ public class OrderEditDTO {
 
     public int getId() {
         return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public String getFirstName() {

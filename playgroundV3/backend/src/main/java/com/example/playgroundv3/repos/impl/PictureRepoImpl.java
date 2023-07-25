@@ -56,14 +56,14 @@ public class PictureRepoImpl implements PictureRepo {
     }
 
     @Override
-    public Optional<PictureEntity> findPictureByOwnerID(int ownerID) {
+    public List<PictureEntity> findAllByOwnerID(int ownerID) {
         String sql = """
                 SELECT *
                 FROM pictures
                 WHERE owner_id = ?;
                 """;
 
-        return this.jdbcTemplate.query(sql, new PictureRowMapper(), ownerID).stream().findFirst();
+        return this.jdbcTemplate.query(sql, new PictureRowMapper(), ownerID);
     }
 
     @Override

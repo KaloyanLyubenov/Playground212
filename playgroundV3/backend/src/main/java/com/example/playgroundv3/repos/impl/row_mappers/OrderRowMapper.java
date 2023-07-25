@@ -12,6 +12,8 @@ public class OrderRowMapper implements RowMapper {
     public OrderEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new OrderEntity(
                 rs.getInt("id"),
+                rs.getString("title"),
+                rs.getInt("user_id"),
                 rs.getString("first_name"),
                 rs.getString("last_name"),
                 rs.getString("email"),

@@ -36,7 +36,7 @@ create table pictures
 (
     id            INT PRIMARY KEY AUTO_INCREMENT,
     name          VARCHAR(255) NOT NULL,
-    album_name         VARCHAR(255) NOT NULL,
+    album_name    VARCHAR(255) NOT NULL,
     owner_id      INT,
     media_type_id INT          NOT NULL,
     FOREIGN KEY (media_type_id) REFERENCES media_types (id),
@@ -89,15 +89,18 @@ create table statuses
 
 create table orders
 (
-    id            INT PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(255),
-    last_name VARCHAR(255),
-    email VARCHAR(255),
-    phone_number VARCHAR(255),
+    id             INT PRIMARY KEY AUTO_INCREMENT,
+    title          VARCHAR(255),
+    user_id        INT,
+    first_name     VARCHAR(255),
+    last_name      VARCHAR(255),
+    email          VARCHAR(255),
+    phone_number   VARCHAR(255),
     format_type_id INT,
-    media_type_id INT,
+    media_type_id  INT,
     FOREIGN KEY (format_type_id) REFERENCES format_types (id),
-    FOREIGN KEY (media_type_id) REFERENCES media_types (id)
+    FOREIGN KEY (media_type_id) REFERENCES media_types (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 create table orders_locations
@@ -122,5 +125,5 @@ create table users_user_roles
     FOREIGN KEY (user_email) REFERENCES users (email),
     FOREIGN KEY (user_role_id) REFERENCES user_roles (id),
     PRIMARY KEY (user_email, user_role_id)
-);
+)
 

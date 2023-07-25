@@ -16,15 +16,12 @@ const RegisterForm: React.FC<RegisterProps> = ({ onPageChange }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://10.16.6.11:8080/auth/register",
-        {
-          firstName,
-          lastName,
-          email,
-          password,
-        }
-      );
+      const response = await axios.post("http://localhost:8080/auth/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
 
       const token = response.data.jwtToken;
       const userEmail = response.data.userEmail;

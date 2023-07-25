@@ -25,12 +25,14 @@ public class OrderRepoImpl implements OrderRepo {
 
     public int saveOrder(OrderEntity order){
         String sql = """
-                INSERT INTO orders(first_name, last_name, email, phone_number, format_type_id, media_type_id)
-                VALUES (?, ?, ?, ?, ?, ?);
+                INSERT INTO orders(title, user_id, first_name, last_name, email, phone_number, format_type_id, media_type_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);
                 """;
 
         return jdbcTemplate.update(
                 sql,
+                order.getTitle(),
+                order.getUserId(),
                 order.getFirstName(),
                 order.getLastName(),
                 order.getEmail(),
@@ -81,6 +83,17 @@ public class OrderRepoImpl implements OrderRepo {
                 """;
 
         return this.jdbcTemplate.query(sql, new OrderRowMapper(), orderId).stream().findFirst();
+    }
+
+    @Override
+    public List<OrderEntity> findAllByOwnerId(int userId) {
+        String sql = """
+                SELECT id, title, user_id, first_name, last_name, email, phone_number, format_type_id, media_type_id
+                FROM orders
+                WHERE user_id = ?
+                """;
+
+        return this.jdbcTemplate.query(sql, new OrderRowMapper(), userId);
     }
 
     @Override

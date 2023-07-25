@@ -5,8 +5,11 @@ import { Height, South } from "@mui/icons-material";
 import "../styles/gallery.css";
 import ImageUpload from "./ImageUpload";
 
-function ImageGetTry() {
-  const [imageNames, setImageNames] = useState<string[]>([]);
+interface ImageShowProps {
+  imageNames: string[];
+}
+
+const ImageGetTry: React.FC<ImageShowProps> = ({ imageNames }) => {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [s3, setS3] = React.useState<S3 | null>(null);
 
@@ -26,19 +29,6 @@ function ImageGetTry() {
       }
     }
     getS3Credentials();
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get<string[]>("http://localhost:8080/pictures")
-      .then((response) => {
-        setImageNames(response.data);
-      })
-      .catch((error) => {
-        console.log("Couldn't get image names!");
-      });
-
-    console.log("got image names");
   }, []);
 
   useEffect(() => {
@@ -73,7 +63,6 @@ function ImageGetTry() {
       setImageUrls(urls);
     });
   }, [s3, imageNames]);
-
   return (
     <>
       <div className="gallery">
@@ -90,6 +79,6 @@ function ImageGetTry() {
       </div>
     </>
   );
-}
+};
 
 export default ImageGetTry;

@@ -3,6 +3,8 @@ package com.example.playgroundv3.domain.dtos.order;
 import java.util.List;
 
 public class OrderSubmitDTO {
+    private String title;
+    private int userId;
     private String firstName;
     private String lastName;
     private String email;
@@ -11,7 +13,9 @@ public class OrderSubmitDTO {
     private String formatType;
     private List<Integer> locationIDs;
 
-    public OrderSubmitDTO(String firstName, String lastName, String email, String phoneNumber, String mediaType, String formatType, List<Integer> locationIDs) {
+    public OrderSubmitDTO(String title, int userId, String firstName, String lastName, String email, String phoneNumber, String mediaType, String formatType, List<Integer> locationIDs) {
+        this.title = title;
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -19,6 +23,14 @@ public class OrderSubmitDTO {
         this.mediaType = mediaType;
         this.formatType = formatType;
         this.locationIDs = locationIDs;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public String getFirstName() {

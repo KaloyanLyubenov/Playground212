@@ -2,6 +2,8 @@ package com.example.playgroundv3.domain.entites;
 
 public class OrderEntity {
     private int id;
+    private String title;
+    private int userId;
     private String firstName;
     private String lastName;
     private String email;
@@ -11,8 +13,10 @@ public class OrderEntity {
 
     // Constructors
 
-    public OrderEntity(int id, String firstName, String lastName, String email, String phoneNumber, int formatTypeID, int mediaTypeID) {
+    public OrderEntity(int id, String title, int userId, String firstName, String lastName, String email, String phoneNumber, int formatTypeID, int mediaTypeID) {
         this.id = id;
+        this.title = title;
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -21,7 +25,9 @@ public class OrderEntity {
         this.mediaTypeID = mediaTypeID;
     }
 
-    public OrderEntity(String firstName, String lastName, String email, String phoneNumber, int formatTypeID, int mediaTypeID) {
+    public OrderEntity(String title, int userId, String firstName, String lastName, String email, String phoneNumber, int formatTypeID, int mediaTypeID) {
+        this.title = title;
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -34,6 +40,14 @@ public class OrderEntity {
 
     public int getId() {
         return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public String getFirstName() {

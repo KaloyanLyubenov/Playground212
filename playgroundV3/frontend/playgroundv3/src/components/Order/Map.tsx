@@ -34,6 +34,8 @@ type Location = {
 };
 
 interface UserOrderInformation {
+  title: string;
+  userId: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -78,8 +80,6 @@ const Map: React.FC<OrderProps> = (givenOrderId) => {
   const [formatTypes, setFormatTypes] = useState<string[]>([]);
 
   useEffect(() => {
-    console.log("OrderId: " + orderId);
-
     if (orderId === 0) {
       axios
         .get("http://localhost:8080/orders", {
@@ -179,11 +179,15 @@ const Map: React.FC<OrderProps> = (givenOrderId) => {
   };
 
   const handleOrderSubmit = (orderDetails: UserOrderInformation) => {
+    console.log(orderDetails.title);
+    console.log(orderDetails.userId);
     if (orderId === 0) {
       axios
         .post(
           "http://localhost:8080/orders",
           {
+            title: orderDetails.title,
+            userId: orderDetails.userId,
             firstName: orderDetails.firstName,
             lastName: orderDetails.lastName,
             email: orderDetails.email,
@@ -213,6 +217,8 @@ const Map: React.FC<OrderProps> = (givenOrderId) => {
           "http://localhost:8080/orders",
           {
             id: orderId,
+            title: orderDetails.title,
+            userId: orderDetails.userId,
             firstName: orderDetails.firstName,
             lastName: orderDetails.lastName,
             email: orderDetails.email,
@@ -237,6 +243,7 @@ const Map: React.FC<OrderProps> = (givenOrderId) => {
           console.log("Couldn't edit order!");
         });
     }
+    window.location.assign("/");
   };
 
   return (

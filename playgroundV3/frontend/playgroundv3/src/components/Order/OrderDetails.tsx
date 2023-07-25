@@ -13,6 +13,8 @@ interface OrderDetailProps {
 }
 
 interface OrderInformation {
+  title: string;
+  userId: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -31,6 +33,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
 }) => {
   // Get user details
 
+  const [title, setTitle] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -38,40 +41,51 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [formatType, setFormat] = useState<string>("");
   const [mediaType, setMediaType] = useState<String>("");
+  const [userId, setUserId] = useState<number>(0);
 
   useEffect(() => {
-    if (loaded) {
-      if (!orderDetails) {
-        axios
-          .get(`http://localhost:8080/users/${localStorage.getItem("email")}`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-              Accept: "application/json",
-            },
-          })
-          .then((response) => {
-            setFirstName(response.data.firstName);
-            setLastName(response.data.lastName);
-            setEmail(response.data.email);
-            console.log("User data collected");
-          })
-          .catch((error) => {
-            console.log("Couldn't find user details!");
-          });
-      } else {
-        console.log("There are order details");
-        setFirstName(orderDetails.firstName);
-        setLastName(orderDetails.lastName);
-        setEmail(orderDetails.email);
-        setPhoneNumber(orderDetails.phoneNumber);
-        handleFormatChange(orderDetails.formatType);
-        handleMediaTypeChange(orderDetails.mediaType);
-
-        console.log(orderDetails);
-      }
+    let orderDetailsExist: boolean = false;
+    let newUserId: number;
+    if (!orderDetails) {
+      axios
+        .get(`http://localhost:8080/users/${localStorage.getItem("email")}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
+          },
+        })
+        .then((response) => {
+          setFirstName(response.data.firstName);
+          setLastName(response.data.lastName);
+          setEmail(response.data.email);
+          setUserId(response.data.userId);
+          console.log(response.data);
+          console.log("User data collected");
+        })
+        .catch((error) => {
+          console.log("Couldn't find user details!");
+        });
+    } else {
+      console.log("There are order details");
+      orderDetailsExist = true;
+      console.log(orderDetails);
+    }
+    if (orderDetailsExist) {
+      setFields();
     }
     setLoaded(true);
-  }, [orderDetails]);
+  }, []);
+
+  const setFields = () => {
+    setUserId(orderDetails?.userId as number);
+    setTitle(orderDetails?.title as string);
+    setFirstName(orderDetails?.firstName as string);
+    setLastName(orderDetails?.lastName as string);
+    setEmail(orderDetails?.email as string);
+    setPhoneNumber(orderDetails?.phoneNumber as string);
+    handleFormatChange(orderDetails?.formatType as string);
+    handleMediaTypeChange(orderDetails?.mediaType as string);
+  };
 
   const [alert, setAlert] = useState<Map<string, boolean>>(new Map());
 
@@ -91,6 +105,17 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
     const newAlerts = alert;
     newAlerts.delete("mediaType");
     setAlert(newAlerts);
+  };
+
+  const titleChange = (title: string) => {
+    setTitle(title);
+    if (title === "") {
+      setAlert(alert.set("title", true));
+    } else {
+      const newAlerts = alert;
+      newAlerts.delete("title");
+      setAlert(newAlerts);
+    }
   };
 
   const firstNameChange = (name: string) => {
@@ -131,6 +156,9 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
   const handleSubmit = () => {
     const alerts = new Map();
 
+    if (title === "") {
+      alerts.set("title", true);
+    }
     if (firstName == "") {
       alerts.set("firstName", true);
     }
@@ -150,11 +178,16 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
 
     setAlert(alerts);
 
+    console.log("title: " + title);
+    console.log("userId: " + userId);
+
     if (alert.size != 0 || alerts.size != 0) {
       console.log("ima eroro gei");
     } else {
       console.log("brao be");
       orderSubmit({
+        title,
+        userId,
         firstName,
         lastName,
         email,
@@ -169,6 +202,16 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
     <>
       <h1>Order Details</h1>
       <div className="inputs">
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          className={`input title ${alert.has("title") ? "" : "space"}`}
+          onChange={(e) => titleChange(e.target.value)}
+        />
+        <label className={`alert title ${alert.has("title") ? "visible" : ""}`}>
+          Improper first name
+        </label>
         <input
           type="text"
           placeholder="First Name"
@@ -215,6 +258,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
         <input
           type="text"
           placeholder="Phone number"
+          value={phoneNumber}
           className="input phone-number"
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
@@ -222,7 +266,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
         <select
           name="format-type"
           id="format-type"
-          defaultValue={formatType === "" ? "option0" : formatType}
+          defaultValue={orderDetails ? orderDetails.formatType : "option0"}
           className={`select format ${alert.get("format") ? "" : "space"}`}
           onChange={(e) => handleFormatChange(e.target.value)}
         >
@@ -243,7 +287,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
         <select
           name="media-type"
           id="media-type"
-          defaultValue={mediaType === "" ? "option0" : mediaType}
+          defaultValue={orderDetails ? orderDetails.mediaType : "option0"}
           className={`input media-type ${
             alert.get("mediaType") ? "" : "space"
           }`}
