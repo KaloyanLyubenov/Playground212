@@ -1,5 +1,5 @@
 import { String } from "aws-sdk/clients/codebuild";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import "../../styles/order.css";
 import axios from "axios";
 
@@ -18,6 +18,7 @@ interface OrderInformation {
   firstName: string;
   lastName: string;
   email: string;
+  creatorEmail: string;
   phoneNumber: string;
   mediaType: string;
   formatType: string;
@@ -42,6 +43,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
   const [formatType, setFormat] = useState<string>("");
   const [mediaType, setMediaType] = useState<String>("");
   const [userId, setUserId] = useState<number>(0);
+  const [creatorEmail, setCreatorEmail] = useState<string>("");
 
   useEffect(() => {
     let orderDetailsExist: boolean = false;
@@ -58,6 +60,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
           setFirstName(response.data.firstName);
           setLastName(response.data.lastName);
           setEmail(response.data.email);
+          setCreatorEmail(response.data.email);
           setUserId(response.data.userId);
           console.log(response.data);
           console.log("User data collected");
@@ -82,6 +85,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
     setFirstName(orderDetails?.firstName as string);
     setLastName(orderDetails?.lastName as string);
     setEmail(orderDetails?.email as string);
+    setCreatorEmail(orderDetails?.creatorEmail as string);
     setPhoneNumber(orderDetails?.phoneNumber as string);
     handleFormatChange(orderDetails?.formatType as string);
     handleMediaTypeChange(orderDetails?.mediaType as string);
@@ -191,6 +195,7 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
         firstName,
         lastName,
         email,
+        creatorEmail,
         phoneNumber,
         mediaType,
         formatType,

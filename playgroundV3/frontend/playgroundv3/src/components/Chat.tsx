@@ -1,20 +1,30 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  FormEvent,
+  ChangeEvent,
+} from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import "../styles/chat.css";
 
 interface Message {
   senderEmail: string;
+  receiverEmail?: string;
   content: string;
   type: "JOIN" | "LEAVE" | "MESSAGE";
 }
 
 const Chat: React.FC = () => {
   const [email, setEmail] = useState<string>("");
+  const [receiverEmail, setReceiverEmail] = useState<string>("");
   const [page, setPage] = useState<string>("email");
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
   const [connected, setConnected] = useState(false);
+  const [users, setUsers] = useState<string[]>([]);
 
   const colors: string[] = [
     "#2196F3",
@@ -27,6 +37,8 @@ const Chat: React.FC = () => {
     "#39bbb0",
   ];
 
+  const email2 = useRef("");
+
   useEffect(() => {
     const socket: WebSocket = new SockJS("http://localhost:8080/ws");
     const stomp: Stomp.Client = Stomp.over(socket);
@@ -36,10 +48,9 @@ const Chat: React.FC = () => {
     stomp.connect(
       {},
       (frame) => {
-        console.log("gosho i tosho");
         setConnected(true);
         stomp.subscribe("/topic/public", (message) => {
-          setMessages((messages) => [...messages, JSON.parse(message.body)]);
+          onMessageReceived(message);
         });
       },
       (error) => {
@@ -52,15 +63,11 @@ const Chat: React.FC = () => {
 
   const connect = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("stompClient:", stompClient);
 
     if (email.trim() !== "") {
       setPage("chat");
 
       const onConnected = () => {
-        console.log("is succesfully connected");
-        // stompClient?.subscribe("/topic/public", onMessageReceived);
-
         stompClient?.send(
           "/app/chat.addUser",
           {},
@@ -81,8 +88,27 @@ const Chat: React.FC = () => {
 
   const onMessageReceived = (payload: Stomp.Message) => {
     const message: Message = JSON.parse(payload.body);
-    console.log("Received message:", message);
-    setMessages((prevMessages) => [...prevMessages, message]);
+    if (!users.includes(message.senderEmail)) {
+      let usersSoFar = users;
+      usersSoFar.push(message.senderEmail);
+      setUsers(usersSoFar);
+    }
+
+    console.log(
+      `Message receiver: ${message.receiverEmail} and email of current user is: ${email2.current}`
+    );
+
+    if (
+      message.receiverEmail === email2.current ||
+      message.senderEmail === email2.current
+    ) {
+      console.log("this message is for you");
+      setMessages((prevMessages) => [...prevMessages, message]);
+    } else {
+      console.log("This message isn't for you");
+    }
+
+    console.log(users);
   };
 
   const sendMessage = (event: React.FormEvent) => {
@@ -92,6 +118,7 @@ const Chat: React.FC = () => {
     if (messageContent && stompClient) {
       const chatMessage: Message = {
         senderEmail: email,
+        receiverEmail: receiverEmail,
         content: messageContent,
         type: "MESSAGE",
       };
@@ -114,6 +141,17 @@ const Chat: React.FC = () => {
     return colors[index];
   };
 
+  const handleEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value !== "") {
+      setEmail(e.target.value);
+    }
+  };
+
+  useEffect(() => {
+    email2.current = email;
+    console.log(email);
+  }, [email]);
+
   return (
     <>
       {page === "email" && (
@@ -128,7 +166,7 @@ const Chat: React.FC = () => {
                     placeholder="Email"
                     autoComplete="off"
                     className="form-control"
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => handleEmail(e)}
                   />
                 </div>
                 <div className="form-group">
@@ -139,16 +177,30 @@ const Chat: React.FC = () => {
               </form>
             </div>
           </div>
-          <button onClick={connect}>Connect me</button>
         </>
       )}
       {page === "chat" && (
         <div className="chat-page">
+          <ul className="user-list">
+            {users.map(
+              (user, index) =>
+                user !== email && (
+                  <li key={index} className="user-field">
+                    <i
+                      style={{
+                        backgroundColor: getAvatarColor(user),
+                      }}
+                    >
+                      {user[0]}
+                    </i>
+                  </li>
+                )
+            )}
+          </ul>
           <div className="chat-container">
             <div className="chat-header">
-              <h2>Spring Websockets By KOKOMOKO</h2>
+              <h2>Hello {email}</h2>
             </div>
-            <div className="connecting">Connecting...</div>
             <ul className="message-area">
               {messages.map((message, index) => (
                 <li
@@ -177,7 +229,7 @@ const Chat: React.FC = () => {
                 </li>
               ))}
             </ul>
-            <form className="message-form" onSubmit={sendMessage}>
+            <form className="message-form">
               <div className="form-group">
                 <div className="input-group clearfix">
                   <input
@@ -185,9 +237,18 @@ const Chat: React.FC = () => {
                     className="message"
                     placeholder="Type a message..."
                     autoComplete="off"
+                    value={message}
                     onChange={(e) => setMessage(e.target.value)}
                   />
-                  <button type="submit" className="primary">
+                  <input
+                    type="text"
+                    className="message"
+                    placeholder="Type a receiver email..."
+                    autoComplete="off"
+                    value={receiverEmail}
+                    onChange={(e) => setReceiverEmail(e.target.value)}
+                  />
+                  <button onClick={sendMessage} className="primary">
                     Send
                   </button>
                 </div>

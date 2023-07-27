@@ -25,8 +25,8 @@ public class OrderRepoImpl implements OrderRepo {
 
     public int saveOrder(OrderEntity order){
         String sql = """
-                INSERT INTO orders(title, user_id, first_name, last_name, email, phone_number, format_type_id, media_type_id)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+                INSERT INTO orders(title, user_id, first_name, last_name, email, creator_email, phone_number, format_type_id, media_type_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
                 """;
 
         return jdbcTemplate.update(
@@ -36,6 +36,7 @@ public class OrderRepoImpl implements OrderRepo {
                 order.getFirstName(),
                 order.getLastName(),
                 order.getEmail(),
+                order.getCreatorEmail(),
                 order.getPhoneNumber(),
                 order.getFormatTypeID(),
                 order.getMediaTypeID());
@@ -60,6 +61,16 @@ public class OrderRepoImpl implements OrderRepo {
                 return locationIDs.size();
             }
         })).sum();
+    }
+
+    @Override
+    public List<OrderEntity> findAll() {
+        String sql = """
+            SELECT *
+            FROM orders;
+            """;
+
+        return jdbcTemplate.query(sql, new OrderRowMapper());
     }
 
     @Override
@@ -88,7 +99,7 @@ public class OrderRepoImpl implements OrderRepo {
     @Override
     public List<OrderEntity> findAllByOwnerId(int userId) {
         String sql = """
-                SELECT id, title, user_id, first_name, last_name, email, phone_number, format_type_id, media_type_id
+                SELECT id, title, user_id, first_name, last_name, email, creator_email, phone_number, format_type_id, media_type_id
                 FROM orders
                 WHERE user_id = ?
                 """;

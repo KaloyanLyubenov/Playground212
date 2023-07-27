@@ -95,6 +95,7 @@ create table orders
     first_name     VARCHAR(255),
     last_name      VARCHAR(255),
     email          VARCHAR(255),
+    creator_email   VARCHAR(255),
     phone_number   VARCHAR(255),
     format_type_id INT,
     media_type_id  INT,

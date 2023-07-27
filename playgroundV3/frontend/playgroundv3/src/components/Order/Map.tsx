@@ -39,6 +39,7 @@ interface UserOrderInformation {
   firstName: string;
   lastName: string;
   email: string;
+  creatorEmail: string;
   phoneNumber: string;
   mediaType: string;
   formatType: string;
@@ -191,6 +192,7 @@ const Map: React.FC<OrderProps> = (givenOrderId) => {
             firstName: orderDetails.firstName,
             lastName: orderDetails.lastName,
             email: orderDetails.email,
+            creatorEmail: orderDetails.creatorEmail,
             phoneNumber: orderDetails.phoneNumber,
             mediaType: mediaType,
             formatType: format,
@@ -222,6 +224,7 @@ const Map: React.FC<OrderProps> = (givenOrderId) => {
             firstName: orderDetails.firstName,
             lastName: orderDetails.lastName,
             email: orderDetails.email,
+            creatorEmail: orderDetails.creatorEmail,
             phoneNumber: orderDetails.phoneNumber,
             mediaType: mediaType,
             formatType: format,

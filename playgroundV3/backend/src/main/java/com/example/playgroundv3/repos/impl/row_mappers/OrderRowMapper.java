@@ -1,7 +1,6 @@
 package com.example.playgroundv3.repos.impl.row_mappers;
 
 import com.example.playgroundv3.domain.entites.OrderEntity;
-import com.example.playgroundv3.domain.entites.UserEntity;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -17,6 +16,7 @@ public class OrderRowMapper implements RowMapper {
                 rs.getString("first_name"),
                 rs.getString("last_name"),
                 rs.getString("email"),
+                rs.getString("creator_email"),
                 rs.getString("phone_number"),
                 rs.getInt("format_type_id"),
                 rs.getInt("media_type_id")

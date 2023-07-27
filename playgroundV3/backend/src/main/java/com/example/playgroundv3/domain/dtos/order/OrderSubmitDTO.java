@@ -8,17 +8,19 @@ public class OrderSubmitDTO {
     private String firstName;
     private String lastName;
     private String email;
+    private String creatorEmail;
     private String phoneNumber;
     private String mediaType;
     private String formatType;
     private List<Integer> locationIDs;
 
-    public OrderSubmitDTO(String title, int userId, String firstName, String lastName, String email, String phoneNumber, String mediaType, String formatType, List<Integer> locationIDs) {
+    public OrderSubmitDTO(String title, int userId, String firstName, String lastName, String email, String creatorEmail, String phoneNumber, String mediaType, String formatType, List<Integer> locationIDs) {
         this.title = title;
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.creatorEmail = creatorEmail;
         this.phoneNumber = phoneNumber;
         this.mediaType = mediaType;
         this.formatType = formatType;
@@ -43,6 +45,10 @@ public class OrderSubmitDTO {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getCreatorEmail() {
+        return creatorEmail;
     }
 
     public String getPhoneNumber() {

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../styles/account.css";
 import OrdersPage from "./Pages/OrdersPage";
 import AlbumsPage from "./Pages/AlbumsPage";
 import SettingsPage from "./Pages/SettingsPage";
 import axios from "axios";
+import BetterChat from "../BetterChat";
 
 interface UserDetails {
   firstName: string;
@@ -31,7 +32,12 @@ function Account() {
   const [page, setPage] = useState("orders");
   const [orders, setOrders] = useState<OrderPreview[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
-  const [userDetails, setUserDetails] = useState<UserDetails>();
+  const [userDetails, setUserDetails] = useState<UserDetails>({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     axios
@@ -46,6 +52,7 @@ function Account() {
         setOrders(data.orders);
         setAlbums(data.albums);
         setUserDetails(data.userDetails);
+        setLoaded(true);
       })
       .catch((error) => {
         console.log("Couldn't find user details!");
@@ -54,24 +61,27 @@ function Account() {
 
   return (
     <>
-      <div className="account-page">
-        <div className="pages-list">
-          <div className="page orders" onClick={() => setPage("orders")}>
-            Orders
+      {loaded && (
+        <div className="account-page">
+          <div className="pages-list">
+            <div className="page orders" onClick={() => setPage("orders")}>
+              Orders
+            </div>
+            <div className="page galleries" onClick={() => setPage("albums")}>
+              Albums
+            </div>
+            <div className="page settings" onClick={() => setPage("settings")}>
+              Settings
+            </div>
           </div>
-          <div className="page galleries" onClick={() => setPage("albums")}>
-            Albums
+          <div className="page-content">
+            {page === "orders" && <OrdersPage orders={orders} />}
+            {page === "albums" && <AlbumsPage albums={albums} />}
+            {page === "settings" && <SettingsPage />}
           </div>
-          <div className="page settings" onClick={() => setPage("settings")}>
-            Settings
-          </div>
+          <BetterChat orderName="GG" userEmail={userDetails.email} />
         </div>
-        <div className="page-content">
-          {page === "orders" && <OrdersPage orders={orders} />}
-          {page === "albums" && <AlbumsPage albums={albums} />}
-          {page === "settings" && <SettingsPage />}
-        </div>
-      </div>
+      )}
     </>
   );
 }

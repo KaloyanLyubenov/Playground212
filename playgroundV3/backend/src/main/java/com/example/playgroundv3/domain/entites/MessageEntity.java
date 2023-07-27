@@ -8,17 +8,17 @@ public class MessageEntity {
     private String senderEmail;
     private String receiverEmail;
     private String content;
-    private Status type;
+    private String orderName;
 
     public MessageEntity() {
     }
 
-    public MessageEntity(int id, String senderEmail, String receiverEmail, String content, Status type) {
+    public MessageEntity(int id, String senderEmail, String receiverEmail, String content, String orderName) {
         this.id = id;
         this.senderEmail = senderEmail;
         this.receiverEmail = receiverEmail;
         this.content = content;
-        this.type = type;
+        this.orderName = orderName;
     }
 
     public int getId() {
@@ -37,7 +37,7 @@ public class MessageEntity {
         return content;
     }
 
-    public Status getType() {
-        return type;
+    public String getOrderName() {
+        return orderName;
     }
 }
