@@ -51,10 +51,8 @@ public class PictureService {
 
         for(PictureEntity pic : this.pictureRepo.findAllByOwnerID(userId)){
             if(!albumPicUrls.containsKey(pic.getAlbumName())){
-                //albumNameAlbums.put(pic.getAlbumName(), new AlbumDTO(pic.getAlbumName(), List.of(pic.getName())));
                 albumPicUrls.put(pic.getAlbumName(), new ArrayList<>(List.of(pic.getName())));
             }else{
-                //albumNameAlbums.get(pic.getAlbumName()).addPicture(pic.getName());
                 albumPicUrls.get(pic.getAlbumName()).add(pic.getName());
             }
         }
