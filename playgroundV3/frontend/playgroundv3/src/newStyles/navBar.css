@@ -1,0 +1,55 @@
+.navbar-container {
+    width: 100%;
+    height: 40px;
+    background-color: #23f7dd; 
+    top: 0;  
+    position:fixed;
+    z-index: 95;
+    display: flex;
+    justify-content: end;
+
+    .p {
+        cursor: pointer;
+    }
+
+    .menu-container {
+        display: flex;
+        justify-content: end;
+        width: 66.6%;
+    }
+
+    .middle-part{
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10%
+    }
+
+    .end-part {
+        width: 48%;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        padding-right: 2%;
+        gap: 10px;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%; 
+        right: 52%;
+        background-color: #23f7dd;
+        padding: 0px 20px;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+
+        .a {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            margin-top:10px
+        }
+    }
+
+}

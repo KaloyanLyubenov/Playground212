@@ -32,7 +32,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorization -> authorization
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                                .requestMatchers("/auth/**", "/pictures", "/media-types", "/s3/creds", "/locations", "/ws/**", "/order/**")
+                                .requestMatchers("/auth/**", "/pictures", "/media-types",
+                                        "/s3/creds", "/locations", "/ws/**",
+                                        "/create-payment-intent")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

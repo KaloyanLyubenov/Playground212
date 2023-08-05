@@ -3,6 +3,7 @@ package com.example.playgroundv3.domain.dtos.order;
 public class OrderDetailsDTO {
 
     private int id;
+    private String title;
     private String firstName;
     private String lastName;
     private String email;
@@ -10,8 +11,9 @@ public class OrderDetailsDTO {
     private String mediaType;
     private String formatType;
 
-    public OrderDetailsDTO(int id, String firstName, String lastName, String email, String phoneNumber, String mediaType, String formatType) {
+    public OrderDetailsDTO(int id, String title, String firstName, String lastName, String email, String phoneNumber, String mediaType, String formatType) {
         this.id = id;
+        this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -22,6 +24,10 @@ public class OrderDetailsDTO {
 
     public int getId() {
         return id;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public String getFirstName() {

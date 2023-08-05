@@ -2,82 +2,51 @@ package com.example.playgroundv3.domain.entites;
 
 public class OrderEntity {
     private int id;
-    private String title;
     private int userId;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String creatorEmail;
-    private String phoneNumber;
-    private int formatTypeID;
-    private int mediaTypeID;
+    private String format;
+    private String type;
+    private String status;
+    private Double toPay;
 
-    // Constructors
-
-    public OrderEntity(int id, String title, int userId, String firstName, String lastName, String email, String creatorEmail, String phoneNumber, int formatTypeID, int mediaTypeID) {
+    public OrderEntity(int id, int userId, String format, String type, String status, Double toPay) {
         this.id = id;
-        this.title = title;
         this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.creatorEmail = creatorEmail;
-        this.phoneNumber = phoneNumber;
-        this.formatTypeID = formatTypeID;
-        this.mediaTypeID = mediaTypeID;
+        this.format = format;
+        this.type = type;
+        this.status = status;
+        this.toPay = toPay;
     }
 
-    public OrderEntity(String title, int userId, String firstName, String lastName, String email, String creatorEmail, String phoneNumber, int formatTypeID, int mediaTypeID) {
-        this.title = title;
+    public OrderEntity(int userId, String format, String type, String status, Double toPay) {
         this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.creatorEmail = creatorEmail;
-        this.phoneNumber = phoneNumber;
-        this.formatTypeID = formatTypeID;
-        this.mediaTypeID = mediaTypeID;
-    }
+        this.format = format;
+        this.type = type;
+        this.status = status;
+        this.toPay = toPay;
 
-    // Getters
+    }
 
     public int getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public int getUserId() {
         return userId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFormat() {
+        return format;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getType() {
+        return type;
     }
 
-    public String getEmail() {
-        return email;
+    public String getStatus() {
+        return status;
     }
 
-    public String getCreatorEmail() {
-        return creatorEmail;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public int getFormatTypeID() {
-        return formatTypeID;
-    }
-
-    public int getMediaTypeID() {
-        return mediaTypeID;
+    public Double getToPay() {
+        return toPay;
     }
 }

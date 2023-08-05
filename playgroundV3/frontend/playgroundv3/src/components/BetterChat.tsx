@@ -28,8 +28,6 @@ const BetterChat: React.FC<ChatProps> = ({ orderName, userEmail }) => {
       receiverEmail.current = "kalo@mail.com";
     }
 
-    console.log(stomp);
-
     stomp.connect(
       {},
       (frame) => {

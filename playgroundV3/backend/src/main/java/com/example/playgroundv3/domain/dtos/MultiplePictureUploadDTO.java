@@ -1,4 +1,4 @@
-package com.example.playgroundv3.domain.dtos.auth;
+package com.example.playgroundv3.domain.dtos;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -6,12 +6,14 @@ public class MultiplePictureUploadDTO {
     private String albumName;
     private String ownerEmail;
     private String mediaType;
+    private String timeOfDay;
     private MultipartFile[] files;
 
-    public MultiplePictureUploadDTO(String albumName, String ownerEmail, String mediaType, MultipartFile[] files) {
+    public MultiplePictureUploadDTO(String albumName, String ownerEmail, String mediaType, String timeOfDay, MultipartFile[] files) {
         this.albumName = albumName;
         this.ownerEmail = ownerEmail;
         this.mediaType = mediaType;
+        this.timeOfDay = timeOfDay;
         this.files = files;
     }
 
@@ -25,6 +27,10 @@ public class MultiplePictureUploadDTO {
 
     public String getMediaType() {
         return mediaType;
+    }
+
+    public String getTimeOfDay() {
+        return timeOfDay;
     }
 
     public MultipartFile[] getFiles() {

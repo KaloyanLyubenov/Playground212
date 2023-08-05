@@ -73,7 +73,8 @@ const Map: React.FC<OrderProps> = (givenOrderId) => {
 
   const [allLocations, setAllLocations] = useState<Location[]>([]);
   const [selectedLocasions, setSelectedLocasions] = useState<Location[]>([]);
-  const [orderDetails, setOrderDetails] = useState<UserOrderInformation>();
+  //const [orderDetails, setOrderDetails] = useState<UserOrderInformation>();
+  const orderDetails = useRef<UserOrderInformation>();
   const [unselectedLocations, setUnselectedLocations] = useState<Location[]>(
     []
   );
@@ -109,7 +110,7 @@ const Map: React.FC<OrderProps> = (givenOrderId) => {
         .then((response) => {
           setAllLocations(response.data.locations);
           setSelectedLocasions(response.data.selectedLocations);
-          setOrderDetails(response.data.orderDetails);
+          orderDetails.current = response.data.orderDetails;
           setMediaTypes(response.data.mediaTypes);
           setFormatTypes(response.data.formatTypes);
           console.log(response.data);
@@ -347,71 +348,35 @@ const Map: React.FC<OrderProps> = (givenOrderId) => {
             options={options}
             onLoad={onLoad}
           >
-            {selectedLocasions.length == 0 &&
-              unselectedLocations.length == 0 &&
-              allLocations.map((location, index) => {
-                return (
-                  <div key={`all-marker ${index}`}>
-                    <Marker
-                      position={{ lat: location.lat, lng: location.lng }}
-                      icon={{
-                        url: BLACK_MARKER_ICON,
-                        scaledSize: new window.google.maps.Size(30, 40),
-                      }}
-                    />
-                  </div>
-                );
-              })}
-            {selectedLocasions.length != 0 &&
-              selectedLocasions.map((location, index) => {
-                return (
-                  <div key={`selected-marker ${index}`}>
-                    <Marker
-                      position={{ lat: location.lat, lng: location.lng }}
-                      icon={{
-                        url: GREEN_MARKER_ICON,
-                        scaledSize: new window.google.maps.Size(30, 40),
-                      }}
-                    />
-                  </div>
-                );
-              })}
-            {unselectedLocations.length != 0 &&
-              unselectedLocations.map((location, index) => {
-                return (
-                  <div key={`unselected-marker ${index}`}>
-                    <Marker
-                      position={{ lat: location.lat, lng: location.lng }}
-                    />
-                  </div>
-                );
-              })}
+            {allLocations.map((location, index) => {
+              const isSelected = selectedLocasions.includes(location);
+              const isUnselected = unselectedLocations.includes(location);
+
+              return (
+                <div key={`marker-${index}`}>
+                  <Marker
+                    position={{ lat: location.lat, lng: location.lng }}
+                    icon={{
+                      url: isSelected ? GREEN_MARKER_ICON : BLACK_MARKER_ICON,
+                      scaledSize: new window.google.maps.Size(30, 40),
+                    }}
+                  />
+                </div>
+              );
+            })}
           </GoogleMap>
         </div>
-        {orderId === 0 && (
-          <div className="order-details">
-            <OrderDetails
-              mediaTypes={mediaTypes}
-              formatTypes={formatTypes}
-              formatUpdate={setFormat}
-              mediaTypeUpdate={setMediaType}
-              orderSubmit={handleOrderSubmit}
-            />
-          </div>
-        )}
-        {orderId !== 0 && (
-          <div className="order-details">
-            <div>Starr</div>
-            <OrderDetails
-              mediaTypes={mediaTypes}
-              formatTypes={formatTypes}
-              formatUpdate={setFormat}
-              mediaTypeUpdate={setMediaType}
-              orderSubmit={handleOrderSubmit}
-              orderDetails={orderDetails}
-            />
-          </div>
-        )}
+        <div className="order-details">
+          <div>Starr</div>
+          <OrderDetails
+            mediaTypes={mediaTypes}
+            formatTypes={formatTypes}
+            formatUpdate={setFormat}
+            mediaTypeUpdate={setMediaType}
+            orderSubmit={handleOrderSubmit}
+            //orderDetails={orderId !== 0 ? orderDetails : undefined}
+          />
+        </div>
       </div>
     </>
   );

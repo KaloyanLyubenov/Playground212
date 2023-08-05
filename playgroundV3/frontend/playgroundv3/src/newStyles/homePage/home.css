@@ -1,0 +1,35 @@
+.home-container {
+    height: 100vh;
+
+    .home-content {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+
+        .video {
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .cards {
+            display: flex;
+            flex-direction: column;
+
+            .intro-card,
+            .about-us-card,
+            .services-card,
+            .portfolio-card,
+            .lets-create-card {
+                z-index: 2;
+            }
+        }
+
+
+    }
+}
+
+
+

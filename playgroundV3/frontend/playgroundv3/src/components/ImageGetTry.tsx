@@ -16,7 +16,7 @@ const ImageGetTry: React.FC<ImageShowProps> = ({ imageNames }) => {
   useEffect(() => {
     async function getS3Credentials() {
       try {
-        const response = await axios.get("http://localhost:8080/s3/creds");
+        const response = await axios.get("http://10.16.6.11:8080/s3/creds");
         const credentials = response.data;
         const s3 = new S3({
           region: credentials.region,

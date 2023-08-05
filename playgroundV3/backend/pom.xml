@@ -123,7 +123,17 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>22.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>top.jfunc.json</groupId>
+			<artifactId>Json-Gson</artifactId>
+			<version>1.0</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>

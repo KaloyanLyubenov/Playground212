@@ -1,52 +1,36 @@
 package com.example.playgroundv3.web;
 
-import com.example.playgroundv3.domain.dtos.order.OrderEditDTO;
-import com.example.playgroundv3.domain.dtos.order.OrderEditInitDTO;
-import com.example.playgroundv3.domain.dtos.order.OrderInitDTO;
-import com.example.playgroundv3.domain.dtos.order.OrderSubmitDTO;
+import com.example.playgroundv3.domain.dtos.order.*;
 import com.example.playgroundv3.services.OrderService;
+import com.example.playgroundv3.services.auth.JwtService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Slf4j
 @RequestMapping("/orders")
 public class OrderController {
 
     private final OrderService orderService;
+    private final JwtService jwtService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, JwtService jwtService) {
         this.orderService = orderService;
+        this.jwtService = jwtService;
     }
 
-    @GetMapping()
-    public OrderInitDTO initOrderPage() {
-        return this.orderService.initOrderPage();
+    @PostMapping
+    public ResponseEntity<Boolean> submitOrder(@RequestHeader("Authorization") String token, @RequestBody OrderPlaceDTO order){
+        boolean outcome = this.orderService.placeOrder(order, token);
+        return ResponseEntity.ok(outcome);
     }
 
-    @GetMapping("/{orderId}")
-    public ResponseEntity<OrderEditInitDTO> initEditOrderPage(@PathVariable int orderId) {
-        OrderEditInitDTO initDetails = this.orderService.initEditOrderPage(orderId);
-
-        return ResponseEntity.ok(initDetails);
+    @PostMapping("/events")
+    public ResponseEntity<Boolean> submitEventOrder(@RequestHeader("Authorization") String token, @RequestBody EventOrderPlaceDTO order){
+        boolean outcome = this.orderService.placeEventOrder(order, token);
+        return ResponseEntity.ok(outcome);
     }
 
-//    @GetMapping
-//    public OrderEditDTO getOrderToEdit(int orderId){
-//
-//    }
-
-    @PostMapping()
-    public ResponseEntity<Integer> submitOrder(@RequestBody OrderSubmitDTO order){
-        int orderId = this.orderService.submitOrder(order);
-
-        return ResponseEntity.ok(orderId);
-    }
-
-    @PatchMapping()
-    public ResponseEntity<Integer> editOrder(@RequestBody OrderEditDTO order){
-        this.orderService.editOrder(order);
-
-        return ResponseEntity.ok(order.getId());
-    }
 
 }

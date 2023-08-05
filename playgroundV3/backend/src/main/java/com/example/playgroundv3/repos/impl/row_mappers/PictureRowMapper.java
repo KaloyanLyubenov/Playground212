@@ -13,9 +13,8 @@ public class PictureRowMapper implements RowMapper<PictureEntity> {
         return new PictureEntity(
                 rs.getInt("id"),
                 rs.getString("name"),
-                rs.getString("album_name"),
-                rs.getInt("owner_id"),
-                rs.getInt("media_type_id")
+                rs.getInt("album_id"),
+                rs.getBoolean("paid_for")
         );
     }
 }

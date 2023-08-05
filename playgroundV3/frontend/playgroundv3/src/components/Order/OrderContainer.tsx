@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useLoadScript } from "@react-google-maps/api";
 import { useParams } from "react-router-dom";
 import Map from "./Map";

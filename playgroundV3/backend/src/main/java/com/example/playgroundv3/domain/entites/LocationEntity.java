@@ -4,36 +4,39 @@ public class LocationEntity {
 
     private int id;
     private String title;
+    private String description;
+    private String type;
+    private String format;
+    private String timeOfDay;
     private float lat;
     private float lng;
-    private String description;
-    private String thumbnailUrl;
-    private int mediaTypeId;
-    private int formatTypeId;
 
-    public LocationEntity(int id, String title, float lat, float lng, String description, String thumbnailUrl, int mediaTypeId, int formatTypeId) {
+    public LocationEntity(int id, String title, String description, String type, String format, String timeOfDay, float lat, float lng) {
         this.id = id;
         this.title = title;
+        this.description = description;
+        this.type = type;
+        this.format = format;
+        this.timeOfDay = timeOfDay;
         this.lat = lat;
         this.lng = lng;
-        this.description = description;
-        this.thumbnailUrl = thumbnailUrl;
-        this.mediaTypeId = mediaTypeId;
-        this.formatTypeId = formatTypeId;
     }
 
-    public LocationEntity(String title, float lat, float lng, String description, String thumbnailUrl, int mediaTypeId, int formatTypeId) {
+    public LocationEntity(String title,
+                          String description,
+                          String type,
+                          String format,
+                          String timeOfDay,
+                          float lat,
+                          float lng) {
         this.title = title;
+        this.description = description;
+        this.type = type;
+        this.format = format;
+        this.timeOfDay = timeOfDay;
         this.lat = lat;
         this.lng = lng;
-        this.description = description;
-        this.thumbnailUrl = thumbnailUrl;
-        this.mediaTypeId = mediaTypeId;
-        this.formatTypeId = formatTypeId;
     }
-
-    // Getters
-
 
     public int getId() {
         return id;
@@ -43,27 +46,27 @@ public class LocationEntity {
         return title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public String getTimeOfDay() {
+        return timeOfDay;
+    }
+
     public float getLat() {
         return lat;
     }
 
     public float getLng() {
         return lng;
-    }
-
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public int getMediaTypeId() {
-        return mediaTypeId;
-    }
-
-    public int getFormatTypeId() {
-        return formatTypeId;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }

@@ -13,14 +13,6 @@ create table format_types
     format_type VARCHAR(255) NOT NULL
 );
 
-create table videos
-(
-    id            INT PRIMARY KEY AUTO_INCREMENT,
-    link          VARCHAR(255) NOT NULL,
-    media_type_id INT          NOT NULL,
-    FOREIGN KEY (media_type_id) REFERENCES media_types (id)
-);
-
 create table users
 (
     id         INT PRIMARY KEY AUTO_INCREMENT,
@@ -32,15 +24,32 @@ create table users
 )
     );
 
+create table videos
+(
+    id          INT PRIMARY KEY AUTO_INCREMENT,
+    link        VARCHAR(255) NOT NULL,
+    media_type  VARCHAR(255) NOT NULL,
+    for_user_id INT,
+    FOREIGN KEY (for_user_id) REFERENCES users (id)
+);
+
+create table albums
+(
+    id                 INT PRIMARY KEY AUTO_INCREMENT,
+    thumbnail_pic_name VARCHAR(255),
+    album_name         VARCHAR(255) NOT NULL,
+    time_of_day        VARCHAR(255) NOT NULL,
+    media_type         VARCHAR(255) NOT NULL,
+    order_id           INT
+);
+
 create table pictures
 (
-    id            INT PRIMARY KEY AUTO_INCREMENT,
-    name          VARCHAR(255) NOT NULL,
-    album_name    VARCHAR(255) NOT NULL,
-    owner_id      INT,
-    media_type_id INT          NOT NULL,
-    FOREIGN KEY (media_type_id) REFERENCES media_types (id),
-    FOREIGN KEY (owner_id) REFERENCES users (id)
+    id          INT PRIMARY KEY AUTO_INCREMENT,
+    name        VARCHAR(255) NOT NULL,
+    album_id    INT          NOT NULL,
+    paid_for    BOOLEAN,
+    FOREIGN KEY (album_id) REFERENCES albums (id)
 );
 
 create table messages
@@ -61,16 +70,14 @@ create table colors
 
 create table locations
 (
-    id             INT PRIMARY KEY AUTO_INCREMENT,
-    title          VARCHAR(255)    NOT NULL,
-    latitude       DOUBLE          NOT NULL,
-    longitude      DOUBLE          NOT NULL,
-    description    VARCHAR(255)    NOT NULL,
-    thumbnail_url  VARCHAR(255)    NOT NULL,
-    media_type_id  INT NOT NULL,
-    format_type_id INT NOT NULL,
-    FOREIGN KEY (media_type_id) REFERENCES media_types (id),
-    FOREIGN KEY (format_type_id) REFERENCES format_types (id)
+    id          INT PRIMARY KEY AUTO_INCREMENT,
+    title       VARCHAR(255) NOT NULL,
+    latitude    DOUBLE       NOT NULL,
+    longitude   DOUBLE       NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    type        VARCHAR(255) NOT NULL,
+    time_of_day VARCHAR(255) NOT NULL,
+    format      VARCHAR(255) NOT NULL
 );
 
 create table locations_suitable_colors
@@ -81,26 +88,14 @@ create table locations_suitable_colors
     FOREIGN KEY (color_id) REFERENCES colors (id)
 );
 
-create table statuses
-(
-    id     INT PRIMARY KEY AUTO_INCREMENT,
-    status VARCHAR(255) NOT NULL
-);
-
 create table orders
 (
-    id             INT PRIMARY KEY AUTO_INCREMENT,
-    title          VARCHAR(255),
-    user_id        INT,
-    first_name     VARCHAR(255),
-    last_name      VARCHAR(255),
-    email          VARCHAR(255),
-    creator_email   VARCHAR(255),
-    phone_number   VARCHAR(255),
-    format_type_id INT,
-    media_type_id  INT,
-    FOREIGN KEY (format_type_id) REFERENCES format_types (id),
-    FOREIGN KEY (media_type_id) REFERENCES media_types (id),
+    id      INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    format  VARCHAR(255),
+    type    VARCHAR(255),
+    status  VARCHAR(255),
+    to_pay  DOUBLE,
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
@@ -126,5 +121,5 @@ create table users_user_roles
     FOREIGN KEY (user_email) REFERENCES users (email),
     FOREIGN KEY (user_role_id) REFERENCES user_roles (id),
     PRIMARY KEY (user_email, user_role_id)
-)
+);
 

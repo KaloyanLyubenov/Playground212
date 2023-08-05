@@ -47,7 +47,6 @@ const OrderDetails: React.FC<OrderDetailProps> = ({
 
   useEffect(() => {
     let orderDetailsExist: boolean = false;
-    let newUserId: number;
     if (!orderDetails) {
       axios
         .get(`http://localhost:8080/users/${localStorage.getItem("email")}`, {

@@ -13,12 +13,12 @@ public class LocationRowMapper implements RowMapper {
         return new LocationEntity(
                 rs.getInt("id"),
                 rs.getString("title"),
-                rs.getFloat("latitude"),
-                rs.getFloat("longitude"),
                 rs.getString("description"),
-                rs.getString("thumbnail_url"),
-                rs.getInt("media_type_id"),
-                rs.getInt("format_type_id")
+                rs.getString("type"),
+                rs.getString("format"),
+                rs.getString("time_of_day"),
+                rs.getFloat("latitude"),
+                rs.getFloat("longitude")
         );
     }
 }

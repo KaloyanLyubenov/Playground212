@@ -1,0 +1,180 @@
+.two-column-view {
+
+.empty-start {
+    height: 7vh;
+    display: flex;
+    justify-content: center;
+    
+    .empty-box {
+        width: 95%;
+        border:1px solid rgba(192, 191, 191, 0.5);
+        border-top: 0px;
+        border-bottom: 0px;
+        display: flex;
+
+        .border-box {
+            width: 50%;
+            border-left: 1px solid rgba(192, 191, 191, 0.5);
+        }
+
+        .border-box.first {
+            border: 0;
+        }
+    }
+}
+
+.title-section {
+    height: 20vh;
+    border: 1px solid rgba(192, 191, 191, 0.5);
+    border-left: 0px;
+    border-right: 0px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .title {
+        position: relative;
+        z-index: 15; 
+        color: white;
+        width: 95%;
+        font-size: 7vw;
+        font-weight: 600;
+    }
+
+    .border-boxes {
+        width: 95%;
+        height: 100%;
+        border: 1px solid rgba(192, 191, 191, 0.5); 
+        border-top: 0px;
+        border-bottom: 0px;
+        display: flex;
+        z-index: 20;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        .border-box {
+            width: 50%;
+            border-left: 1px solid rgba(192, 191, 191, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: end;
+            color: aliceblue;
+
+            .options-container {
+                width: 88%;
+                padding: 0px 20px;
+                margin-bottom: 2px;
+                display: flex;
+                flex-direction: column;
+                justify-content: end;
+                align-items: center;
+                height: auto;
+
+                .dropdown-menu {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: end;
+                    height: 100%;
+                    width: 100%;
+
+                    .option {
+                        z-index: 150;
+                        background-color: transparent;
+                    }
+                }
+
+                .option {
+                    display: flex;
+                    flex-direction: row;
+                    width: 100%;
+                    height: 40px;
+                    justify-content: space-between;
+                    align-items: center;
+                    z-index: 200;
+                    background-color: #282936;
+                }
+
+                .filter-option {
+                    margin: 0; 
+                }
+
+                .option .arrow {
+                    animation: unRotateAnimation 0.3s linear;
+                }
+            }
+
+            .options-container:hover {
+                    background-color: #333441;
+                    border-radius: 10px;
+                    border: #333441; 
+
+                    .option {
+                        background-color: #333441; 
+
+                        .arrow{
+                            transform: rotate(180deg);
+                            animation: rotateAnimation 0.2s linear;
+                        }
+                    }
+            }
+
+            
+        }
+
+        .border-box.first {
+            border: 0;
+        }
+    }
+  
+}
+
+.projects-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+
+    .columns-box {
+        width: 95%;
+        border-right: 1px solid rgba(192, 191, 191, 0.5);
+        border-left: 1px solid rgba(192, 191, 191, 0.5);
+        display: flex;
+
+
+        .column {
+            width: 50%;
+            height: 100%;
+            border-left: 1px solid rgba(192, 191, 191, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+
+        .column.one {
+            border: 0px;
+        }
+
+    }
+}
+
+@keyframes rotateAnimation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(180deg);
+    }
+  }
+
+  @keyframes unRotateAnimation {
+    from {
+      transform: rotate(180deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+}

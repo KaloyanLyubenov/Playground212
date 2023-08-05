@@ -11,15 +11,11 @@ public class OrderRowMapper implements RowMapper {
     public OrderEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new OrderEntity(
                 rs.getInt("id"),
-                rs.getString("title"),
                 rs.getInt("user_id"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getString("email"),
-                rs.getString("creator_email"),
-                rs.getString("phone_number"),
-                rs.getInt("format_type_id"),
-                rs.getInt("media_type_id")
+                rs.getString("format"),
+                rs.getString("type"),
+                rs.getString("status"),
+                rs.getDouble("to_pay")
         );
     }
 }

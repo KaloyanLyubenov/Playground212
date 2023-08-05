@@ -1,0 +1,118 @@
+.static-navbar-container {
+    width: 100%;
+    height: 40px;
+    background-color: #23f7dd; 
+    top: 0;  
+    position:fixed;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+
+    .p {
+        cursor: pointer;
+    }
+
+    .menu-container {
+        display: flex;
+        justify-content: end;
+        width: 95%;
+
+        .first-part {
+            width: 33.3%;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            font-size: 30px;
+
+            .logo {
+                padding-top: 7px;
+                text-decoration: none;
+                font-family: "Uni-Sans";
+                font-size: 2.2rem;
+                color: inherit;
+                cursor: pointer;
+                white-space: "nowrap";
+            }
+        }
+
+        @media all and (max-width: 950px){
+            .first-part {
+                width: 50%;
+            }
+        }
+        
+    }  
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%; 
+        right: 52%;
+        background-color: #23f7dd;
+        padding: 0 20px;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+
+        .a {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            margin-top:10px
+        }
+    }
+
+}
+
+.end-part {
+    width: 31.3%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding-right: 2%;
+    gap: 10px;
+}
+
+.middle-part{
+    width: 33.3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%
+}
+
+.small-icon-container {
+    display: none;
+    flex: 1;
+    justify-content: end;
+    gap: 5px;
+    align-items: center;
+    transition: display 1s;
+    cursor: pointer;
+}
+.small-icon div {
+    width: 35px;
+    height: 5px;
+    border-radius: 1px;
+    background-color: #282936;;
+    margin: 6px 0;
+    cursor: pointer;
+    animation: hideAnim 300ms;
+}
+
+@media all and (max-width: 950px){
+    .small-icon-container {
+        display: flex;
+    }
+
+    .small-icon div {
+        animation: showAnim 300ms;
+    }
+
+    .middle-part {
+        display: none;
+    }
+
+    .end-part {
+        display: none;
+    }
+
+}

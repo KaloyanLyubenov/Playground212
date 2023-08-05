@@ -1,5 +1,7 @@
 package com.example.playgroundv3.web;
 
+import com.example.playgroundv3.domain.dtos.location.LocationAddDTO;
+import com.example.playgroundv3.domain.dtos.location.LocationPreviewDTO;
 import com.example.playgroundv3.domain.dtos.location.LocationSaveDTO;
 import com.example.playgroundv3.domain.dtos.location.LocationSendDTO;
 import com.example.playgroundv3.services.LocationService;
@@ -19,14 +21,17 @@ public class LocationController {
     }
 
     @GetMapping
-    public List<LocationSendDTO> getLocations() {
-        return this.locationService.getAllLocations();
+    public ResponseEntity<List<LocationPreviewDTO>> getLocations(@RequestParam(name = "type", required = false) String type,
+                                                                 @RequestParam(name = "format", required = false) String format) {
+        return ResponseEntity.ok(this.locationService.getLocationsByTypeAndFormat(type, format));
     }
 
     @PostMapping
-    public ResponseEntity<String> uploadLocations(@RequestBody List<LocationSaveDTO> locations){
-        this.locationService.addLocations(locations);
-        return ResponseEntity.ok("Location upload complete");
+    public ResponseEntity<String> uploadLocations(@RequestBody List<LocationAddDTO> locations){
+        if(this.locationService.addLocations(locations).size() == locations.size()){
+            return ResponseEntity.ok("Adding the locations went according to plan!");
+        }
+        return ResponseEntity.ok("There was an issue adding the locations!");
     }
 
 

@@ -11,6 +11,7 @@ import OrderContainer from "./components/Order/OrderContainer";
 import Account from "./components/Account/Account";
 import Gallery from "./components/Gallery";
 import Chat from "./components/Chat";
+import Payment from "./components/pay/Payment";
 
 function App() {
   const [page, setPage] = useState("home");
@@ -118,6 +119,14 @@ function App() {
               element={
                 <>
                   <Chat />
+                </>
+              }
+            />
+            <Route
+              path="/pay"
+              element={
+                <>
+                  <Payment />
                 </>
               }
             />

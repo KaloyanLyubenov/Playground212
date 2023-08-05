@@ -3,6 +3,7 @@ package com.example.playgroundv3.services;
 import com.example.playgroundv3.domain.dtos.order.*;
 import com.example.playgroundv3.domain.entites.OrderEntity;
 import com.example.playgroundv3.repos.OrderRepo;
+import com.example.playgroundv3.services.auth.JwtService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,80 +15,46 @@ public class OrderService {
     private final FormatTypeService formatTypeService;
     private final OrderRepo orderRepo;
 
-    public OrderService(LocationService locationService, MediaTypesService mediaTypesService, FormatTypeService formatTypeService, OrderRepo orderRepo) {
+    private final UserService userService;
+
+    private final JwtService jwtService;
+
+
+    public OrderService(LocationService locationService, MediaTypesService mediaTypesService, FormatTypeService formatTypeService, OrderRepo orderRepo, UserService userService, JwtService jwtService) {
         this.locationService = locationService;
         this.mediaTypesService = mediaTypesService;
         this.formatTypeService = formatTypeService;
         this.orderRepo = orderRepo;
+        this.userService = userService;
+        this.jwtService = jwtService;
     }
 
-    public List<OrderPreviewDTO> getOrderPreviewsByOwnerId(int userId){
-        return this.orderRepo.findAllByOwnerId(userId)
-                        .stream()
-                        .map(order -> new OrderPreviewDTO(order.getId(), order.getTitle())).toList();
+
+    public Boolean placeOrder(OrderPlaceDTO order, String jwtToken) {
+        int userId =
+                this.userService.getUserByEmail(
+                        this.jwtService.extractUserEmail(jwtToken.substring(7)))
+                        .getId();
+
+        return this.orderRepo.saveOrderAndLocations(
+                new OrderEntity(
+                        userId,
+                        order.getFormat(),
+                        order.getType(),
+                        "submitted",
+                        0.00
+                ), order.getLocationIDs());
     }
 
-    public List<OrderPreviewDTO> getAllOrders(){
-        return this.orderRepo.findAll()
-                .stream()
-                .map(order -> new OrderPreviewDTO(order.getId(), order.getTitle())).toList();
-    }
+    public Boolean placeEventOrder(EventOrderPlaceDTO order, String token) {
+        int userId =
+                this.userService.getUserByEmail(
+                                this.jwtService.extractUserEmail(token.substring(7)))
+                        .getId();
 
-    public OrderInitDTO initOrderPage() {
-        OrderInitDTO orderInitDTO = new OrderInitDTO(
-                this.locationService.getAllLocations(),
-                this.mediaTypesService.getAllMediaTypes(),
-                this.formatTypeService.getAllFormatTypeNames());
 
-        return orderInitDTO;
-    }
+        List<Integer> locationIDs = this.locationService.addLocations(order.getLocations());
 
-    public OrderEditInitDTO initEditOrderPage(int orderId) {
-        return new OrderEditInitDTO(
-                this.locationService.getAllLocations(),
-                this.locationService.getAllSelectedLocationsByOrderId(orderId),
-                this.mediaTypesService.getAllMediaTypes(),
-                this.formatTypeService.getAllFormatTypeNames(),
-                getOrderDetails(orderId)
-        );
-    }
-
-    public int submitOrder(OrderSubmitDTO order) {
-        int result = this.orderRepo.saveOrder(new OrderEntity(order.getTitle(), order.getUserId(), order.getFirstName(), order.getLastName(), order.getEmail(), order.getCreatorEmail(), order.getPhoneNumber(), this.formatTypeService.getFormatTypeIdByName(order.getFormatType()), this.mediaTypesService.getMediaTypeIdByName(order.getMediaType())));
-        if(result != 1) {
-            throw new IllegalStateException("Something went wrong adding order");
-        }
-
-        int orderId = this.orderRepo.findLastAddedOrder().get().getId();
-        result = this.orderRepo.saveOrderLocations(order.getLocationIDs(), orderId);
-
-        if(result != order.getLocationIDs().size()){
-            throw new IllegalStateException("Something went wrong adding locations to the order");
-        }
-
-        return orderId;
-    }
-
-    public void editOrder(OrderEditDTO order) {
-        int result = this.orderRepo.updateOrder(new OrderEntity(order.getId(), order.getTitle(), order.getUserId(), order.getFirstName(), order.getLastName(), order.getEmail(), order.getCreatorEmail(), order.getPhoneNumber(), this.formatTypeService.getFormatTypeIdByName(order.getFormatType()), this.mediaTypesService.getMediaTypeIdByName(order.getMediaType())));
-
-        if(result != 1) {
-            throw new IllegalStateException("Something went wrong editing the order");
-        }
-
-        int orderId = this.orderRepo.findLastAddedOrder().get().getId();
-
-        this.orderRepo.removeLocationsWithOrderId(order.getId());
-        result = this.orderRepo.saveOrderLocations(order.getLocationIDs(), orderId);
-
-        if(result != order.getLocationIDs().size()){
-            throw new IllegalStateException("Something went wrong adding locations to the order");
-        }
-    }
-
-    private OrderDetailsDTO getOrderDetails(int orderId){
-        OrderEntity order = this.orderRepo.findOrderById(orderId).orElseThrow(() -> new IllegalStateException("order with this id not found"));
-
-        return new OrderDetailsDTO(order.getId(), order.getFirstName(), order.getLastName(), order.getEmail(), order.getPhoneNumber(), this.formatTypeService.getFormatNameById(order.getFormatTypeID()), this.mediaTypesService.getMediaTypeNameById(order.getMediaTypeID()));
+        return placeOrder(new OrderPlaceDTO(order.getFormat(), order.getType(), locationIDs), token);
     }
 }

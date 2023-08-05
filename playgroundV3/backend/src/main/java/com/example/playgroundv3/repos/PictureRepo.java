@@ -9,12 +9,6 @@ import java.util.Optional;
 
 public interface PictureRepo {
 
-    public List<PictureEntity> findALlPictures();
-    public List<PictureEntity> findAllPicturesByAlbum(String albumName);
-    public List<PictureEntity> findAllPicturesByMediaType(int mediaTypeId);
-    public List<PictureEntity> findAllByOwnerID(int ownerID);
-    public Optional<PictureEntity> findPictureByName(String name);
-
-    public int savePicture(PictureModel picture);
+    public int[] savePictures(List<PictureEntity> pictures);
 
 }

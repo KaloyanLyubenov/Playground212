@@ -21,17 +21,20 @@ public class AccountService {
         UserModel user =  this.userService.getUserByEmail(email);
 
         if(user.getRoles().contains("ADMIN")){
-            return new AccountInfoDTO(
-                    this.userService.getUserDetails(user.getId()),
-                    this.orderService.getAllOrders(),
-                    this.pictureService.getAllAlbumsByOwnerId(user.getId())
-            );
+//            return new AccountInfoDTO(
+//                    this.userService.getUserDetails(user.getId()),
+//                    this.orderService.getAllOrders(),
+//                    this.pictureService.getAllAlbumsByOwnerId(user.getId())
+//            );
+            return null;
         }
 
-        return new AccountInfoDTO(
-                        this.userService.getUserDetails(user.getId()),
-                        this.orderService.getOrderPreviewsByOwnerId(user.getId()),
-                        this.pictureService.getAllAlbumsByOwnerId(user.getId())
-                );
+//        return new AccountInfoDTO(
+//                        this.userService.getUserDetails(user.getId()),
+//                        this.orderService.getOrderPreviewsByOwnerId(user.getId()),
+//                        this.pictureService.getAllAlbumsByOwnerId(user.getId())
+//                );
+
+        return null;
     }
 }

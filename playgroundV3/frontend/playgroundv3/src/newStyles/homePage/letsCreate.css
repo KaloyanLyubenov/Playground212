@@ -1,0 +1,142 @@
+.lets-create-container {
+    width: 100vw;
+    height: 100vh;
+    background-color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .details {
+        width: 80%;
+        height: 70%;
+        display: flex;
+        align-items: center;
+
+        .title-container {
+            width: 70%;
+
+            .title {
+                font-size: 6.46vw;
+                color:black;
+                
+                p {
+                    margin: 0px;
+                }
+            }
+
+            .buttons {
+                display: flex;
+                gap: 10px;
+
+                .button {
+                    position: relative;
+                    display: inline-block;
+                    cursor: pointer;
+                    outline: none;
+                    border: 0;
+                    vertical-align: middle;
+                    text-decoration: none;
+                    background: transparent;
+                    padding: 0;
+                    font-size: inherit;
+                    font-family: inherit;
+                    width: 12rem;
+                    height: auto;
+            
+                    .circle {
+                        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+                        position: relative;
+                        display: block;
+                        margin: 0;
+                        width: 3rem;
+                        height: 3rem;
+                        background: #0a010c;
+                        border-radius: 1.625rem;
+            
+                        .icon {
+                            transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            margin: auto;
+                            background: white;
+                        }
+            
+                        .icon.arrow {
+                            transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+                            left: 0.625rem;
+                            width: 1.125rem;
+                            height: 0.125rem;
+                            background: none;
+                            color: white;
+                        }
+            
+                        .icon.arrow::before {
+                            position: absolute;
+                            content: "";
+                            top: -0.29rem;
+                            right: 0.0625rem;
+                            width: 0.625rem;
+                            height: 0.625rem;
+                            border-top: 0.125rem solid white;
+                            border-right: 0.125rem solid white;
+                            transform: rotate(45deg);
+                        }
+                       
+                    }
+            
+                    .button-text {
+                        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        padding: 0.75rem 0;
+                        margin: 0 0 0 1.85rem;
+                        font-weight: 700;
+                        line-height: 1.6;
+                        text-align: center;
+                        text-transform: uppercase;
+                        color: black;
+                    }
+                }
+                   
+                .button:hover .circle {
+                    width: 100%;
+                    background: rgb(101, 99, 99);
+            
+                    .icon.arrow {
+                        background: white;
+                        transform: translate(1rem, 0);
+                    }
+                }
+
+                .button:hover .button-text {
+                    color: white;
+                }
+            }
+        }
+
+    }
+
+    .offices-container {
+        width: 30%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+
+        .where {
+            padding-top: 4px;
+            border-top: 2px solid black;
+        }
+
+        .office-address {
+            font-size: 1.8vw;
+            padding-top: 90px;
+            height: 40%;
+        }
+    }
+}

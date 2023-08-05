@@ -1,5 +1,7 @@
 package com.example.playgroundv3.services;
 
+import com.example.playgroundv3.domain.dtos.location.LocationAddDTO;
+import com.example.playgroundv3.domain.dtos.location.LocationPreviewDTO;
 import com.example.playgroundv3.domain.dtos.location.LocationSaveDTO;
 import com.example.playgroundv3.domain.dtos.location.LocationSendDTO;
 import com.example.playgroundv3.domain.entites.LocationEntity;
@@ -13,69 +15,35 @@ import java.util.List;
 public class LocationService {
 
     private final LocationRepo locationRepo;
-    private final FormatTypeService formatTypeService;
-    private final MediaTypesService mediaTypesService;
 
 
     public LocationService(LocationRepo locationRepo, FormatTypeService formatTypeService, MediaTypesService mediaTypesService) {
         this.locationRepo = locationRepo;
-        this.formatTypeService = formatTypeService;
-        this.mediaTypesService = mediaTypesService;
     }
 
 
-    public void addLocations(List<LocationSaveDTO> locations) {
-        for(LocationSaveDTO location : locations) {
-            int res = this.locationRepo.saveLocation(
-                    new LocationEntity(
-                            location.getTitle(),
-                            location.getLat(),
-                            location.getLng(),
-                            location.getDescription(),
-                            location.getThumbnailUrl(),
-                            this.mediaTypesService.getMediaTypeIdByName(location.getMediaType()),
-                            this.formatTypeService.getFormatTypeIdByName(location.getFormatType())
-                    ));
-            if( res == -1){
-                throw new IllegalStateException("Something went wrong adding this location");
-            }
-        }
-    }
-
-    public List<LocationSendDTO> getAllLocations() {
-        List<LocationEntity> locations = this.locationRepo.findAllLocations();
-
-        return mapLocationsToLocationsToSend(locations);
-    }
-
-    public List<LocationSendDTO> getAllSelectedLocationsByOrderId(int orderId) {
-        List<LocationEntity> locations = this.locationRepo.findAllByOrderId(orderId);
-
-        return mapLocationsToLocationsToSend(locations);
-    }
-
-    private List<LocationSendDTO> mapLocationsToLocationsToSend(List<LocationEntity> locations){
-        List<LocationSendDTO> locationsToSend = new ArrayList<>();
-
-        for (int i = 0; i < locations.size(); i++) {
-            LocationEntity location = locations.get(i);
-            String mediaType = this.mediaTypesService.getMediaTypeNameById(location.getMediaTypeId());
-            String formatType = this.formatTypeService.getFormatNameById(location.getFormatTypeId());
-
-            locationsToSend.add(
-                    new LocationSendDTO(
-                            location.getId(),
-                            location.getTitle(),
-                            location.getLat(),
-                            location.getLng(),
-                            location.getDescription(),
-                            location.getThumbnailUrl(),
-                            mediaType,
-                            formatType
-                    )
-            );
+    public List<Integer> addLocations(List<LocationAddDTO> locations) {
+        List<LocationEntity> locationEntities = new ArrayList<>();
+        for(LocationAddDTO location : locations) {
+            locationEntities.add(new LocationEntity(location.getTitle(), location.getDescription(), location.getType(), location.getFormat(), location.getTimeOfDay(), location.getLat(), location.getLng()));
         }
 
-        return locationsToSend;
+        return this.locationRepo.saveLocations(locationEntities);
     }
+
+
+    public List<LocationPreviewDTO> getLocationsByTypeAndFormat(String type, String format){
+        List<LocationEntity> locationEntities = new ArrayList<>();
+
+        if(type.equals("")){
+            locationEntities = this.locationRepo.findAllByFormat(format);
+        }else if(format.equals("")){
+            locationEntities = this.locationRepo.findAllByType(type);
+        }else{
+            locationEntities = this.locationRepo.findAllByFormatAndType(format, type);
+        }
+
+        return locationEntities.stream().map((locationEntity) -> new LocationPreviewDTO(locationEntity.getId(), locationEntity.getTitle(), locationEntity.getDescription(), locationEntity.getTimeOfDay(), locationEntity.getLat(), locationEntity.getLng())).toList();
+    }
+
 }

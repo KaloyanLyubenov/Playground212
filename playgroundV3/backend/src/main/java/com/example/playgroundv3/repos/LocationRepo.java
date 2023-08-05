@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface LocationRepo {
 
-    public int saveLocation(LocationEntity location);
-    public List<LocationEntity>  findAllLocations();
-    public List<LocationEntity> findAllByOrderId(int orderId);
+    public List<LocationEntity> findAllByFormat(String format);
+    public List<LocationEntity> findAllByType(String type);
+    public List<LocationEntity> findAllByFormatAndType(String format, String type);
+    public List<Integer> saveLocations(List<LocationEntity> locations);
 }
