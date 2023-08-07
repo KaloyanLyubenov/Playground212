@@ -6,7 +6,7 @@
     height: 270px;
     margin-top: 20px;
     animation: loadLogFormCont 500ms;
-    background-color: #282936;
+    background-color: #1f2128;
     border-radius: 20px;
     font-family: Arial, Helvetica, sans-serif;
 
@@ -45,6 +45,11 @@
                 vertical-align: bottom;
                 padding-left: 7px;
                 color: #23f7dd;
+                background-color: #30343a;
+            }
+
+            .input::placeholder {
+                color: #23f7dd;
             }
 
             .login.input.email {
@@ -70,14 +75,15 @@
                 height: 40px;
                 border-style: none;
                 cursor: pointer;
-                color: #23f7dd;
+                color: #23262c;
                 font-size: 18px;
-                background-color: white;
+                background-color: #23f7dd;
                 border-radius: 10px;
             }
             
             .login-button:hover {
-                background-color: rgba(33, 34, 35, 0.712);
+                background-color: #1d91c3;
+                color: white;
             }
         }
 
@@ -87,12 +93,12 @@
             margin-bottom: 5px;
             font-size: 12px;
             width: 190px;
-            color: rgb(97, 99, 99);
+            color: white;
         }
         
         .register-option a {
             text-decoration: none;
-            color: rgb(30, 129, 215);
+            color: #23f7dd;
             cursor: pointer;
         }
 

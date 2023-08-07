@@ -1,6 +1,7 @@
 package com.example.playgroundv3.services;
 
-import com.example.playgroundv3.domain.dtos.*;
+import com.example.playgroundv3.domain.dtos.album.AlbumUploadDTO;
+import com.example.playgroundv3.domain.dtos.picture.PicturePreviewDTO;
 import com.example.playgroundv3.domain.entites.PictureEntity;
 import com.example.playgroundv3.repos.PictureRepo;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,11 @@ public class PictureService {
         }
 
         return true;
+    }
+
+    public List<PicturePreviewDTO> getAllPicturesByAlbumID(int albumID){
+        return this.pictureRepo.findAllPicturesBYAlbumID(albumID)
+                .stream().map(pic -> new PicturePreviewDTO(pic.getName())).toList();
     }
 
 

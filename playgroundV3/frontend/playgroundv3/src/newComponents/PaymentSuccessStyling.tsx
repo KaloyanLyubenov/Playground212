@@ -13,5 +13,6 @@ export const SuccessStyle = styled.div`
   h1 {
     text-align: center;
     font-size: 8vw;
+    margin: 0;
   }
 `;

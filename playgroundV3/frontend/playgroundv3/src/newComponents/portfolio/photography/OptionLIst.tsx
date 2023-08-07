@@ -4,9 +4,10 @@ import PopUpAnimation from "../../../animations/portfolio/PopUpAnimation";
 
 interface OptionListProps {
   items: string[];
+  onChoice: (choice: string) => void;
 }
 
-const OptionList: React.FC<OptionListProps> = ({ items }) => {
+const OptionList: React.FC<OptionListProps> = ({ items, onChoice }) => {
   return (
     <>
       <AnimatePresence>
@@ -15,6 +16,8 @@ const OptionList: React.FC<OptionListProps> = ({ items }) => {
             {items.map((item, index) => {
               return (
                 <motion.div
+                  onClick={() => onChoice(item)}
+                  style={{ cursor: "pointer" }}
                   className="option"
                   key={index}
                   initial="start"

@@ -1,4 +1,4 @@
-package com.example.playgroundv3.domain.dtos;
+package com.example.playgroundv3.domain.dtos.album;
 
 import java.util.ArrayList;
 import java.util.List;

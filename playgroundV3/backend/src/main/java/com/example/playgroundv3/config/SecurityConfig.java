@@ -34,7 +34,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
                                 .requestMatchers("/auth/**", "/pictures", "/media-types",
                                         "/s3/creds", "/locations", "/ws/**", "/v3/api-docs/**", "/swagger-ui/**",
-                                        "/create-payment-intent")
+                                        "/create-payment-intent", "/albums/all")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

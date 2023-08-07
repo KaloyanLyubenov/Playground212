@@ -66,9 +66,6 @@ const ImageGetTry: React.FC<ImageShowProps> = ({ imageNames }) => {
   return (
     <>
       <div className="gallery">
-        {/* <div className="upload-form">
-          <ImageUpload />
-        </div> */}
         {imageUrls.map((url, index) => {
           return (
             <div className="pics" key={index}>

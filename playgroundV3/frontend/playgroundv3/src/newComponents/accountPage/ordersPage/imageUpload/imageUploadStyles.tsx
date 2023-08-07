@@ -6,7 +6,6 @@ export const ImageUploadContainer = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
-  border: 1px solid red;
 
   .upload-area {
     display: flex;
@@ -64,7 +63,6 @@ export const ImageUploadContainer = styled.div`
   .preview-area {
     width: 75%;
     height: 100%;
-    border: 1px solid blue;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;

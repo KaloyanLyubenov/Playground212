@@ -62,7 +62,7 @@ const OrdersPage: React.FC<OrdersPageProps> = ({ orders }) => {
                       infoContentType === "upload"
                     ? 460
                     : orderIDDetailed === order.id
-                    ? 330
+                    ? 370
                     : 70,
               }}
               exit={{ height: 70 }}
@@ -122,7 +122,10 @@ const OrdersPage: React.FC<OrdersPageProps> = ({ orders }) => {
               {orders &&
               orderIDDetailed === order.id &&
               infoContentType === "upload" ? (
-                <ImageUpload onSubmit={() => handleOrderClick(0, "none")} />
+                <ImageUpload
+                  onSubmit={() => handleOrderClick(0, "none")}
+                  orderID={order.id}
+                />
               ) : null}
             </motion.div>
           ))

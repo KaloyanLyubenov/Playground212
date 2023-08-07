@@ -4,7 +4,31 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AlbumCard from "../AlbumCard";
 import "../../../../newStyles/portfolio/photography/fourColumnView.css";
 
-function FourColumnView() {
+type Picture = {
+  name: string;
+};
+
+type Album = {
+  albumName: string;
+  thumbnailName: string;
+  timeOfDay: string;
+  mediaType: string;
+  pictures: Picture[];
+};
+
+type ViewProps = {
+  albums: Album[];
+  chooseAlbum: (albumName: string) => void;
+  mediaTypeChoice: (option: string) => void;
+  timeOfDayChoice: (option: string) => void;
+};
+
+const FourColumnView: React.FC<ViewProps> = ({
+  albums,
+  chooseAlbum,
+  mediaTypeChoice,
+  timeOfDayChoice,
+}) => {
   const [isTypeHovered, setIsTypeHovered] = useState(false);
   const [isCityHovered, setIsCityHovered] = useState(false);
 
@@ -32,9 +56,10 @@ function FourColumnView() {
                 {isTypeHovered ? (
                   <OptionList
                     items={["Cars", "Portrait", "Landscape", "Event"]}
+                    onChoice={mediaTypeChoice}
                   />
                 ) : null}
-                <div className="option">
+                <div className="option" onClick={() => mediaTypeChoice("")}>
                   <p className="filter-option">Type</p>
                   <KeyboardArrowDownIcon className="arrow" />
                 </div>
@@ -46,8 +71,13 @@ function FourColumnView() {
                 onMouseEnter={() => setIsCityHovered(true)}
                 onMouseLeave={() => setIsCityHovered(false)}
               >
-                {isCityHovered ? <OptionList items={["Day", "Night"]} /> : null}
-                <div className="option">
+                {isCityHovered ? (
+                  <OptionList
+                    items={["Day", "Night"]}
+                    onChoice={timeOfDayChoice}
+                  />
+                ) : null}
+                <div className="option" onClick={() => timeOfDayChoice("")}>
                   <p className="filter-option">Time of day</p>
                   <KeyboardArrowDownIcon className="arrow" />
                 </div>
@@ -59,22 +89,38 @@ function FourColumnView() {
         <div className="projects-section">
           <div className="columns-box">
             <div className="column one">
-              <AlbumCard columns={4} />
+              {albums.map((album, index) =>
+                (index + 1) % 4 === 1 ? (
+                  <AlbumCard columns={4} album={album} onChoose={chooseAlbum} />
+                ) : null
+              )}
             </div>
             <div className="column two">
-              <AlbumCard columns={4} />
+              {albums.map((album, index) =>
+                (index + 1) % 4 === 2 ? (
+                  <AlbumCard columns={4} album={album} onChoose={chooseAlbum} />
+                ) : null
+              )}
             </div>
             <div className="column three">
-              <AlbumCard columns={4} />
+              {albums.map((album, index) =>
+                (index + 1) % 4 === 3 ? (
+                  <AlbumCard columns={4} album={album} onChoose={chooseAlbum} />
+                ) : null
+              )}
             </div>
             <div className="column four">
-              <AlbumCard columns={4} />
+              {albums.map((album, index) =>
+                (index + 1) % 4 === 0 ? (
+                  <AlbumCard columns={4} album={album} onChoose={chooseAlbum} />
+                ) : null
+              )}
             </div>
           </div>
         </div>
       </div>
     </>
   );
-}
+};
 
 export default FourColumnView;

@@ -18,9 +18,10 @@ interface SendProps {
 
 type ImageUploadProps = {
   onSubmit: () => void;
+  orderID: number;
 };
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onSubmit }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ onSubmit, orderID }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [thumbnailName, setThumbnailName] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -81,7 +82,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onSubmit }) => {
         albumName: "",
         mediaType: "",
         timeOfDay: "",
-        orderID: 0,
+        orderID: orderID,
         thumbnailPicName: "",
         fileNames: [],
       };
@@ -98,6 +99,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onSubmit }) => {
       console.log(data);
       saveInDB(data);
       uploadToS3();
+      onSubmit();
     } else {
       window.alert("Please fill the nescessary fields!");
     }

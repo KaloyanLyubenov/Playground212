@@ -7,5 +7,7 @@ import java.util.List;
 public interface PictureRepo {
 
     public int[] savePictures(List<PictureEntity> pictures);
+    public List<PictureEntity> findAllPicturesBYAlbumID(int albumID);
+
 
 }

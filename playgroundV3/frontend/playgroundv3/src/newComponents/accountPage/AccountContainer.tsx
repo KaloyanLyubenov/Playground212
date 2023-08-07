@@ -4,6 +4,19 @@ import { motion } from "framer-motion";
 import SectionField from "./sectionField/SectionField";
 import OrdersPage from "./ordersPage/OrdersPage";
 import axios from "axios";
+import AccountGallery from "./gallerySection/AccountGallery";
+
+type Picture = {
+  name: string;
+};
+
+type Album = {
+  albumName: string;
+  thumbnailName: string;
+  timeOfDay: string;
+  mediaType: string;
+  pictures: Picture[];
+};
 
 type LocationPreview = {
   title: string;
@@ -22,6 +35,7 @@ function AccountContainer() {
   const [hoveredSection, setHoveredSection] = useState("none");
   const [selectedSection, setSelectedSection] = useState("orders");
   const [orders, setOrders] = useState<OrderPreview[] | null>(null);
+  const [albums, setAlbums] = useState<Album[] | null>(null);
 
   useEffect(() => {
     if (localStorage.getItem("email") === "nick@mail.com") {
@@ -34,7 +48,6 @@ function AccountContainer() {
         })
         .then((response) => {
           setOrders(response.data);
-          console.log(response.data);
         })
         .catch((error) => {
           console.log("Couldn't get orders!");
@@ -54,6 +67,20 @@ function AccountContainer() {
           console.log("Couldn't get orders!");
         });
     }
+    axios
+      .get(`http://localhost:8080/albums`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json",
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setAlbums(response.data);
+      })
+      .catch((error) => {
+        console.log("Couldn't get albums!");
+      });
   }, []);
 
   return (
@@ -86,6 +113,9 @@ function AccountContainer() {
         <div className="content">
           {selectedSection === "orders" && orders ? (
             <OrdersPage orders={orders} />
+          ) : null}
+          {selectedSection === "gallery" && albums ? (
+            <AccountGallery albums={albums} />
           ) : null}
         </div>
       </div>

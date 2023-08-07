@@ -1,4 +1,4 @@
-package com.example.playgroundv3.domain.dtos;
+package com.example.playgroundv3.domain.dtos.picture;
 
 import org.springframework.web.multipart.MultipartFile;
 

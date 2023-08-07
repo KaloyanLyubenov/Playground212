@@ -110,7 +110,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ orderUserEmail, orderID }) => {
               }`}
             >
               <div className="message-content">
-                <p className="name">{message.senderEmail}</p>
                 <p className="text">{message.content}</p>
               </div>
             </div>

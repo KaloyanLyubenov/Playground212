@@ -50,6 +50,33 @@
       }
     },
     "/orders": {
+      "get": {
+        "tags": ["order-controller"],
+        "operationId": "getOrdersForUser",
+        "parameters": [{
+          "name": "Authorization",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderPreviewDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": ["order-controller"],
         "operationId": "submitOrder",
@@ -124,7 +151,7 @@
     "/locations": {
       "get": {
         "tags": ["location-controller"],
-        "operationId": "getLocations",
+        "operationId": "getLocationsByTypeAndFormat",
         "parameters": [{
           "name": "type",
           "in": "query",
@@ -148,7 +175,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/LocationPreviewDTO"
+                    "$ref": "#/components/schemas/LocationDTO"
                   }
                 }
               }
@@ -298,6 +325,44 @@
         }
       }
     },
+    "/orders/pricing/{orderID}": {
+      "patch": {
+        "tags": ["order-controller"],
+        "operationId": "updateOrderPrice",
+        "parameters": [{
+          "name": "orderID",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "number",
+                "format": "float"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/{email}": {
       "get": {
         "tags": ["user-controller"],
@@ -317,6 +382,57 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/UserDetailsOrderDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/admin": {
+      "get": {
+        "tags": ["order-controller"],
+        "operationId": "getAllOrders",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderPreviewDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages": {
+      "get": {
+        "tags": ["message-controller"],
+        "operationId": "getMessages",
+        "parameters": [{
+          "name": "orderid",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Message"
+                  }
                 }
               }
             }
@@ -503,6 +619,10 @@
       "UserDTO": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "firstName": {
             "type": "string"
           },
@@ -536,6 +656,66 @@
         }
       },
       "LocationPreviewDTO": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "lat": {
+            "type": "number",
+            "format": "float"
+          },
+          "lng": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "OrderPreviewDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationPreviewDTO"
+            }
+          },
+          "toPay": {
+            "type": "number",
+            "format": "double"
+          },
+          "userEmail": {
+            "type": "string"
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "senderEmail": {
+            "type": "string"
+          },
+          "receiverEmail": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "LocationDTO": {
         "type": "object",
         "properties": {
           "id": {

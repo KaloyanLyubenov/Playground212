@@ -40,5 +40,16 @@ public class PictureRepoImpl implements PictureRepo {
         return this.namedJdbcTemplate.batchUpdate(sql, batchParameters);
     }
 
+    @Override
+    public List<PictureEntity> findAllPicturesBYAlbumID(int albumID) {
+        String sql = """
+                SELECT id, name, album_id, paid_for
+                FROM pictures
+                WHERE album_id = ? 
+                """;
+
+        return this.jdbcTemplate.query(sql, new PictureRowMapper(), albumID);
+    }
+
 
 }
