@@ -10,4 +10,5 @@ public interface LocationRepo {
     public List<LocationEntity> findAllByType(String type);
     public List<LocationEntity> findAllByFormatAndType(String format, String type);
     public List<Integer> saveLocations(List<LocationEntity> locations);
+    public List<LocationEntity> findAllByOrderID(int orderID);
 }

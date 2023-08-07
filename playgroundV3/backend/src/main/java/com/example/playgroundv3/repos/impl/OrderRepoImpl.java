@@ -1,7 +1,11 @@
 package com.example.playgroundv3.repos.impl;
 
 import com.example.playgroundv3.domain.entites.OrderEntity;
+import com.example.playgroundv3.domain.entites.UserEntity;
 import com.example.playgroundv3.repos.OrderRepo;
+import com.example.playgroundv3.repos.impl.row_mappers.LocationRowMapper;
+import com.example.playgroundv3.repos.impl.row_mappers.OrderRowMapper;
+import com.example.playgroundv3.repos.impl.row_mappers.UserRowMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class OrderRepoImpl implements OrderRepo {
@@ -60,5 +65,47 @@ public class OrderRepoImpl implements OrderRepo {
         }
 
         return true;
+    }
+
+    @Override
+    public List<OrderEntity> findAllByUserID(int userID) {
+            String sql = """
+            SELECT *
+            FROM orders
+            WHERE user_id = ?;
+            """;
+
+            return this.jdbcTemplate.query(sql, new OrderRowMapper(), userID);
+    }
+
+    @Override
+    public List<OrderEntity> findAll() {
+        String sql = """
+            SELECT *
+            FROM orders;
+            """;
+
+        return this.jdbcTemplate.query(sql, new OrderRowMapper());
+    }
+
+    @Override
+    public int updateOrderPriceByOrderID(int orderID, double price) {
+        String sql = """
+                UPDATE orders
+                SET to_pay = ?
+                WHERE id = ?;
+                """;
+        return this.jdbcTemplate.update(sql, price, orderID);
+    }
+
+    @Override
+    public Optional<OrderEntity> findByOrderID(int orderID) {
+        String sql = """
+            SELECT *
+            FROM orders
+            WHERE id = ?;
+            """;
+
+        return this.jdbcTemplate.query(sql, new OrderRowMapper(), orderID).stream().findFirst();
     }
 }

@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequestMapping("/orders")
@@ -30,6 +32,22 @@ public class OrderController {
     public ResponseEntity<Boolean> submitEventOrder(@RequestHeader("Authorization") String token, @RequestBody EventOrderPlaceDTO order){
         boolean outcome = this.orderService.placeEventOrder(order, token);
         return ResponseEntity.ok(outcome);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<OrderPreviewDTO>> getOrdersForUser(@RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(this.orderService.getOrdersForUser(token));
+    }
+
+    @GetMapping("/admin")
+    public ResponseEntity<List<OrderPreviewDTO>> getAllOrders(){
+        return ResponseEntity.ok(this.orderService.getAllOrders());
+    }
+
+    @PatchMapping("/pricing/{orderID}")
+    public ResponseEntity<Boolean> updateOrderPrice(@PathVariable int orderID, @RequestBody float price){
+        log.info("payment came");
+        return ResponseEntity.ok(this.orderService.setOrderPrice(orderID, price));
     }
 
 

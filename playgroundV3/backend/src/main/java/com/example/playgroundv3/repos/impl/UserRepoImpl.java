@@ -28,16 +28,6 @@ public class UserRepoImpl implements UserRepo {
 
         return jdbcTemplate.query(sql, new UserRowMapper());
     }
-    @Override
-    public Optional<UserEntity> findUserByID(int id) {
-        String sql = """
-            SELECT *
-            FROM users
-            WHERE id = ?;
-            """;
-
-        return jdbcTemplate.query(sql, new UserRowMapper(), id).stream().findFirst();
-    }
 
     @Override
     public Optional<UserEntity> findUserByEmail(String email) {
@@ -48,6 +38,18 @@ public class UserRepoImpl implements UserRepo {
             """;
 
         return jdbcTemplate.query(sql, new UserRowMapper(), email).stream().findFirst();
+    }
+
+    @Override
+    public Optional<UserEntity> findUserByID(int id) {
+        String sql = """
+            SELECT *
+            FROM users
+            WHERE id = ?;
+            """;
+
+        return jdbcTemplate.query(sql, new UserRowMapper(), id).stream().findFirst();
+
     }
 
     @Override

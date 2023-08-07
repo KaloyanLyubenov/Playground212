@@ -33,8 +33,4 @@ public class AlbumRepoImpl implements AlbumRepo {
         }
     }
 
-    @Override
-    public int addThumbnail(int albumID, String thumbnailName) {
-        return 0;
-    }
 }

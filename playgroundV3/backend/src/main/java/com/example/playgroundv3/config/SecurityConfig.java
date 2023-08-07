@@ -33,7 +33,7 @@ public class SecurityConfig {
                         authorization -> authorization
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
                                 .requestMatchers("/auth/**", "/pictures", "/media-types",
-                                        "/s3/creds", "/locations", "/ws/**",
+                                        "/s3/creds", "/locations", "/ws/**", "/v3/api-docs/**", "/swagger-ui/**",
                                         "/create-payment-intent")
                                 .permitAll()
                                 .anyRequest()

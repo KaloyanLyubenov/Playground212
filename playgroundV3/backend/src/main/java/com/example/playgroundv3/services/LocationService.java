@@ -1,9 +1,8 @@
 package com.example.playgroundv3.services;
 
 import com.example.playgroundv3.domain.dtos.location.LocationAddDTO;
+import com.example.playgroundv3.domain.dtos.location.LocationDTO;
 import com.example.playgroundv3.domain.dtos.location.LocationPreviewDTO;
-import com.example.playgroundv3.domain.dtos.location.LocationSaveDTO;
-import com.example.playgroundv3.domain.dtos.location.LocationSendDTO;
 import com.example.playgroundv3.domain.entites.LocationEntity;
 import com.example.playgroundv3.repos.LocationRepo;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class LocationService {
     }
 
 
-    public List<LocationPreviewDTO> getLocationsByTypeAndFormat(String type, String format){
+    public List<LocationDTO> getLocationsByTypeAndFormat(String type, String format){
         List<LocationEntity> locationEntities = new ArrayList<>();
 
         if(type.equals("")){
@@ -43,7 +42,11 @@ public class LocationService {
             locationEntities = this.locationRepo.findAllByFormatAndType(format, type);
         }
 
-        return locationEntities.stream().map((locationEntity) -> new LocationPreviewDTO(locationEntity.getId(), locationEntity.getTitle(), locationEntity.getDescription(), locationEntity.getTimeOfDay(), locationEntity.getLat(), locationEntity.getLng())).toList();
+        return locationEntities.stream().map((locationEntity) -> new LocationDTO(locationEntity.getId(), locationEntity.getTitle(), locationEntity.getDescription(), locationEntity.getTimeOfDay(), locationEntity.getLat(), locationEntity.getLng())).toList();
+    }
+
+    public List<LocationPreviewDTO> getLocationsForOrder(int orderID){
+        return this.locationRepo.findAllByOrderID(orderID).stream().map(location -> new LocationPreviewDTO(location.getTitle(), location.getLat(), location.getLng())).toList();
     }
 
 }

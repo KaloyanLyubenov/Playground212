@@ -1,37 +1,40 @@
 package com.example.playgroundv3.domain.dtos;
 
-import com.example.playgroundv3.domain.enums.Status;
-
 public class Message {
 
-    private String senderName;
-    private String receiverName;
-    private String message;
-    private Status status;
+    int id;
+    int orderID;
+    private String senderEmail;
+    private String receiverEmail;
+    private String content;
 
     public Message() {
     }
 
-    public Message(String senderName, String receiverName, String message, Status status) {
-        this.senderName = senderName;
-        this.receiverName = receiverName;
-        this.status = status;
-        this.message = message;
+    public Message(int id, int orderID, String senderEmail, String receiverEmail, String message) {
+        this.id = id;
+        this.orderID = orderID;
+        this.senderEmail = senderEmail;
+        this.receiverEmail = receiverEmail;
+        this.content = message;
     }
 
-    public String getSenderName() {
-        return senderName;
+    public int getId() {
+        return id;
+    }
+    public int getOrderID() {
+        return orderID;
+    }
+    public String getSenderEmail() {
+        return senderEmail;
     }
 
-    public String getReceiverName() {
-        return receiverName;
+    public String getReceiverEmail() {
+        return receiverEmail;
     }
 
-    public String getMessage() {
-        return message;
+    public String getContent() {
+        return content;
     }
 
-    public Status getStatus() {
-        return status;
-    }
 }

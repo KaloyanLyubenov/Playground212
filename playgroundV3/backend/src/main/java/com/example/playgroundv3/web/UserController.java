@@ -23,11 +23,6 @@ public class UserController {
         return this.userService.getAllUsers();
     }
 
-    //    @GetMapping("/{id}")
-    //    public UserModel getUserById(@PathVariable int id){
-    //        return this.userService.getUserByID(id);
-    //    }
-
     @GetMapping("/{email}")
     public UserDetailsOrderDTO getUserByEmail(@PathVariable String email) {return this.userService.getUserDetailsForOrderByEmail(email);}
 

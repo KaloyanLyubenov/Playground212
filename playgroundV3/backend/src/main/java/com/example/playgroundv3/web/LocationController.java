@@ -1,16 +1,16 @@
 package com.example.playgroundv3.web;
 
 import com.example.playgroundv3.domain.dtos.location.LocationAddDTO;
-import com.example.playgroundv3.domain.dtos.location.LocationPreviewDTO;
-import com.example.playgroundv3.domain.dtos.location.LocationSaveDTO;
-import com.example.playgroundv3.domain.dtos.location.LocationSendDTO;
+import com.example.playgroundv3.domain.dtos.location.LocationDTO;
 import com.example.playgroundv3.services.LocationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequestMapping("/locations")
 public class LocationController {
 
@@ -21,9 +21,16 @@ public class LocationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<LocationPreviewDTO>> getLocations(@RequestParam(name = "type", required = false) String type,
-                                                                 @RequestParam(name = "format", required = false) String format) {
-        return ResponseEntity.ok(this.locationService.getLocationsByTypeAndFormat(type, format));
+    public ResponseEntity<List<LocationDTO>> getLocationsByTypeAndFormat(@RequestParam(name = "type", required = false) String type,
+                                                                         @RequestParam(name = "format", required = false) String format) {
+
+        List<LocationDTO> locations = this.locationService.getLocationsByTypeAndFormat(type, format);
+
+        log.info("type: " + type + "; format: " + format);
+
+        log.info(locations.stream().map(location -> location.toString()).toString());
+
+        return ResponseEntity.ok(locations);
     }
 
     @PostMapping

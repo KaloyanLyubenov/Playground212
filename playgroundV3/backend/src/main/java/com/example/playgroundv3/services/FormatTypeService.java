@@ -33,25 +33,4 @@ public class FormatTypeService {
 
         return typesMap;
     }
-
-    public List<String> getAllFormatTypeNames(){
-        List<String> types = new ArrayList<>();
-        for(Map.Entry<String, Integer> entry : this.availableFormatTypes.entrySet()){
-            types.add(entry.getKey());
-        }
-        return types;
-    }
-
-    public String getFormatNameById(int id) {
-        for(Map.Entry<String, Integer> format : this.availableFormatTypes.entrySet()){
-            if(format.getValue() == id){
-                return format.getKey();
-            }
-        }
-        return null;
-    }
-
-    public int getFormatTypeIdByName(String formatTypeName) {
-        return this.availableFormatTypes.get(formatTypeName);
-    }
 }

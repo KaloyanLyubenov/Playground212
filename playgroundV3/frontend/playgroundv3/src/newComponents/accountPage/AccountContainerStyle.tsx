@@ -14,7 +14,7 @@ export const StylizedAccountContainer = styled.div`
   }
 
   .main-view {
-    height: 65vh;
+    height: 80vh;
     width: 75vw;
     display: flex;
     flex-direction: column;
@@ -35,14 +35,10 @@ export const StylizedAccountContainer = styled.div`
     height: 100%;
     width: 100%;
     display: flex;
+    flex-shrink: 0;
     justify-content: center;
-    align-items: center;
-    overflow-y: scroll;
-    scrollbar-width: none;
-
-    -webkit-scrollbar {
-      width: 0;
-    }
+    align-items: flex-start;
+    overflow-y: auto;
   }
 `;
 

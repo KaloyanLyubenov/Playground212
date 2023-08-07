@@ -10,6 +10,7 @@ import UploadForm from "./imageUpload/UploadForm";
 import CreateContainer from "./create/CreateContainer";
 import LocationAdd from "./locationAdding/LocationAdd";
 import AccountContainer from "./accountPage/AccountContainer";
+import PaymentSuccess from "./PaymentSuccess";
 
 function App() {
   return (
@@ -70,6 +71,15 @@ function App() {
                   <>
                     <NavbarStatic />
                     <AccountContainer />
+                  </>
+                }
+              />
+              <Route
+                path="/payment-success/:orderID"
+                element={
+                  <>
+                    <NavbarStatic />
+                    <PaymentSuccess />
                   </>
                 }
               />

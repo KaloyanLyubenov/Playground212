@@ -59,8 +59,6 @@ public class LocationRepoImpl implements LocationRepo {
 
         return this.jdbcTemplate.query(sql, new LocationRowMapper(), format, type);
     }
-
-    // New Version
     @Override
     public List<Integer> saveLocations(List<LocationEntity> locations) {
         String sql = """
@@ -91,9 +89,17 @@ public class LocationRepoImpl implements LocationRepo {
         return generatedIds;
     }
 
+    @Override
+    public List<LocationEntity> findAllByOrderID(int orderID) {
+        String sql = """
+            SELECT l.id as id, l.title as title, l.latitude as latitude , l.longitude as longitude, l.description as description, l.type as type, l.time_of_day as time_of_day, l.format as format
+            FROM locations as l
+            JOIN orders_locations as ol on l.id = ol.location_id  
+            WHERE ol.order_id = ?;
+            """;
 
-
-
+        return this.jdbcTemplate.query(sql, new LocationRowMapper(), orderID);
+    }
 
 
 }

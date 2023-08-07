@@ -20,17 +20,12 @@ public class UserService {
         this.userRoleService = userRoleService;
     }
 
-    public UserDetailsDTO getUserDetails(int userId){
-        UserEntity user = this.userRepo.findUserByID(userId).orElseThrow(() -> new IllegalStateException("User with this id not found"));
-
-        return new UserDetailsDTO(user.getFirstName(), user.getLastName(), user.getEmail());
-    }
-
     public List<UserDTO> getAllUsers() {
         List<UserDTO> users = this.userRepo.findAllUsers()
                 .stream().map(
                         entity ->
                             new UserDTO(
+                                    entity.getId(),
                                     entity.getFirstName(),
                                     entity.getLastName(),
                                     entity.getEmail(),
@@ -39,20 +34,6 @@ public class UserService {
                 ).toList();
 
         return users;
-    }
-
-    public UserModel getUserByID(int id){
-        Optional<UserEntity> optionalUser = this.userRepo.findUserByID(id);
-
-        if(optionalUser.isEmpty()){
-            throw new IllegalArgumentException("User with this ID not found");
-        }
-
-        UserEntity user = optionalUser.get();
-        UserModel userModel = new UserModel(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
-        userModel.setRoles(this.userRoleService.getUserRolesByUserEmail(user.getEmail()));
-
-        return userModel;
     }
 
     public UserModel getUserByEmail(String email){
@@ -76,6 +57,22 @@ public class UserService {
             throw new IllegalStateException("Something went wrong adding user");
         }
         this.userRoleService.addRoleToUser(new UserAddRoleDTO(user.getEmail(), "USER"));
+    }
+
+    public String getUserEmailByID(int id){
+        Optional<UserEntity> user =  this.userRepo.findUserByID(id);
+        if(user.isEmpty()){
+            throw new IllegalStateException("User with this ID not found");
+        }
+        return user.get().getEmail();
+    }
+
+    public int getUserIDByEmail(String userEmail){
+        Optional<UserEntity> user =  this.userRepo.findUserByEmail(userEmail);
+        if(user.isEmpty()){
+            throw new IllegalStateException("User with this ID not found");
+        }
+        return user.get().getId();
     }
 
 

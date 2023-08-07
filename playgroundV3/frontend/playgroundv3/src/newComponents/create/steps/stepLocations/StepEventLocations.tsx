@@ -115,8 +115,8 @@ const StepEventLocations: React.FC<LocationStepProps> = ({
       title: "{set title}",
       position: position,
       description: "{set description}",
-      type: "personal",
-      format: "photoshoot",
+      type: "event",
+      format: "event",
       timeOfDay: "day",
     };
     setLocations((prevLocations) => [...prevLocations, newLocation]);
