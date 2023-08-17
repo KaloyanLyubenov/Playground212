@@ -1,6 +1,6 @@
-# Photographer Portfolio Website
+# Forbidden Media Website
 
-Welcome to the Photographer Portfolio Website project! This web application serves as a portfolio platform for photographers, allowing them to showcase their work, interact with clients, and manage photoshoot orders seamlessly.
+Welcome to Forbidden Media's first iteration Website! This web application serves as a portfolio platform for the photographer, allowing them to showcase their work, interact with clients, and manage photoshoot orders seamlessly.
 
 ## Features
 
